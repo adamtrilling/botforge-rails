@@ -34,6 +34,6 @@ group :development, :test do
   gem 'pry-rescue'
   gem 'pry-stack_explorer'
   gem 'rspec'
-  gem 'simple_bdd', github: 'embraceyour/simple_bdd'
+  gem 'simple_bdd'
   gem 'rspec-rails'
 end
