@@ -1,14 +1,6 @@
 require 'rails_helper'
 
 feature "User management" do
-  scenario "login" do
-    Given "I have an account"
-    And "I am at the login page"
-
-    When "I log in with my username and password"
-    Then "I am shown to be logged in"
-  end
-
   scenario "account registration" do
     Given "I am at the login page"
     When "I elect to create an account"
@@ -24,5 +16,17 @@ feature "User management" do
     When "I log out"
     And "I log in with my username and password"
     Then "I am shown to be logged in"
+  end
+
+  scenario "login" do
+    Given "I have an account"
+    And "I am at the login page"
+
+    When "I log in with my username and password"
+    Then "I am shown to be logged in"
+  end
+
+  def i_am_at_the_login_page
+    visit new_session_path
   end
 end
