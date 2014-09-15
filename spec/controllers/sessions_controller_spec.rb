@@ -2,13 +2,13 @@ require 'rails_helper'
 
 describe SessionsController do
   describe '#new' do
+    before do
+      allow(controller).to receive(:check_session_token).and_return(logged_in?)
+      get :new
+    end
+
     context 'with a user who isn\'t logged in' do
-      before do
-        session[:user_id] = nil
-        session[:session_token] = nil
-        
-        get :new
-      end
+      let(:logged_in?) { false }
 
       it "is sucessful" do
         expect(response).to be_success
@@ -20,18 +20,10 @@ describe SessionsController do
     end
 
     context 'with a user who is logged in' do
-      let(:user_id) { rand(10000) }
-      let(:session_token) { rand(10000) }
-
-      before do
-        session[:user_id] = user_id
-        session[:session_token] = session_token
-
-        get :new
-      end
+      let(:logged_in?) { true }
 
       it "redirects to the dashboard" do
-        expect(response).to redirect_to dashboard_path
+        expect(response).to redirect_to root_path
       end
     end
   end
