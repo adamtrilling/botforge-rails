@@ -26,7 +26,31 @@ feature "User management" do
     Then "I am shown to be logged in"
   end
 
+  let(:name) { Faker::Name.name }
+  let(:email) { Faker::Internet.email }
+  let(:password) { 'password1' }
+
   def i_am_at_the_login_page
     visit new_session_path
+  end
+
+  def i_elect_to_create_an_account
+    click_link "Register"
+  end
+
+  def i_am_shown_the_registration_page
+    expect(page).to have_field "Username"
+    expect(page).to have_field "Email"
+    expect(page).to have_field "Password"
+    expect(page).to have_field "Confirm password"
+  end
+
+  def i_fill_in_the_registration_page
+    fill_in 'Username', with: name
+    fill_in 'Email', with: email
+    fill_in 'Password', with: password
+    fill_in 'Confirm password', with: password
+
+    click_button 'Create User'
   end
 end
