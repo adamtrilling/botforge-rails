@@ -1,5 +1,7 @@
 class User < BaseModel
   attribute :username
   attribute :email
-  attribute :password_digest
+  attribute :password
+
+  validates_confirmation_of :password
 end
