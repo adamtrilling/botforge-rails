@@ -1,0 +1,8 @@
+<p>Dear <%= @user.username %>,</p>
+
+<p>Welcome to BotForge.  Click the following link to confirm your account:</p>
+
+<p><%= link_to 'confirm your account', confirm_user_url(@user, token: @token) %></p>
+
+<p>Thanks,<br/>
+The BotForge Spammer</p>

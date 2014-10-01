@@ -4,6 +4,7 @@ require 'spec_helper'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
+require 'capybara/email/rspec'
 require 'simple_bdd/rspec'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -20,5 +21,6 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     BaseModel.redis.flushdb
+    FactoryGirl.lint
   end
 end

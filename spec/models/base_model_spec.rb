@@ -57,6 +57,10 @@ describe BaseModel do
     end
   end
 
+  describe '#save!' do
+    pending "like save except it throws an exception on failure"
+  end
+
   describe '#find' do
     context 'with a saved model' do
       subject do

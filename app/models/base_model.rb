@@ -6,12 +6,12 @@ class BaseModel
 
   class << self
     def attribute(name, params = {})
-      define_method name.to_sym do
+      define_method name do
         @attributes ||= Hash.new
         @attributes[name]
       end
 
-      define_method :"#{name}=" do |new_val|
+      define_method "#{name}=" do |new_val|
         @attributes ||= Hash.new
         @attributes[name] = new_val
       end
@@ -34,6 +34,7 @@ class BaseModel
     @id = redis.incr("#{model_key}:next_id")
     redis.mapped_hmset(object_key, @attributes)
   end
+  alias_method :save!, :save
 
   protected
   def self.redis

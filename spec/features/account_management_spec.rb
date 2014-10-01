@@ -53,4 +53,12 @@ feature "User management" do
 
     click_button 'Create User'
   end
+
+  def i_get_a_confirmation_email
+    open_email(email)
+  end
+
+  def i_click_the_confirmation_link
+    current_email.click_link 'confirm your account'
+  end
 end

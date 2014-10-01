@@ -4,6 +4,7 @@ ruby '2.2.0'
 
 gem 'rails', github: 'rails'
 
+gem 'bcrypt'
 gem 'exception_notification'
 gem 'haml'
 gem 'jbuilder', '~> 2.0'
@@ -25,7 +26,7 @@ group :test do
   gem 'capybara-webkit'
   gem 'capybara-email'
   gem 'database_cleaner'
-  gem 'factory_girl'
+  gem 'factory_girl_rails'
   gem 'faker'
   gem 'shoulda-matchers'
 end
