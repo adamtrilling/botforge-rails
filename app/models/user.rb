@@ -10,11 +10,10 @@ class User < BaseModel
   def set_confirmation_token
     token = SecureRandom.hex
     self.confirmation_token = BCrypt::Password.create(token)
-    save
     token
   end
 
   def verify_confirmation_token(token)
-    BCrypt::Password.new(confirmation_token) == token
+    BCrypt::Password.new(self.confirmation_token) == token
   end
 end

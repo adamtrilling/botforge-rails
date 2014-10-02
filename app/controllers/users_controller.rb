@@ -11,9 +11,10 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(registration_params)
+    token = @user.set_confirmation_token
 
     if (@user.save)
-      UserMailer.confirmation(@user, 'abcde').deliver_now
+      UserMailer.confirmation(@user, token).deliver_now
       redirect_to root_path
     else
       render :new
