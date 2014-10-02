@@ -66,4 +66,18 @@ feature "User management" do
       expect(page).to have_text(name)
     end
   end
+
+  def i_log_out
+    click_link 'Log out'
+  end
+
+  def i_log_in_with_my_username_and_password
+    visit new_session_path
+
+    fill_in 'Username', with: email
+    fill_in 'Password', with: password
+
+    click_button 'Log in'
+    save_and_open_page
+  end
 end

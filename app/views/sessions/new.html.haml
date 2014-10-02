@@ -1,6 +1,6 @@
-= simple_form_for :session do |f|
+= simple_form_for :session, url: session_path do |f|
   =f.input :username
   =f.input :password
-  =f.submit
+  =f.submit 'Log in'
 
 = link_to "Register", new_user_path
