@@ -61,4 +61,8 @@ feature "User management" do
   def i_click_the_confirmation_link
     current_email.click_link 'confirm your account'
   end
+
+  def i_am_shown_to_be_logged_in
+    expect(page).to have_text(name)
+  end
 end

@@ -3,12 +3,12 @@ require 'rails_helper'
 describe UsersController do
   describe '#new' do
     before do
-      allow(controller).to receive(:check_session_token).and_return(logged_in?)
+      allow(controller).to receive(:current_user).and_return(user)
       get :new
     end
 
     context 'with a user who isn\'t logged in' do
-      let(:logged_in?) { false }
+      let(:user) { nil }
 
       it "assigns a blank user" do
         expect(assigns(:user)).to be_a User
@@ -25,7 +25,7 @@ describe UsersController do
     end
 
     context 'with a user who is logged in' do
-      let(:logged_in?) { true }
+      let(:user) { FactoryGirl.create(:user) }
 
       it "redirects to the dashboard" do
         expect(response).to redirect_to root_path
@@ -35,7 +35,7 @@ describe UsersController do
 
   describe '#create' do
     before do
-      allow(controller).to receive(:check_session_token).and_return(logged_in?)
+      allow(controller).to receive(:current_user).and_return(logged_in_user)
 
       @user = User.new
       allow(User).to receive(:new).and_return(@user)
@@ -46,7 +46,7 @@ describe UsersController do
     end
 
     context 'with a user who is logged in' do
-      let(:logged_in?) { true }
+      let(:logged_in_user) { @user }
       let(:valid_params?) { true }
 
       it 'saves the user' do
@@ -74,7 +74,7 @@ describe UsersController do
 
     context 'with a user who isn\'t logged in' do
       let(:valid_params?) { false }
-      let(:logged_in?) { false }
+      let(:logged_in_user) { nil }
 
       it "assigns a blank user" do
         expect(assigns(:user)).to be_a User

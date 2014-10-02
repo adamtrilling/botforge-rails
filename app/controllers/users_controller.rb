@@ -1,8 +1,6 @@
 class UsersController < ApplicationController
-  skip_before_filter :check_session_token
-
   def new
-    if (check_session_token)
+    if (current_user)
       redirect_to root_path
     else
       @user = User.new
@@ -29,6 +27,7 @@ class UsersController < ApplicationController
       @user.confirmed_at = Time.now
       @user.save
 
+      session[:user_id] = @user.id
       redirect_to user_path(@user)
     else
       redirect_to root_path

@@ -3,12 +3,12 @@ require 'rails_helper'
 describe SessionsController do
   describe '#new' do
     before do
-      allow(controller).to receive(:check_session_token).and_return(logged_in?)
+      allow(controller).to receive(:current_user).and_return(user)
       get :new
     end
 
     context 'with a user who isn\'t logged in' do
-      let(:logged_in?) { false }
+      let(:user) { nil }
 
       it "is sucessful" do
         expect(response).to be_success
@@ -20,7 +20,7 @@ describe SessionsController do
     end
 
     context 'with a user who is logged in' do
-      let(:logged_in?) { true }
+      let(:user) { FactoryGirl.create(:user) }
 
       it "redirects to the dashboard" do
         expect(response).to redirect_to root_path
