@@ -11,8 +11,7 @@ feature "User management" do
 
     When "I click the confirmation link"
     Then "I am shown to be logged in"
-    And "My account is shown to be confirmed"
-
+    
     When "I log out"
     And "I log in with my username and password"
     Then "I am shown to be logged in"
@@ -63,6 +62,8 @@ feature "User management" do
   end
 
   def i_am_shown_to_be_logged_in
-    expect(page).to have_text(name)
+    within '#header' do
+      expect(page).to have_text(name)
+    end
   end
 end
