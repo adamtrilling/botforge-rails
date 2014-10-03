@@ -32,7 +32,7 @@ describe SessionsController do
     let(:user) { FactoryGirl.create(:user) }
 
     before do
-      allow(User).to receive(:find_by).with(login: user.email).and_return(user)
+      allow(User).to receive(:find_by).with(username: user.email).and_return(user)
       allow(user).to receive(:authenticate).with('password').and_return(correct_password?)
       allow(controller).to receive(:current_user).and_return(logged_in_user)
       

@@ -19,19 +19,35 @@ describe BaseModel do
   end
 
   describe '#attribute' do
-    subject { TestModels::Attribute.new(first_name: 'foo', last_name: 'bar')}
+    context 'basic attributes' do
+      subject { TestModels::Attribute.new(first_name: 'foo', last_name: 'bar')}
 
-    it 'defines a getter' do
-      expect(subject).to respond_to(:first_name)
-      expect(subject.first_name).to eq 'foo'
+      it 'defines a getter' do
+        expect(subject).to respond_to(:first_name)
+        expect(subject.first_name).to eq 'foo'
 
-      expect(subject).to respond_to(:last_name)
-      expect(subject.last_name).to eq 'bar'
+        expect(subject).to respond_to(:last_name)
+        expect(subject.last_name).to eq 'bar'
+      end
+
+      it 'defines a setter' do
+        expect(subject).to respond_to(:first_name=)
+        expect(subject).to respond_to(:last_name=)
+      end
+
+      it 'throws an exception on find_by' do
+        expect { subject.class.find_by(first_name: 'foo') }.to raise_error(UnindexedSearch)
+        expect { subject.class.find_by(last_name: 'bar') }.to raise_error(UnindexedSearch)
+      end
     end
 
-    it 'defines a setter' do
-      expect(subject).to respond_to(:first_name=)
-      expect(subject).to respond_to(:last_name=)
+    context 'attributes with an index' do
+      subject { TestModels::Index.new(identifier: SecureRandom.hex, category: 'animal') }
+
+      it 'does not throw an exception on find_by' do
+        expect { subject.class.find_by(identifier: 'abc') }.to_not raise_error
+        expect { subject.class.find_by(category: 'animal') }.to_not raise_error
+      end
     end
   end
 
@@ -80,6 +96,14 @@ describe BaseModel do
     context 'with a nonexistent model' do
       it 'returns nil' do
         expect(TestModels::Attribute.find(-24)).to be_nil
+      end
+    end
+  end
+
+  describe '#find_by' do
+    context 'with no key given' do
+      it 'raises an ArgumentError' do
+        expect { TestModels::Index.find_by({}) }.to raise_error ArgumentError
       end
     end
   end

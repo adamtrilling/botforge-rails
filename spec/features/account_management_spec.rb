@@ -78,6 +78,5 @@ feature "User management" do
     fill_in 'Password', with: password
 
     click_button 'Log in'
-    save_and_open_page
   end
 end

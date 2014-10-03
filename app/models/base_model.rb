@@ -24,6 +24,15 @@ class BaseModel
         nil
       end
     end
+
+    def find_by(params = {})
+      raise ArgumentError if params.keys.empty?
+
+      if (redis.exists("#{model_key}:indexes:#{params.keys.first}"))
+      else
+        raise UnindexedSearch
+      end
+    end
   end
 
   def persisted?
@@ -56,4 +65,7 @@ class BaseModel
   def object_key
     "#{model_key}:#{@id}"
   end
+end
+
+class UnindexedSearch < Exception
 end
