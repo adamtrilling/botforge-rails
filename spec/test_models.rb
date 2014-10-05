@@ -4,6 +4,11 @@ module TestModels
     attribute :last_name
   end
 
+  class All < BaseModel
+    attribute :first_name
+    attribute :last_name
+  end
+
   class Index < BaseModel
     attribute :identifier, unique_index: true
     attribute :category, index: true
