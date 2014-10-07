@@ -36,13 +36,8 @@ describe BaseModel do
       end
 
       it 'does not create an index' do
-        expect(TestModels::Index.has_index?(:category)).to eq false
-        expect(TestModels::Index.has_unique_index?(:identifier)).to eq false
-      end
-
-      it 'throws an exception on find_by' do
-        expect { subject.class.find_by(first_name: 'foo') }.to raise_error(UnindexedSearch)
-        expect { subject.class.find_by(last_name: 'bar') }.to raise_error(UnindexedSearch)
+        expect(TestModels::Attribute.has_index?(:first_name)).to eq false
+        expect(TestModels::Attribute.has_unique_index?(:last_name)).to eq false
       end
     end
 
@@ -184,6 +179,38 @@ describe BaseModel do
     context 'with no key given' do
       it 'raises an ArgumentError' do
         expect { TestModels::Index.find_by({}) }.to raise_error ArgumentError
+      end
+    end
+
+    context 'with an unindexed field' do
+      subject { TestModels::Attribute.create(first_name: 'foo', last_name: 'bar') }
+
+      it 'raises an UnindexedSearch exception' do
+        expect { subject.class.find_by(first_name: 'foo') }.to raise_error(UnindexedSearch)
+        expect { subject.class.find_by(last_name: 'bar') }.to raise_error(UnindexedSearch)
+      end
+    end
+
+    context 'with an indexed field' do
+      let(:subject_identifier) { SecureRandom.hex }
+      let!(:subject) { TestModels::Index.create(identifier: subject_identifier, category: 'plant') }
+
+      it 'returns the model for a correct search (unique)' do
+        results = TestModels::Index.find_by(identifier: subject_identifier)
+        expect(results.size).to eq 1
+        expect(results.first.id).to eq subject.id
+      end
+
+      it 'resturns the model for a correct search (non-unique)' do
+        non_uniq_subject = TestModels::Index.create(identifier: subject_identifier, category: 'metal')
+        results = TestModels::Index.find_by(category: 'metal')
+        expect(results.size).to eq 1
+        expect(results.first.id).to eq non_uniq_subject.id
+      end
+
+      it 'returns an empty array for an incorrect result' do
+        results = TestModels::Index.find_by(category: 'mineral')
+        expect(results.size).to eq 0
       end
     end
   end

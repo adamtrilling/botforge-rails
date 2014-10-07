@@ -20,7 +20,10 @@ RSpec.configure do |config|
   config.infer_spec_type_from_file_location!
 
   config.before(:suite) do
-    BaseModel.redis.flushdb
     FactoryGirl.lint
+  end
+
+  config.after(:suite) do
+    BaseModel.redis.flushdb
   end
 end

@@ -47,9 +47,24 @@ class BaseModel
     end
 
     def find_by(params = {})
-      raise ArgumentError if params.keys.empty?
+      raise ArgumentError if params.keys.size != 1
 
-      if (redis.exists("#{model_key}:indexes:#{params.keys.first}"))
+      search_key = params.keys.first
+
+      if (has_index?(search_key))
+        if (has_unique_index?(search_key))
+          result = redis.hget("#{model_key}:indexes:#{search_key}", params[search_key])
+          if (result)
+            [find(result)]
+          else
+            []
+          end
+        else
+          score = redis.hget("#{model_key}:indexes:#{search_key}:scores", params[search_key])
+          results = redis.zrangebyscore("#{model_key}:indexes:#{search_key}:map", score, score)
+
+          results.collect { |result_id| find(result_id) }
+        end
       else
         raise UnindexedSearch
       end
@@ -61,9 +76,28 @@ class BaseModel
   end
 
   def save
-    binding.pry
     @id ||= redis.incr("#{model_key}:next_id")
     redis.mapped_hmset(object_key, @attributes)
+
+    # update indexes
+    changes.each do |field, change|
+      if (has_index?(field))
+        if (has_unique_index?(field))
+          redis.hdel("#{model_key}:indexes:#{field}", change.first) if change.first.present?
+          redis.hset("#{model_key}:indexes:#{field}", change.last, @id)
+        else
+          redis.zrem("#{model_key}:indexes:#{field}:map", @id) if change.first.present?
+
+          score = redis.hget("#{model_key}:indexes:#{field}:scores", change.last)
+          unless (score)
+            score = redis.incr("#{model_key}:indexes:#{field}:score_counter")
+            redis.hset("#{model_key}:indexes:#{field}:scores", change.last, score)
+          end
+          redis.zadd("#{model_key}:indexes:#{field}:map", score, @id)
+        end
+      end
+    end
+
     redis.sadd("#{model_key}:all", @id)
     changes_applied
     true
@@ -94,29 +128,27 @@ class BaseModel
     end
 
     def has_index?(key)
-      redis.exists("#{model_key}:index:#{key}")
+      redis.sismember("#{model_key}:indexes", key)
     end
 
     def has_unique_index?(key)
-      redis.exists("#{model_key}:unique_index:#{key}")
+      redis.sismember("#{model_key}:unique_indexes", key)
     end
 
     def create_unique_index(key)
+      redis.sadd("#{model_key}:unique_indexes", key)
+      redis.sadd("#{model_key}:indexes", key)
       puts "creating unique index"
     end
 
     def create_index(key)
+      redis.sadd("#{model_key}:indexes", key)
       puts "creating index"
     end
   end
 
-  def redis
-    self.class.redis
-  end
-
-  def model_key
-    self.class.name
-  end
+  delegate :redis, :model_key, :has_index?, :has_unique_index?,
+    to: :class
 
   def object_key
     "#{model_key}:#{@id}"

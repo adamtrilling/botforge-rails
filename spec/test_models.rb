@@ -10,7 +10,7 @@ module TestModels
   end
 
   class Index < BaseModel
-    attribute :identifier, unique_index: true
+    attribute :identifier, index: :unique
     attribute :category, index: true
   end
 end
