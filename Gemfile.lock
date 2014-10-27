@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/capistrano/capistrano.git
-  revision: 93cd74ae71e5ecedcaa96914121b615a74dc2836
+  revision: d3023202d5139a88fe71c0a6bc3b0aee7c8b6180
   specs:
     capistrano (3.2.1)
       i18n
@@ -17,7 +17,7 @@ GIT
 
 GIT
   remote: git://github.com/rails/rails.git
-  revision: 42130e8572a7d6b05ec9c2d6531ff87cea37c7e0
+  revision: d616fec8117ac25753ee23e15ac14261d298ee51
   specs:
     actionmailer (4.2.0.beta2)
       actionpack (= 4.2.0.beta2)
@@ -76,7 +76,7 @@ GEM
   specs:
     addressable (2.3.6)
     arel (6.0.0.beta1)
-    bcrypt (3.1.7)
+    bcrypt (3.1.9)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
@@ -92,7 +92,7 @@ GEM
     capybara-email (2.4.0)
       capybara (~> 2.4)
       mail
-    capybara-webkit (1.3.0)
+    capybara-webkit (1.3.1)
       capybara (>= 2.0.2, < 2.5.0)
       json
     coderay (1.1.0)
@@ -119,7 +119,7 @@ GEM
     hike (1.2.3)
     i18n (0.7.0.beta1)
     interception (0.5)
-    jbuilder (2.2.3)
+    jbuilder (2.2.4)
       activesupport (>= 3.0.0, < 5)
       multi_json (~> 1.2)
     jquery-rails (3.1.2)
@@ -136,7 +136,7 @@ GEM
     mail (2.6.1)
       mime-types (>= 1.16, < 3)
     method_source (0.8.2)
-    mime-types (2.4.2)
+    mime-types (2.4.3)
     mini_portile (0.6.0)
     minitest (5.4.2)
     multi_json (1.10.1)
@@ -247,7 +247,7 @@ DEPENDENCIES
   factory_girl_rails
   faker
   haml
-  jbuilder (~> 2.0)
+  jbuilder
   jquery-rails
   launchy
   letter_opener
