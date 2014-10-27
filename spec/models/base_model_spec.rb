@@ -122,6 +122,40 @@ describe BaseModel do
     end
   end
 
+  describe '#destroy' do
+    before do
+      @model1 = TestModels::Attribute.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+      @model2 = TestModels::Attribute.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+
+      @model1.destroy
+    end
+
+    it 'destroys the targetted model' do
+      expect(TestModels::Attribute.find(@model1.id)).to be_nil
+    end
+
+    it 'leaves the other model in place' do
+      result = TestModels::Attribute.find(@model2.id)
+      expect(result).to be_a TestModels::Attribute
+      expect(result.first_name).to eq @model2.first_name
+      expect(result.last_name).to eq @model2.last_name
+    end
+  end
+
+  describe '#destroy_all' do
+    before do
+      TestModels::All.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+      TestModels::All.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+      TestModels::All.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+
+      TestModels::All.destroy_all
+    end
+
+    it 'should destroy all instances' do
+      expect(TestModels::All.all.size).to eq 0
+    end
+  end
+
   describe '#all' do
     context 'with no saved objects' do
       it 'returns an empty array' do

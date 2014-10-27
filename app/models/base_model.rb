@@ -104,6 +104,29 @@ class BaseModel
   end
   alias_method :save!, :save
 
+  def destroy
+    redis.del(object_key)
+    redis.srem("#{model_key}:all", @id)
+
+    @attributes.each do |field, val|
+      if (has_index?(field))
+        if (has_unique_index?(field))
+          redis.hdel("#{model_key}:indexes:#{field}", val)
+        else
+          redis.zrem("#{model_key}:indexes:#{field}:map", @id)
+        end
+      end
+    end
+
+    self
+  end
+
+  def self.destroy_all
+    all.each do |obj|
+      obj.destroy
+    end
+  end
+
   protected
   class << self
     def define_accessors(name)
@@ -138,12 +161,10 @@ class BaseModel
     def create_unique_index(key)
       redis.sadd("#{model_key}:unique_indexes", key)
       redis.sadd("#{model_key}:indexes", key)
-      puts "creating unique index"
     end
 
     def create_index(key)
       redis.sadd("#{model_key}:indexes", key)
-      puts "creating index"
     end
   end
 
