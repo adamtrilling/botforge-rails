@@ -247,5 +247,42 @@ describe BaseModel do
         expect(results.size).to eq 0
       end
     end
+
+    context 'with multiple fields' do
+      before do
+        TestModels::Index.destroy_all
+
+        @objs = [
+          TestModels::Index.create(identifier: SecureRandom.hex, category: 'plant', age: 2),
+          TestModels::Index.create(identifier: SecureRandom.hex, category: 'plant', age: 2),
+          TestModels::Index.create(identifier: SecureRandom.hex, category: 'metal', age: 2),
+          TestModels::Index.create(identifier: SecureRandom.hex, category: 'animal', age: 2),
+          TestModels::Index.create(identifier: SecureRandom.hex, category: 'plant', age: 3),
+          TestModels::Index.create(identifier: SecureRandom.hex, category: 'animal', age: 3)
+        ]
+      end
+
+      it 'find_by returns the correct results' do
+        results = TestModels::Index.find_by(category: 'plant', age: 2).collect(&:id)
+        expect(results.size).to eq 2
+        expect(results).to include(@objs[0].id)
+        expect(results).to include(@objs[1].id)
+        expect(results).to_not include(@objs[2].id)
+        expect(results).to_not include(@objs[3].id)
+        expect(results).to_not include(@objs[4].id)
+        expect(results).to_not include(@objs[5].id)
+      end
+
+      it 'find_by_any returns the correct results' do
+        results = TestModels::Index.find_by_any(category: 'plant', age: 2).collect(&:id)
+        expect(results.size).to eq 5
+        expect(results).to include(@objs[0].id)
+        expect(results).to include(@objs[1].id)
+        expect(results).to include(@objs[2].id)
+        expect(results).to include(@objs[3].id)
+        expect(results).to include(@objs[4].id)
+        expect(results).to_not include(@objs[5].id)
+      end
+    end
   end
 end

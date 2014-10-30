@@ -12,5 +12,6 @@ module TestModels
   class Index < BaseModel
     attribute :identifier, index: :unique
     attribute :category, index: true
+    attribute :age, index: true
   end
 end
