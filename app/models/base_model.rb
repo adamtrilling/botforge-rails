@@ -3,6 +3,8 @@ class BaseModel
   include ActiveModel::Model
   include ActiveModel::Dirty
 
+  include Concerns::BaseModel::Finders
+
   attr_accessor :id
 
   class << self
@@ -43,28 +45,6 @@ class BaseModel
         found
       else
         nil
-      end
-    end
-
-    def find_by(params = {})
-      raise ArgumentError if params.keys.size < 1
-
-      results = redis.smembers("#{model_key}:all")
-      params.each do |k, v|
-        results = results & _find_ids_by_field(k, v)
-      end
-      results.collect do |result_id|
-        find(result_id)
-      end
-    end
-
-    def find_by_any(params = {})
-      raise ArgumentError if params.keys.size < 1
-
-      params.collect do |k, v|
-        _find_ids_by_field(k, v)
-      end.flatten.uniq.collect do |result_id|
-        find(result_id)
       end
     end
   end
@@ -163,24 +143,6 @@ class BaseModel
 
     def create_index(key)
       redis.sadd("#{model_key}:indexes", key)
-    end
-
-    def _find_ids_by_field(search_key, search_value)
-      if (has_index?(search_key))
-        if (has_unique_index?(search_key))
-          result = redis.hget("#{model_key}:indexes:#{search_key}", search_value)
-          if (result)
-            [result]
-          else
-            []
-          end
-        else
-          score = redis.hget("#{model_key}:indexes:#{search_key}:scores", search_value)
-          redis.zrangebyscore("#{model_key}:indexes:#{search_key}:map", score, score)
-        end
-      else
-        raise UnindexedSearch
-      end
     end
   end
 
