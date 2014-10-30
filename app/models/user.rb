@@ -1,11 +1,13 @@
 class User < BaseModel
-  attribute :username
-  attribute :email
-  attribute :password
+  include ActiveModel::SecurePassword
+
+  attribute :username, index: :unique
+  attribute :email, index: :unique
+  attribute :password_digest
   attribute :confirmation_token
   attribute :confirmed_at
 
-  validates_confirmation_of :password
+  has_secure_password validations: false
 
   def set_confirmation_token
     token = SecureRandom.hex

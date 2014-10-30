@@ -67,24 +67,6 @@ class BaseModel
         find(result_id)
       end
     end
-
-    def _find_ids_by_field(search_key, search_value)
-      if (has_index?(search_key))
-        if (has_unique_index?(search_key))
-          result = redis.hget("#{model_key}:indexes:#{search_key}", search_value)
-          if (result)
-            [result]
-          else
-            []
-          end
-        else
-          score = redis.hget("#{model_key}:indexes:#{search_key}:scores", search_value)
-          redis.zrangebyscore("#{model_key}:indexes:#{search_key}:map", score, score)
-        end
-      else
-        raise UnindexedSearch
-      end
-    end
   end
 
   def persisted?
@@ -181,6 +163,24 @@ class BaseModel
 
     def create_index(key)
       redis.sadd("#{model_key}:indexes", key)
+    end
+
+    def _find_ids_by_field(search_key, search_value)
+      if (has_index?(search_key))
+        if (has_unique_index?(search_key))
+          result = redis.hget("#{model_key}:indexes:#{search_key}", search_value)
+          if (result)
+            [result]
+          else
+            []
+          end
+        else
+          score = redis.hget("#{model_key}:indexes:#{search_key}:scores", search_value)
+          redis.zrangebyscore("#{model_key}:indexes:#{search_key}:map", score, score)
+        end
+      else
+        raise UnindexedSearch
+      end
     end
   end
 
