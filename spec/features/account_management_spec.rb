@@ -13,21 +13,15 @@ feature "User management" do
     Then "I am shown to be logged in"
     
     When "I log out"
-    And "I log in with my username and password"
-    Then "I am shown to be logged in"
-  end
-
-  scenario "login" do
-    Given "I have an account"
-    And "I am at the login page"
-
-    When "I log in with my username and password"
+    And "I log in with my email and password"
     Then "I am shown to be logged in"
   end
 
   let(:name) { Faker::Name.name }
   let(:email) { Faker::Internet.email }
   let(:password) { 'password1' }
+
+  let(:user) { FactoryGirl.create(:user, password: password) }
 
   def i_am_at_the_login_page
     visit new_session_path
@@ -71,7 +65,7 @@ feature "User management" do
     click_link 'Log out'
   end
 
-  def i_log_in_with_my_username_and_password
+  def i_log_in_with_my_email_and_password
     visit new_session_path
 
     fill_in 'Username', with: email
