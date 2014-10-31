@@ -5,6 +5,7 @@ class BaseModel
 
   include Concerns::BaseModel::Finders
   include Concerns::BaseModel::Indexing
+  include Concerns::BaseModel::Associations
 
   attr_accessor :id
 

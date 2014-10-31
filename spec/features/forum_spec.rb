@@ -30,4 +30,6 @@ feature "Forum" do
     When "I enter the thread title and first post"
     Then "I see the thread"
   end
+
+  let(:current_user) { FactoryGirl.create(:user) }
 end

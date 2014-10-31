@@ -18,4 +18,6 @@ feature "Bot management" do
     Then "I am shown a list of my bots"
     And "The list includes the bot I just created"
   end
+
+  let(:current_user) { FactoryGirl.create(:user) }
 end
