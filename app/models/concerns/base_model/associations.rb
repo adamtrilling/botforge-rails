@@ -6,5 +6,10 @@ module Concerns::BaseModel::Associations
   end
 
   module ClassMethods
+    def has_many(target, options = {})
+    end
+
+    def belongs_to(target, options = {})
+    end
   end
 end
