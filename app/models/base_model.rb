@@ -2,6 +2,7 @@ class BaseModel
   extend ActiveModel::Naming
   include ActiveModel::Model
   include ActiveModel::Dirty
+  include ActiveModel::Validations
 
   include Concerns::BaseModel::Finders
   include Concerns::BaseModel::Indexing
