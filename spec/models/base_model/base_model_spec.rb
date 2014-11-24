@@ -2,8 +2,8 @@ require 'rails_helper'
 
 require 'test_models'
 
-describe BaseModel do
-  let(:redis) { BaseModel.redis }
+describe Fishbulb::Base do
+  let(:redis) { Fishbulb::Base.redis }
 
   include ActiveModel::Lint::Tests
  

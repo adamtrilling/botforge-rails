@@ -1,12 +1,12 @@
-class BaseModel
+class Fishbulb::Base
   extend ActiveModel::Naming
   include ActiveModel::Model
   include ActiveModel::Dirty
   include ActiveModel::Validations
 
-  include Concerns::BaseModel::Finders
-  include Concerns::BaseModel::Indexing
-  include Concerns::BaseModel::Associations
+  include Fishbulb::Concerns::Finders
+  include Fishbulb::Concerns::Indexing
+  include Fishbulb::Concerns::Associations
 
   attr_accessor :id
 
@@ -124,7 +124,4 @@ class BaseModel
   def object_key
     "#{model_key}:#{@id}"
   end
-end
-
-class UnindexedSearch < Exception
 end

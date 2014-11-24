@@ -1,4 +1,4 @@
-module Concerns::BaseModel::Indexing
+module Fishbulb::Concerns::Indexing
   extend ActiveSupport::Concern
 
   included do

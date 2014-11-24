@@ -1,36 +1,36 @@
 module TestModels
-  class Attribute < BaseModel
+  class Attribute < Fishbulb::Base
     attribute :first_name
     attribute :last_name
   end
 
-  class All < BaseModel
+  class All < Fishbulb::Base
     attribute :first_name
     attribute :last_name
   end
 
-  class Index < BaseModel
+  class Index < Fishbulb::Base
     attribute :identifier, index: :unique
     attribute :category, index: true
     attribute :age, index: true
   end
 
   # association examples
-  class Blog < BaseModel
+  class Blog < Fishbulb::Base
     attribute :name
 
     has_many :posts, sorted: true
     has_many :authors
   end
 
-  class Author <  BaseModel
+  class Author <  Fishbulb::Base
     attribute :name
 
     belongs_to :blog
     has_many :posts
   end
 
-  class Post < BaseModel
+  class Post < Fishbulb::Base
     attribute :title
     attribute :body
 

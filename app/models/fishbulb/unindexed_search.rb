@@ -1,0 +1,2 @@
+class UnindexedSearch < Exception
+end

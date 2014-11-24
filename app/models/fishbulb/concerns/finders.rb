@@ -1,4 +1,4 @@
-module Concerns::BaseModel::Finders
+module Fishbulb::Concerns::Finders
   extend ActiveSupport::Concern
 
   included do

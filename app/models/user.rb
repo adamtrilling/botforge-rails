@@ -1,4 +1,4 @@
-class User < BaseModel
+class User < Fishbulb::Base
   include ActiveModel::SecurePassword
 
   attribute :username, index: :unique

@@ -1,4 +1,4 @@
-class Set
+class Fishbulb::Set
   attr_accessor :storage
 
   def initialize(storage)

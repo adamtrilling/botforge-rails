@@ -26,6 +26,6 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    BaseModel.redis.flushdb
+    Fishbulb::Base.redis.flushdb
   end
 end

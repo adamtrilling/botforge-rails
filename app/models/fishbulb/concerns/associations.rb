@@ -1,4 +1,4 @@
-module Concerns::BaseModel::Associations
+module Fishbulb::Concerns::Associations
   extend ActiveSupport::Concern
 
   included do
