@@ -11,5 +11,6 @@ module Concerns::BaseModel::Associations
 
     def belongs_to(target, options = {})
     end
+    alias_method :has_one, :belongs_to
   end
 end

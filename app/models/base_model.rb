@@ -114,7 +114,7 @@ class BaseModel
     end
 
     def model_key
-      self.name
+      self.name.underscore
     end
   end
 

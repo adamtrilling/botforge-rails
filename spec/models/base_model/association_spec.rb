@@ -18,8 +18,8 @@ describe BaseModel do
           expect(@blog).to respond_to :authors
         end
 
-        it 'returns an array' do
-          expect(@blog.authors).to be_a Array
+        it 'returns a Set' do
+          expect(@blog.authors).to be_a Set
         end
       end
 
@@ -68,6 +68,23 @@ describe BaseModel do
         expect(@author1.blog).to be_a TestModels::Blog
         expect(@author1.blog.id).to eq @blog.id
       end
+    end
+  end
+end
+
+describe Set do
+  subject {
+    Set.new([
+      TestModels::Attribute.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name),
+      TestModels::Attribute.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name),
+      TestModels::Attribute.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name),
+      TestModels::Attribute.create(first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+    ])
+  }
+
+  describe '#size' do
+    it 'returns the size of the underlying array' do
+      expect(subject.size).to eq 4
     end
   end
 end
