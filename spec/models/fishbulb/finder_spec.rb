@@ -39,8 +39,8 @@ describe Fishbulb::Base do
       subject { TestModels::Attribute.create(first_name: 'foo', last_name: 'bar') }
 
       it 'raises an UnindexedSearch exception' do
-        expect { subject.class.find_by(first_name: 'foo') }.to raise_error(UnindexedSearch)
-        expect { subject.class.find_by(last_name: 'bar') }.to raise_error(UnindexedSearch)
+        expect { subject.class.find_by(first_name: 'foo') }.to raise_error(Fishbulb::UnindexedSearch)
+        expect { subject.class.find_by(last_name: 'bar') }.to raise_error(Fishbulb::UnindexedSearch)
       end
     end
 

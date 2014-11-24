@@ -43,7 +43,7 @@ module Fishbulb::Concerns::Finders
           redis.zrangebyscore("#{model_key}:indexes:#{search_key}:map", score, score)
         end
       else
-        raise UnindexedSearch
+        raise Fishbulb::UnindexedSearch
       end
     end
   end

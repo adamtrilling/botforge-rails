@@ -1,2 +1,2 @@
-class UnindexedSearch < Exception
+class Fishbulb::UnindexedSearch < Exception
 end
