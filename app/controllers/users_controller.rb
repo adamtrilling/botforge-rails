@@ -36,10 +36,8 @@ class UsersController < ApplicationController
 
   def show
     @user = User.find(params[:id])
-
-    unless (@user)
-      render nothing: true, status: 404
-    end
+  rescue ActiveRecord::RecordNotFound
+    render nothing: true, status: 404
   end
 
   private
