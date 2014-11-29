@@ -146,6 +146,7 @@ GEM
     net-ssh (2.9.1)
     nokogiri (1.6.4.1)
       mini_portile (~> 0.6.0)
+    pg (0.17.1)
     pry (0.10.1)
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
@@ -172,7 +173,6 @@ GEM
     rails-html-sanitizer (1.0.1)
       loofah (~> 2.0)
     rake (10.4.0)
-    redis (3.1.0)
     ref (1.0.5)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
@@ -252,13 +252,13 @@ DEPENDENCIES
   jquery-rails
   launchy
   letter_opener
+  pg
   pry
   pry-nav
   pry-rescue
   pry-stack_explorer
   quiet_assets
   rails!
-  redis
   rspec
   rspec-rails
   sass-rails (~> 5.0.0.beta1)

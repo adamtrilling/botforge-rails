@@ -6,6 +6,7 @@ class ApplicationController < ActionController::Base
   protected
   def current_user
     @user ||= User.find(session[:user_id])
+  rescue ActiveRecord::RecordNotFound
   end
   helper_method :current_user
 end

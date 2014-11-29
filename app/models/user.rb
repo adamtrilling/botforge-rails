@@ -1,11 +1,4 @@
-class User < Fishbulb::Base
-  include ActiveModel::SecurePassword
-
-  attribute :username, index: :unique
-  attribute :email, index: :unique
-  attribute :password_digest
-  attribute :confirmation_token
-  attribute :confirmed_at
+class User < ActiveRecord::Base
 
   has_secure_password validations: false
 

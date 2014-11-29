@@ -23,9 +23,13 @@ RSpec.configure do |config|
 
   config.before(:suite) do
     FactoryGirl.lint
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
   end
 
-  config.after(:suite) do
-    Fishbulb::Base.redis.flushdb
+  config.around(:each) do |example|
+    DatabaseCleaner.cleaning do
+      example.run
+    end
   end
 end

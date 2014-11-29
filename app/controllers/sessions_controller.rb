@@ -7,7 +7,7 @@ class SessionsController < ApplicationController
     if (current_user)
       redirect_to root_path
     else
-      @user = User.find_by_any(username: params['session']['username'], email: params['session']['username']).first
+      @user = User.where("username = ? OR email = ?", params['session']['username'], params['session']['username']).first
       if (@user && @user.authenticate(params['session'][:password]))
         session[:user_id] = @user.id
         redirect_to root_path

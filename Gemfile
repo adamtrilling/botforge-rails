@@ -9,7 +9,7 @@ gem 'exception_notification'
 gem 'haml'
 gem 'jbuilder'
 gem 'jquery-rails'
-gem 'redis'
+gem 'pg'
 gem 'sass-rails', '~> 5.0.0.beta1'
 gem 'simple_form'
 gem 'therubyracer', platforms: :ruby
