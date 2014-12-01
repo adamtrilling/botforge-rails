@@ -1,9 +1,15 @@
 require 'rails_helper'
 
 describe BotsController do
+  let(:current_user) { FactoryGirl.create(:user) }
+
+  before do
+    controller.stub(:current_user).and_return(current_user)
+  end
+
   describe '#new' do
     before do
-      allow(controller).to receive(:current_user).and_return(user)
+      allow(controller).to receive(:current_user).and_return(current_user)
       get :new
     end
 
@@ -29,6 +35,22 @@ describe BotsController do
 
       it "redirects to the dashboard" do
         expect(response).to redirect_to root_path
+      end
+    end
+  end
+
+  describe 'unauthorized' do
+    before do
+      controller.stub(:can?).with(:manage, Bot).and_return(false)
+    end
+
+    it 'redirects to the root path' do
+      [
+        [:get, :new]
+      ].each do |method, *args|
+        self.send(method, *args)
+        expect(response).to redirect_to root_path
+        # expect(flash[:alert]).to eq I18n.t('botforge.alerts.unauthorized')
       end
     end
   end
