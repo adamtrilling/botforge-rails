@@ -20,4 +20,17 @@ feature "Bot management" do
   end
 
   let(:current_user) { FactoryGirl.create(:user) }
+  let(:bots) { [
+    FactoryGirl.create(:bot, user: current_user),
+    FactoryGirl.create(:bot, user: current_user),
+    FactoryGirl.create(:bot, user: current_user)
+  ] }
+
+  def i_have_bots
+    bots
+  end
+
+  def i_visit_the_bot_list
+    click_link 'Bots'
+  end
 end

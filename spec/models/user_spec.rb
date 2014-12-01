@@ -1,6 +1,10 @@
 require 'rails_helper'
 
 describe User do
+  specify do
+    should have_many(:bots)
+  end
+
   describe '#set_confirmation_token' do
     before do
       @user = FactoryGirl.create(:user)

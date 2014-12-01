@@ -1,5 +1,7 @@
 class User < ActiveRecord::Base
 
+  has_many :bots
+
   has_secure_password validations: false
 
   def set_confirmation_token
