@@ -5,6 +5,7 @@ ruby '2.2.0'
 gem 'rails', github: 'rails'
 
 gem 'bcrypt'
+gem 'cancancan'
 gem 'exception_notification'
 gem 'haml'
 gem 'jbuilder'
