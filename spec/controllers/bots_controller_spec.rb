@@ -2,50 +2,65 @@ require 'rails_helper'
 
 describe BotsController do
   let(:current_user) { FactoryGirl.create(:user) }
+  let(:authorized) { true }
 
   before do
-    controller.stub(:current_user).and_return(current_user)
+    allow(controller).to receive(:current_user).and_return(current_user)
+    allow(controller).to receive(:can?).and_return(authorized)
+  end
+
+  describe '#index' do
+    let!(:bots) {[
+      FactoryGirl.create(:bot, user: current_user),
+      FactoryGirl.create(:bot, user: current_user)
+    ]}
+
+    before do
+      get :index
+    end
+
+    it 'assigns the current user\'s bots' do
+      expect(assigns(:bots).size).to eq bots.size
+      bots.each do |b|
+        expect(assigns(:bots).collect(&:id)).to include(b.id)
+      end
+    end
+
+    it "is sucessful" do
+      expect(response).to be_success
+    end
+
+    it "renders the bot index" do
+      expect(response).to render_template(:index)
+    end
   end
 
   describe '#new' do
     before do
-      allow(controller).to receive(:current_user).and_return(current_user)
       get :new
     end
 
-    context 'with a user who is logged in' do
-      let(:user) { FactoryGirl.create(:user) }
-
-      it "assigns a blank user" do
-        expect(assigns(:user)).to be_a User
-        expect(assigns(:user)).to_not be_persisted
-      end
-
-      it "is sucessful" do
-        expect(response).to be_success
-      end
-
-      it "renders the new bot page" do
-        expect(response).to render_template(:new)
-      end
+    it "assigns a blank bot assigned to the current user" do
+      expect(assigns(:bot)).to be_a Bot
+      expect(assigns(:bot)).to_not be_persisted
+      expect(assigns(:bot).user_id).to eq current_user.id
     end
 
-    context 'with a user who is not logged in' do
-      let(:user) { nil }
+    it "is sucessful" do
+      expect(response).to be_success
+    end
 
-      it "redirects to the dashboard" do
-        expect(response).to redirect_to root_path
-      end
+    it "renders the new bot page" do
+      expect(response).to render_template(:new)
     end
   end
 
   describe 'unauthorized' do
-    before do
-      controller.stub(:can?).with(:manage, Bot).and_return(false)
-    end
+    let(:authorized) { false }
 
     it 'redirects to the root path' do
       [
+        [:get, :index],
         [:get, :new]
       ].each do |method, *args|
         self.send(method, *args)
