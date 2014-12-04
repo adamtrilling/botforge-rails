@@ -58,6 +58,10 @@ describe BotsController do
   describe 'unauthorized' do
     let(:authorized) { false }
 
+    before do
+      allow(controller).to receive(:authorize!).and_raise(CanCan::AccessDenied)
+    end
+
     it 'redirects to the root path' do
       [
         [:get, :index],
