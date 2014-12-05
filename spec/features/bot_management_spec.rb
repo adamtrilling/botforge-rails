@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'securerandom'
 
 feature "Bot management" do
   scenario "List bots" do
@@ -25,6 +26,7 @@ feature "Bot management" do
     FactoryGirl.create(:bot, user: current_user),
     FactoryGirl.create(:bot, user: current_user)
   ] }
+  let(:bot_name) { SecureRandom.hex }
 
   def i_have_bots
     bots
@@ -35,8 +37,31 @@ feature "Bot management" do
   end
 
   def i_am_shown_a_list_of_my_bots
-    bots.each do |b|
+    current_user.bots.each do |b|
       expect(page).to have_content b.name
     end
+  end
+
+  def i_elect_to_create_a_bot
+    click_link 'New bot'
+  end
+
+  def i_am_shown_the_new_bot_form
+    expect(page).to have_field 'Name'
+    expect(page).to have_field 'URL'
+    expect(page).to have_field 'Game'
+    expect(page).to have_field 'Active', type: 'checkbox'
+  end
+
+  def i_fill_in_the_new_bot_form
+    fill_in 'Name', with: bot_name
+    fill_in 'URL', with: "https://www.example.com/bots/#{bot_name}"
+    fill_in 'Game', with: 'Thermonuclear War'
+
+    click_button 'Create Bot'
+  end
+
+  def the_list_includes_the_bot_i_just_created
+    expect(page).to have_content bot_name
   end
 end

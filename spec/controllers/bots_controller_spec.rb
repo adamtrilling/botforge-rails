@@ -3,6 +3,14 @@ require 'rails_helper'
 describe BotsController do
   let(:current_user) { FactoryGirl.create(:user) }
   let(:authorized) { true }
+  let(:params) { {
+    bot: {
+      name: 'foo',
+      url: 'https://www.example.com/bots/foo',
+      game: 'Thermonuclear War',
+      active: 'true'
+    }
+  } }
 
   before do
     allow(controller).to receive(:current_user).and_return(current_user)
@@ -55,6 +63,40 @@ describe BotsController do
     end
   end
 
+  describe '#create' do
+    let(:bot) { Bot.new }
+
+    before do
+      allow(Bot).to receive(:new).and_return(bot)
+      allow(bot).to receive(:save).and_return(valid_params)
+      post :create, params
+    end
+
+    context 'with valid params' do
+      let(:valid_params) { true }
+
+      it 'assigns the new bot' do
+        expect(assigns(:bot)).to be_a Bot
+      end
+
+      it 'redirects to the bot list' do
+        expect(response).to redirect_to bots_path
+      end
+    end
+
+    context 'with invalid params' do
+      let(:valid_params) { false }
+
+      it 'assigns the new bot' do
+        expect(assigns(:bot)).to be_a Bot
+      end
+
+      it 'shows the edit page' do
+        expect(response).to render_template(:new)
+      end
+    end
+  end
+
   describe 'unauthorized' do
     let(:authorized) { false }
 
@@ -65,7 +107,8 @@ describe BotsController do
     it 'redirects to the root path' do
       [
         [:get, :index],
-        [:get, :new]
+        [:get, :new],
+        [:post, :create, params]
       ].each do |method, *args|
         self.send(method, *args)
         expect(response).to redirect_to root_path
