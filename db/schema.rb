@@ -15,18 +15,18 @@ ActiveRecord::Schema.define(version: 20141129215504) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
 
   create_table "players", force: true do |t|
     t.string   "type"
     t.integer  "user_id"
     t.string   "name"
-    t.string   "url",                       null: false
-    t.string   "game",                      null: false
+    t.string   "url",                         null: false
+    t.string   "game",                        null: false
+    t.float    "rating",     default: 2000.0
     t.boolean  "active",     default: true
     t.integer  "warnings",   default: 0
-    t.datetime "created_at",                null: false
-    t.datetime "updated_at",                null: false
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   add_index "players", ["active"], name: "index_players_on_active", using: :btree

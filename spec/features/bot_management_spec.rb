@@ -33,4 +33,10 @@ feature "Bot management" do
   def i_visit_the_bot_list
     click_link 'Bots'
   end
+
+  def i_am_shown_a_list_of_my_bots
+    bots.each do |b|
+      expect(page).to have_content b.name
+    end
+  end
 end

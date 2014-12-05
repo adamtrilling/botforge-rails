@@ -7,6 +7,7 @@ class CreatePlayers < ActiveRecord::Migration
       t.string :name
       t.string :url, null: false
       t.string :game, null: false
+      t.float :rating, default: 2000.0
 
       t.boolean :active, default: true
       t.integer :warnings, default: 0
