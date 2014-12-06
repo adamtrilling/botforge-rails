@@ -15,6 +15,7 @@ describe BotsController do
   before do
     allow(controller).to receive(:current_user).and_return(current_user)
     allow(controller).to receive(:can?).and_return(authorized)
+    allow(controller).to receive(:authorize!).and_return(authorized)
   end
 
   describe '#index' do
@@ -75,6 +76,63 @@ describe BotsController do
     context 'with valid params' do
       let(:valid_params) { true }
 
+      it 'assigns the bot to be updated' do
+        expect(assigns(:bot)).to be_a Bot
+        expect(assigns(:bot).id).to eq bot.id
+      end
+
+      it 'redirects to the bot list' do
+        expect(response).to redirect_to bots_path
+      end
+    end
+
+    context 'with invalid params' do
+      let(:valid_params) { false }
+
+      it 'assigns the new bot' do
+        expect(assigns(:bot)).to be_a Bot
+        expect(assigns(:bot).id).to eq bot.id
+      end
+
+      it 'shows the edit page' do
+        expect(response).to render_template(:new)
+      end
+    end
+  end
+
+  describe '#edit' do
+    let(:bot) { FactoryGirl.create(:bot, user_id: current_user.id) }
+
+    before do
+      allow(Bot).to receive(:find).with(bot.id.to_s).and_return(bot)
+      get :edit, id: bot.id
+    end
+
+    it "assigns the bot" do
+      expect(assigns(:bot).id).to eq bot.id
+    end
+
+    it "is sucessful" do
+      expect(response).to be_success
+    end
+
+    it "renders the edit bot page" do
+      expect(response).to render_template(:edit)
+    end
+  end
+
+  describe '#update' do
+    let(:bot) { FactoryGirl.create(:bot) }
+
+    before do
+      allow(Bot).to receive(:find).with(bot.id.to_s).and_return(bot)
+      allow(bot).to receive(:update_attributes).and_return(valid_params)
+      put :update, params.merge(id: bot.id)
+    end
+
+    context 'with valid params' do
+      let(:valid_params) { true }
+
       it 'assigns the new bot' do
         expect(assigns(:bot)).to be_a Bot
       end
@@ -92,7 +150,7 @@ describe BotsController do
       end
 
       it 'shows the edit page' do
-        expect(response).to render_template(:new)
+        expect(response).to render_template(:edit)
       end
     end
   end
@@ -102,13 +160,15 @@ describe BotsController do
 
     before do
       allow(controller).to receive(:authorize!).and_raise(CanCan::AccessDenied)
+      allow(Bot).to receive(:find).and_return(double(:bot))
     end
 
     it 'redirects to the root path' do
       [
         [:get, :index],
         [:get, :new],
-        [:post, :create, params]
+        [:post, :create, params],
+        [:get, :edit, id: 42]
       ].each do |method, *args|
         self.send(method, *args)
         expect(response).to redirect_to root_path

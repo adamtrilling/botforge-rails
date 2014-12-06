@@ -1,10 +1,12 @@
 %h1 My bots
 = link_to 'New bot', new_bot_path
-%table
+%table#bot-list
   %tr
     %th Name
     %th Rating
+    %th
   - @bots.each do |bot|
-    %tr
+    %tr{id: "bot-#{bot.id}"}
       %td= bot.name
       %td= bot.rating
+      %td= link_to 'Edit', edit_bot_path(bot)

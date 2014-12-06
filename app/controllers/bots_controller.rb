@@ -20,12 +20,34 @@ class BotsController < ApplicationController
     end
   end
 
+  def edit
+    @bot = Bot.find(params[:id])
+    authorize! :update, @bot
+  end
+
+  def update
+    @bot = Bot.find(params[:id])
+    authorize! :update, @bot
+
+    if (@bot.update_attributes(update_params))
+      redirect_to bots_path
+    else
+      render :edit
+    end
+  end
+
   private
   def create_params
     params.require(:bot).permit(
       :name, :url, :game, :active
     ).merge(
       user_id: current_user.id
+    )
+  end
+
+  def update_params
+    params.require(:bot).permit(
+      :name, :url, :game, :active
     )
   end
 end
