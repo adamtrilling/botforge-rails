@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'Matches' do
+feature 'Perfect Information Matches' do
   scenario 'View a completed match' do
     Given 'There is a completed match'
     When 'I view it'
@@ -15,7 +15,6 @@ feature 'Matches' do
     Then 'I see the current game state'
     And 'I see the scoreboard'
     And 'I see the list of moves so far'
-    And 'I do not see hidden information'
   end
 
   scenario 'View an in-progress match I am participating in' do
@@ -26,7 +25,6 @@ feature 'Matches' do
     And 'I see the scoreboard'
     And 'I see the list of moves so far'
     And 'I see my hidden information'
-    And 'I do not see other players hidden information'
   end
 
   let(:current_user) { FactoryGirl.create(:user) }
