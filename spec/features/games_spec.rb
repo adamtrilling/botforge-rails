@@ -10,4 +10,8 @@ feature 'Game Dashboard' do
     And 'I see the rules for the game'
     And 'I see the API for the game'
   end
+
+  def i_visit_the_list_of_games
+    visit games_path
+  end
 end
