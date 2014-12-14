@@ -10,7 +10,8 @@ feature 'Game Dashboard' do
     scenario do
       Given 'I visit the list of games'
       When "I click on #{game}"
-      Then "I see a list of top bots at #{game}"
+      Then "I see the human name of #{game}"
+      And "I see a list of top bots at #{game}"
       And "I see the rules for #{game}"
       And "I see the API for #{game}"
     end
@@ -26,9 +27,26 @@ feature 'Game Dashboard' do
     end
   end
 
+  # steps for every game
   Match::GAMES.each do |game, attrs|
     define_method :"i_click_on_#{game}" do
       click_link attrs[:name]
+    end
+
+    define_method :"i_see_the_human_name_of_#{game}" do
+      expect(page).to have_content attrs[:name]
+    end
+
+    define_method :"i_see_a_list_of_top_bots_at_#{game}" do
+      expect(page).to have_selector('#leaderboard')
+    end
+
+    define_method :"i_see_the_rules_for_#{game}" do
+      expect(page).to have_selector('#rules')
+    end
+
+    define_method :"i_see_the_api_for_#{game}" do
+      expect(page).to have_selector('#api')
     end
   end
 end
