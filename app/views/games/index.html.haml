@@ -1,0 +1,3 @@
+%h1 Games
+- Match::GAMES.each do |game, attrs|
+  = link_to attrs[:name], game_path(id: game)
