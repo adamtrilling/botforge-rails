@@ -3,12 +3,12 @@ class CreateMatches < ActiveRecord::Migration
     create_table :matches do |t|
       t.string :type
       t.string :state
-      t.json :board
+      t.jsonb :board
     end
 
-    create_table :seats do |t|
-      t.reference :match, index: true
-      t.reference :player, index: true
+    create_table :participants do |t|
+      t.references :match, index: true
+      t.references :player, index: true
     end
   end
 end

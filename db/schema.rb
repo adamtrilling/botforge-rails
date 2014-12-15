@@ -11,11 +11,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141129215504) do
+ActiveRecord::Schema.define(version: 20141214192231) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "hstore"
+
+  create_table "matches", force: true do |t|
+    t.string "type"
+    t.string "state"
+    t.jsonb  "board"
+  end
+
+  create_table "participants", force: true do |t|
+    t.integer "match_id"
+    t.integer "player_id"
+  end
+
+  add_index "participants", ["match_id"], name: "index_participants_on_match_id", using: :btree
+  add_index "participants", ["player_id"], name: "index_participants_on_player_id", using: :btree
 
   create_table "players", force: true do |t|
     t.string   "type"
