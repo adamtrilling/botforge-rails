@@ -23,13 +23,25 @@ ActiveRecord::Schema.define(version: 20141214192231) do
     t.jsonb  "board"
   end
 
+  add_index "matches", ["board"], name: "index_matches_on_board", using: :gin
+  add_index "matches", ["state"], name: "index_matches_on_state", using: :btree
+  add_index "matches", ["type"], name: "index_matches_on_type", using: :btree
+
   create_table "participants", force: true do |t|
     t.integer "match_id"
     t.integer "player_id"
+    t.integer "starting_seat"
+    t.integer "seat"
+    t.float   "score"
+    t.integer "rank"
   end
 
   add_index "participants", ["match_id"], name: "index_participants_on_match_id", using: :btree
   add_index "participants", ["player_id"], name: "index_participants_on_player_id", using: :btree
+  add_index "participants", ["rank"], name: "index_participants_on_rank", using: :btree
+  add_index "participants", ["score"], name: "index_participants_on_score", using: :btree
+  add_index "participants", ["seat"], name: "index_participants_on_seat", using: :btree
+  add_index "participants", ["starting_seat"], name: "index_participants_on_starting_seat", using: :btree
 
   create_table "players", force: true do |t|
     t.string   "type"
