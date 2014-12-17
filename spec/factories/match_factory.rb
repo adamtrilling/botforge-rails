@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :chess do
-    email { Faker::Internet.email }
+    state { 'in progress' }
   end
 end

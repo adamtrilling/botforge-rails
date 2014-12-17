@@ -18,12 +18,14 @@ ActiveRecord::Schema.define(version: 20141214192231) do
   enable_extension "hstore"
 
   create_table "matches", force: true do |t|
-    t.string "type"
-    t.string "state"
-    t.jsonb  "board"
+    t.string  "type"
+    t.string  "state"
+    t.integer "next_to_move"
+    t.jsonb   "board"
   end
 
   add_index "matches", ["board"], name: "index_matches_on_board", using: :gin
+  add_index "matches", ["next_to_move"], name: "index_matches_on_next_to_move", using: :btree
   add_index "matches", ["state"], name: "index_matches_on_state", using: :btree
   add_index "matches", ["type"], name: "index_matches_on_type", using: :btree
 

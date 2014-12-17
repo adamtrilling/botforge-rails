@@ -3,11 +3,13 @@ class CreateMatches < ActiveRecord::Migration
     create_table :matches do |t|
       t.string :type
       t.string :state
+      t.integer :next_to_move
       t.jsonb :board
     end
 
     add_index :matches, :type
     add_index :matches, :state
+    add_index :matches, :next_to_move
     add_index :matches, :board, using: :gin
 
     create_table :participants do |t|

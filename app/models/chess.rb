@@ -1,0 +1,2 @@
+class Chess < Match
+end
