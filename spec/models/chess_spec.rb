@@ -1,10 +1,11 @@
-class Chess < Match
-  before_create :setup_board
+require 'rails_helper'
 
-  private
-  def setup_board
-    self.board = Hash[
-      'current' => {
+RSpec.describe Chess, :type => :model do
+  describe 'initial setup' do
+    subject { Chess.create }
+
+    it "sets the initial board layout" do
+      expect(subject.board['current']).to eq Hash[
         'a' => {
           '1' => { 'piece' => 'R', 'color' => 'W' },
           '2' => { 'piece' => 'P', 'color' => 'W' },
@@ -31,7 +32,7 @@ class Chess < Match
         },
         'e' => {
           '1' => { 'piece' => 'K', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
+          '2' => { 'piece' => 'P', 'color' => 'W' },      
           '7' => { 'piece' => 'K', 'color' => 'B' },
           '8' => { 'piece' => 'P', 'color' => 'B' }
         },
@@ -52,9 +53,12 @@ class Chess < Match
           '2' => { 'piece' => 'P', 'color' => 'W' },
           '7' => { 'piece' => 'R', 'color' => 'B' },
           '8' => { 'piece' => 'P', 'color' => 'B' }
-        },
-      },
-      'history' => []
-    ]
+        }
+      ]
+    end
+
+    it 'creates an empty move history' do
+      expect(subject.board['history']).to eq []
+    end
   end
 end
