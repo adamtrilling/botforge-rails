@@ -1,16 +1,21 @@
 class Match < ActiveRecord::Base
   GAMES = {
-    'holdem_poker' => {
+    'Holdem' => {
       name: 'Texas Hold\'em Poker'  
     },
-    'go' => {
+    'Go' => {
       name: 'Go'
     },
-    'chess' => {
+    'Chess' => {
       name: 'Chess'
     },
-    'hearts' => {
+    'Hearts' => {
       name: 'Hearts'
     }
   }
+
+  has_many :participants
+
+  validates :type,
+    inclusion: {in: GAMES.keys}
 end
