@@ -5,7 +5,7 @@ RSpec.describe Chess, :type => :model do
     subject { Chess.create }
 
     it "sets the initial board layout" do
-      expect(subject.board['current']).to eq Hash[
+      expect(subject.state['board']).to eq Hash[
         'a' => {
           '1' => { 'piece' => 'R', 'color' => 'W' },
           '2' => { 'piece' => 'P', 'color' => 'W' },
@@ -58,7 +58,7 @@ RSpec.describe Chess, :type => :model do
     end
 
     it 'creates an empty move history' do
-      expect(subject.board['history']).to eq []
+      expect(subject.state['history']).to eq []
     end
   end
 end

@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :chess do
-    state { 'in progress' }
+    status { 'in progress' }
   end
 end

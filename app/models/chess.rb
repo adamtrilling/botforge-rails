@@ -3,8 +3,8 @@ class Chess < Match
 
   private
   def setup_board
-    self.board = Hash[
-      'current' => {
+    self.state = Hash[
+      'board' => {
         'a' => {
           '1' => { 'piece' => 'R', 'color' => 'W' },
           '2' => { 'piece' => 'P', 'color' => 'W' },

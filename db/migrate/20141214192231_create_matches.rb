@@ -2,15 +2,15 @@ class CreateMatches < ActiveRecord::Migration
   def change
     create_table :matches do |t|
       t.string :type
-      t.string :state
+      t.string :status
       t.integer :next_to_move
-      t.jsonb :board
+      t.jsonb :state
     end
 
     add_index :matches, :type
-    add_index :matches, :state
+    add_index :matches, :status
     add_index :matches, :next_to_move
-    add_index :matches, :board, using: :gin
+    add_index :matches, :state, using: :gin
 
     create_table :participants do |t|
       t.references :match, index: true

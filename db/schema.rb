@@ -19,14 +19,14 @@ ActiveRecord::Schema.define(version: 20141214192231) do
 
   create_table "matches", force: true do |t|
     t.string  "type"
-    t.string  "state"
+    t.string  "status"
     t.integer "next_to_move"
-    t.jsonb   "board"
+    t.jsonb   "state"
   end
 
-  add_index "matches", ["board"], name: "index_matches_on_board", using: :gin
   add_index "matches", ["next_to_move"], name: "index_matches_on_next_to_move", using: :btree
-  add_index "matches", ["state"], name: "index_matches_on_state", using: :btree
+  add_index "matches", ["state"], name: "index_matches_on_state", using: :gin
+  add_index "matches", ["status"], name: "index_matches_on_status", using: :btree
   add_index "matches", ["type"], name: "index_matches_on_type", using: :btree
 
   create_table "participants", force: true do |t|
