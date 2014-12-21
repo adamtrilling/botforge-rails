@@ -40,6 +40,19 @@ feature 'Chess Matches' do
   end
 
   let(:current_user) { FactoryGirl.create(:user) }
+  let(:chess_bot) { FactoryGirl.create(:bot, :chess) }
+
+  def there_is_a_chess_bot
+    chess_bot
+  end
+
+  def i_visit_the_chess_page
+    visit game_path('Chess')
+  end
+
+  def i_click_request_match
+    click_link 'Request Match'
+  end
 
   def there_is_an_in_progress_match
     @match = FactoryGirl.create(:chess)

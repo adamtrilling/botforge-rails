@@ -4,4 +4,8 @@ FactoryGirl.define do
     url { |n| "http://bots.example.com/#{name}"}
     game { 'global thermonuclear war' }
   end
+
+  trait :chess do
+    game { 'Chess' }
+  end
 end
