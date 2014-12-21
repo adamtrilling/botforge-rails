@@ -29,23 +29,23 @@ feature 'Game Dashboard' do
 
   # steps for every game
   Match::GAMES.each do |game, attrs|
-    define_method :"i_click_on_#{game}" do
+    define_method :"i_click_on_#{game.downcase}" do
       click_link attrs[:name]
     end
 
-    define_method :"i_see_the_human_name_of_#{game}" do
+    define_method :"i_see_the_human_name_of_#{game.downcase}" do
       expect(page).to have_content attrs[:name]
     end
 
-    define_method :"i_see_a_list_of_top_bots_at_#{game}" do
+    define_method :"i_see_a_list_of_top_bots_at_#{game.downcase}" do
       expect(page).to have_selector('#leaderboard')
     end
 
-    define_method :"i_see_the_rules_for_#{game}" do
+    define_method :"i_see_the_rules_for_#{game.downcase}" do
       expect(page).to have_selector('#rules')
     end
 
-    define_method :"i_see_the_api_for_#{game}" do
+    define_method :"i_see_the_api_for_#{game.downcase}" do
       expect(page).to have_selector('#api')
     end
   end

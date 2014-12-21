@@ -2,7 +2,7 @@
 = render partial: 'leaderboard'
 
 #rules
-  = render partial: "games/#{@game}/rules"
+  = render partial: "games/#{@game.downcase}/rules"
 
 #api
-  = render partial: "games/#{@game}/api"
+  = render partial: "games/#{@game.downcase}/api"
