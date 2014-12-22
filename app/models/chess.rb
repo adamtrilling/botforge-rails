@@ -3,54 +3,42 @@ class Chess < Match
   def setup_board
     self.state = Hash[
       'board' => {
-        'a' => {
-          '1' => { 'piece' => 'R', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'R', 'color' => 'B' }
-        },
-        'b' => {
-          '1' => { 'piece' => 'B', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'B', 'color' => 'B' }
-        },
-        'c' => {
-          '1' => { 'piece' => 'N', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'N', 'color' => 'B' }
-        },
-        'd' => {
-          '1' => { 'piece' => 'Q', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'Q', 'color' => 'B' }
-        },
-        'e' => {
-          '1' => { 'piece' => 'K', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'K', 'color' => 'B' }
-        },
-        'f' => {
-          '1' => { 'piece' => 'B', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'B', 'color' => 'B' }
-        },
-        'g' => {
-          '1' => { 'piece' => 'N', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'N', 'color' => 'B' }
-        },
-        'h' => {
-          '1' => { 'piece' => 'R', 'color' => 'W' },
-          '2' => { 'piece' => 'P', 'color' => 'W' },
-          '7' => { 'piece' => 'P', 'color' => 'B' },
-          '8' => { 'piece' => 'R', 'color' => 'B' }
-        },
+        '0' => [
+          { 'rank' => 'R', 'space' => ['a', '1']},
+          { 'rank' => 'N', 'space' => ['b', '1']},
+          { 'rank' => 'B', 'space' => ['c', '1']},
+          { 'rank' => 'Q', 'space' => ['d', '1']},
+          { 'rank' => 'K', 'space' => ['e', '1']},
+          { 'rank' => 'B', 'space' => ['f', '1']},
+          { 'rank' => 'N', 'space' => ['g', '1']},
+          { 'rank' => 'R', 'space' => ['h', '1']},
+          { 'rank' => 'P', 'space' => ['a', '2']},
+          { 'rank' => 'P', 'space' => ['b', '2']},
+          { 'rank' => 'P', 'space' => ['c', '2']},
+          { 'rank' => 'P', 'space' => ['d', '2']},
+          { 'rank' => 'P', 'space' => ['e', '2']},
+          { 'rank' => 'P', 'space' => ['f', '2']},
+          { 'rank' => 'P', 'space' => ['g', '2']},
+          { 'rank' => 'P', 'space' => ['h', '2']}
+        ],
+        '1' => [
+          { 'rank' => 'R', 'space' => ['a', '8']},
+          { 'rank' => 'N', 'space' => ['b', '8']},
+          { 'rank' => 'B', 'space' => ['c', '8']},
+          { 'rank' => 'Q', 'space' => ['d', '8']},
+          { 'rank' => 'K', 'space' => ['e', '8']},
+          { 'rank' => 'B', 'space' => ['f', '8']},
+          { 'rank' => 'N', 'space' => ['g', '8']},
+          { 'rank' => 'R', 'space' => ['h', '8']},
+          { 'rank' => 'P', 'space' => ['a', '7']},
+          { 'rank' => 'P', 'space' => ['b', '7']},
+          { 'rank' => 'P', 'space' => ['c', '7']},
+          { 'rank' => 'P', 'space' => ['d', '7']},
+          { 'rank' => 'P', 'space' => ['e', '7']},
+          { 'rank' => 'P', 'space' => ['f', '7']},
+          { 'rank' => 'P', 'space' => ['g', '7']},
+          { 'rank' => 'P', 'space' => ['h', '7']}
+        ]
       },
       'history' => [],
       'legal_moves' => [
