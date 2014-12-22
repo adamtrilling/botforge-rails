@@ -3,26 +3,8 @@ class Chess < Match
   def setup_board
     self.state = Hash[
       'board' => {
-        '0' => [
-          { 'rank' => 'R', 'space' => ['a', '1']},
-          { 'rank' => 'N', 'space' => ['b', '1']},
-          { 'rank' => 'B', 'space' => ['c', '1']},
-          { 'rank' => 'Q', 'space' => ['d', '1']},
-          { 'rank' => 'K', 'space' => ['e', '1']},
-          { 'rank' => 'B', 'space' => ['f', '1']},
-          { 'rank' => 'N', 'space' => ['g', '1']},
-          { 'rank' => 'R', 'space' => ['h', '1']},
-        ] + ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, '2']}},
-        '1' => [
-          { 'rank' => 'R', 'space' => ['a', '8']},
-          { 'rank' => 'N', 'space' => ['b', '8']},
-          { 'rank' => 'B', 'space' => ['c', '8']},
-          { 'rank' => 'Q', 'space' => ['d', '8']},
-          { 'rank' => 'K', 'space' => ['e', '8']},
-          { 'rank' => 'B', 'space' => ['f', '8']},
-          { 'rank' => 'N', 'space' => ['g', '8']},
-          { 'rank' => 'R', 'space' => ['h', '8']},
-        ] + ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, '7']}}
+        '0' => initial_board_power_pieces('1') + initial_board_pawns('2'),
+        '1' => initial_board_power_pieces('8') + initial_board_pawns('7')
       },
       'history' => [],
       'legal_moves' => [
@@ -33,5 +15,20 @@ class Chess < Match
       ],
       'next_to_move' => 0
     ]
+  end
+
+  def initial_board_pawns(row)
+    ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, row]}}
+  end
+
+  def initial_board_power_pieces(row)
+    [ { 'rank' => 'R', 'space' => ['a', row]},
+      { 'rank' => 'N', 'space' => ['b', row]},
+      { 'rank' => 'B', 'space' => ['c', row]},
+      { 'rank' => 'Q', 'space' => ['d', row]},
+      { 'rank' => 'K', 'space' => ['e', row]},
+      { 'rank' => 'B', 'space' => ['f', row]},
+      { 'rank' => 'N', 'space' => ['g', row]},
+      { 'rank' => 'R', 'space' => ['h', row]} ]
   end
 end
