@@ -12,15 +12,7 @@ class Chess < Match
           { 'rank' => 'B', 'space' => ['f', '1']},
           { 'rank' => 'N', 'space' => ['g', '1']},
           { 'rank' => 'R', 'space' => ['h', '1']},
-          { 'rank' => 'P', 'space' => ['a', '2']},
-          { 'rank' => 'P', 'space' => ['b', '2']},
-          { 'rank' => 'P', 'space' => ['c', '2']},
-          { 'rank' => 'P', 'space' => ['d', '2']},
-          { 'rank' => 'P', 'space' => ['e', '2']},
-          { 'rank' => 'P', 'space' => ['f', '2']},
-          { 'rank' => 'P', 'space' => ['g', '2']},
-          { 'rank' => 'P', 'space' => ['h', '2']}
-        ],
+        ] + ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, '2']}},
         '1' => [
           { 'rank' => 'R', 'space' => ['a', '8']},
           { 'rank' => 'N', 'space' => ['b', '8']},
@@ -30,15 +22,7 @@ class Chess < Match
           { 'rank' => 'B', 'space' => ['f', '8']},
           { 'rank' => 'N', 'space' => ['g', '8']},
           { 'rank' => 'R', 'space' => ['h', '8']},
-          { 'rank' => 'P', 'space' => ['a', '7']},
-          { 'rank' => 'P', 'space' => ['b', '7']},
-          { 'rank' => 'P', 'space' => ['c', '7']},
-          { 'rank' => 'P', 'space' => ['d', '7']},
-          { 'rank' => 'P', 'space' => ['e', '7']},
-          { 'rank' => 'P', 'space' => ['f', '7']},
-          { 'rank' => 'P', 'space' => ['g', '7']},
-          { 'rank' => 'P', 'space' => ['h', '7']}
-        ]
+        ] + ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, '7']}}
       },
       'history' => [],
       'legal_moves' => [
