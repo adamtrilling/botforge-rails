@@ -76,7 +76,7 @@ describe BotsController do
     context 'with valid params' do
       let(:valid_params) { true }
 
-      it 'assigns the bot to be updated' do
+      it 'assigns the bot to be created' do
         expect(assigns(:bot)).to be_a Bot
         expect(assigns(:bot).id).to eq bot.id
       end

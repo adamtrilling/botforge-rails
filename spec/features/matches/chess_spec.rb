@@ -51,7 +51,7 @@ feature 'Chess Matches' do
   end
 
   def i_click_request_match
-    click_link 'Request Match'
+    click_button 'Request Match'
   end
 
   def there_is_an_in_progress_match
