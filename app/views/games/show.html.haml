@@ -1,5 +1,7 @@
 %h1=@game_attrs[:name]
-= button_to 'Request Match', match_path(game: @game.downcase), method: :post
+= form_tag matches_path do
+  = hidden_field_tag :game, @game
+  = submit_tag "Request Match"
 = render partial: 'leaderboard'
 
 #rules
