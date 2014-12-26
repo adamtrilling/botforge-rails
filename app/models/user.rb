@@ -1,6 +1,7 @@
 class User < ActiveRecord::Base
 
   has_many :bots
+  has_many :humans
 
   has_secure_password validations: false
 
@@ -12,5 +13,9 @@ class User < ActiveRecord::Base
 
   def verify_confirmation_token(token)
     BCrypt::Password.new(self.confirmation_token) == token
+  end
+
+  def human_for(game)
+    humans.find_or_create_by(game: game)
   end
 end

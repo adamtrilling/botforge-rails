@@ -15,7 +15,7 @@ describe MatchesController do
       it 'assigns a new match with the current user as a participant' do
         expect(assigns(:match)).to be_a Chess
         expect(assigns(:match)).to be_persisted
-        expect(assigns(:match).participants.first.user.id).to eq current_user.id
+        expect(assigns(:match).participants.first.player.user.id).to eq current_user.id
       end
 
       it 'redirects to the match' do

@@ -5,7 +5,7 @@ class CreatePlayers < ActiveRecord::Migration
       t.references :user, index: true
 
       t.string :name
-      t.string :url, null: false
+      t.string :url
       t.string :game, null: false
       t.float :rating, default: 2000.0
 
