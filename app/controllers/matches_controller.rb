@@ -1,4 +1,13 @@
 class MatchesController < ApplicationController
+  def show
+    begin
+      @match = Match.find(params[:id])
+    rescue ActiveRecord::RecordNotFound
+      render nothing: true, status: 404 and return
+    end
+
+  end
+
   def create
     unless Match::GAMES.has_key?(params[:game])
       redirect_to games_path and return

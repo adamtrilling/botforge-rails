@@ -10,16 +10,20 @@ describe MatchesController do
     end
 
     context 'with a valid game' do
-      let(:game) { 'Chess' }
+      Match::GAMES.keys.each do |g|
+        context g do
+          let(:game) { g }
 
-      it 'assigns a new match with the current user as a participant' do
-        expect(assigns(:match)).to be_a Chess
-        expect(assigns(:match)).to be_persisted
-        expect(assigns(:match).participants.first.player.user.id).to eq current_user.id
-      end
+          it 'assigns a new match with the current user as a participant' do
+            expect(assigns(:match)).to be_a g.constantize
+            expect(assigns(:match)).to be_persisted
+            expect(assigns(:match).participants.first.player.user.id).to eq current_user.id
+          end
 
-      it 'redirects to the match' do
-        expect(response).to redirect_to match_path(assigns(:match))
+          it 'redirects to the match' do
+            expect(response).to redirect_to match_path(assigns(:match))
+          end
+        end
       end
     end
 
@@ -28,6 +32,40 @@ describe MatchesController do
 
       it 'redirects to the games index' do
         expect(response).to redirect_to games_path
+      end
+    end
+  end
+
+  describe '#show' do
+    Match::GAMES.keys.each do |g|
+      context g do
+        context 'with a match that exists' do
+          let(:match) { FactoryGirl.create(g.downcase.to_sym) }
+
+          before do
+            allow(Match).to receive(:find).with(match.id.to_s).and_return(match)
+            get :show, id: match.id
+          end
+
+          it 'assigns the match' do
+            expect(assigns(:match).id).to eq match.id
+          end
+
+          it 'renders the templates for the correct game' do
+            expect(response).to render_template(:show)
+          end
+        end
+
+        context 'with a match that doesn\'t exist' do
+          before do
+            allow(Match).to receive(:find).with('-42').and_raise(ActiveRecord::RecordNotFound)
+            get :show, id: '-42'
+          end
+
+          it 'returns 404' do
+            expect(response.status).to eq 404
+          end
+        end
       end
     end
   end

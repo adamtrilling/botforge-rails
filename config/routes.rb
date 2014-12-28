@@ -9,5 +9,5 @@ Rails.application.routes.draw do
   end
   resources :bots
   resources :games, only: [:index, :show]
-  resources :matches, only: [:index, :new, :create, :show]
+  resources :matches, only: [:index, :show, :new, :create]
 end
