@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20141214192231) do
   enable_extension "plpgsql"
   enable_extension "hstore"
 
-  create_table "matches", force: true do |t|
+  create_table "matches", force: :cascade do |t|
     t.string "type"
     t.string "status"
     t.jsonb  "state"
@@ -27,7 +27,7 @@ ActiveRecord::Schema.define(version: 20141214192231) do
   add_index "matches", ["status"], name: "index_matches_on_status", using: :btree
   add_index "matches", ["type"], name: "index_matches_on_type", using: :btree
 
-  create_table "participants", force: true do |t|
+  create_table "participants", force: :cascade do |t|
     t.integer "match_id"
     t.integer "player_id"
     t.integer "seat"
@@ -41,7 +41,7 @@ ActiveRecord::Schema.define(version: 20141214192231) do
   add_index "participants", ["score"], name: "index_participants_on_score", using: :btree
   add_index "participants", ["seat"], name: "index_participants_on_seat", using: :btree
 
-  create_table "players", force: true do |t|
+  create_table "players", force: :cascade do |t|
     t.string   "type"
     t.integer  "user_id"
     t.string   "name"
@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 20141214192231) do
   add_index "players", ["game"], name: "index_players_on_game", using: :btree
   add_index "players", ["user_id"], name: "index_players_on_user_id", using: :btree
 
-  create_table "users", force: true do |t|
+  create_table "users", force: :cascade do |t|
     t.string "username"
     t.string "email"
     t.string "password_digest"
