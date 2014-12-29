@@ -16,6 +16,7 @@ gem 'simple_form'
 gem 'therubyracer', platforms: :ruby
 gem 'uglifier', '>= 1.3.0'
 gem 'validate_url'
+gem 'webmock'
 
 group :development do
   gem 'letter_opener'

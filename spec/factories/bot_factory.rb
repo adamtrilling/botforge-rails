@@ -4,4 +4,20 @@ FactoryGirl.define do
     url { |n| "http://bots.example.com/#{name}"}
     game { Match::GAMES.keys.sample }
   end
+
+  trait :accepts_matches do
+    after(:create) do |b|
+      WebMock::API.stub_request(:get, b.url).
+        with(:body => hash_including({type: 'invitation')).
+        to_return(:status => 200)
+    end
+  end
+
+  trait :declines_matches do
+    after(:create) do |b|
+      WebMock::API.stub_request(:get, b.url).
+        with(:body => hash_including({type: 'invitation')).
+        to_return(:status => 503)
+    end
+  end
 end

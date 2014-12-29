@@ -9,7 +9,24 @@ RSpec.describe Match, :type => :model do
   end
 
   describe '#invite_participants' do
+    subject { FactoryGirl.create(:match) }
 
+    before do
+      allow(subject).to receive(:num_players).and_return(3)
+    end
+
+    context 'when there are enough players available' do
+      before do
+        3.times do
+          FactoryGirl.create(:bot, :accepts_matches, game: Match::GAMES.keys)
+          subject.invite_participants
+        end
+
+        it 'fills all spots' do
+          expect(subject.has_participants?).to eq true
+        end
+      end
+    end
   end
 
   describe '#has_participants?' do
