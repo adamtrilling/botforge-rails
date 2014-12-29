@@ -20,6 +20,10 @@ describe MatchesController do
             expect(assigns(:match).participants.first.player.user.id).to eq current_user.id
           end
 
+          it 'starts the match' do
+            expect(assigns(:match).state).to_not be_nil
+          end
+
           it 'redirects to the match' do
             expect(response).to redirect_to match_path(assigns(:match))
           end

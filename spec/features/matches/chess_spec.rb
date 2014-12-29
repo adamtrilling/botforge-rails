@@ -52,6 +52,7 @@ feature 'Chess Matches' do
 
   def i_click_request_match
     click_button 'Request Match'
+    @match = current_user.humans.first.participants.first.match
   end
 
   def there_is_an_in_progress_match

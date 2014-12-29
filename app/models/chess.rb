@@ -1,5 +1,4 @@
 class Chess < Match
-  private
   def setup_board
     self.state = Hash[
       'board' => {
@@ -17,6 +16,7 @@ class Chess < Match
     ]
   end
 
+  private
   def initial_board_pawns(row)
     ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, row]}}
   end

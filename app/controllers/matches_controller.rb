@@ -5,7 +5,6 @@ class MatchesController < ApplicationController
     rescue ActiveRecord::RecordNotFound
       render nothing: true, status: 404 and return
     end
-
   end
 
   def create
@@ -15,6 +14,7 @@ class MatchesController < ApplicationController
 
     @game = params[:game]
     @match = @game.constantize.new
+    @match.setup_board
     @match.participants.build(
       player: current_user.human_for(@game)
     )
