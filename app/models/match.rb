@@ -18,4 +18,11 @@ class Match < ActiveRecord::Base
 
   validates :type,
     inclusion: {in: GAMES.keys}
+
+  def has_participants?
+    participants.size == num_players
+  end
+
+  def invite_participants
+  end
 end
