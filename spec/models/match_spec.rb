@@ -9,7 +9,7 @@ RSpec.describe Match, :type => :model do
   end
 
   describe '#invite_participants' do
-    subject { FactoryGirl.create(:match) }
+    subject { FactoryGirl.create(Match::GAMES.keys.sample.downcase.to_sym) }
 
     before do
       allow(subject).to receive(:num_players).and_return(3)
@@ -18,13 +18,43 @@ RSpec.describe Match, :type => :model do
     context 'when there are enough players available' do
       before do
         3.times do
-          FactoryGirl.create(:bot, :accepts_matches, game: Match::GAMES.keys)
-          subject.invite_participants
+          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
         end
 
-        it 'fills all spots' do
-          expect(subject.has_participants?).to eq true
+        subject.invite_participants
+      end
+
+      it 'fills all spots' do
+        expect(subject.has_participants?).to eq true
+      end
+    end
+
+    context 'when there are not enough players available' do
+      before do
+        2.times do
+          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
         end
+
+        subject.invite_participants
+      end
+
+      it 'doesn\'t fill all spots' do
+        expect(subject.has_participants?).to eq false
+      end
+    end
+
+    context 'when there are enough players available but some of them decline' do
+      before do
+        2.times do
+          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
+        end
+        FactoryGirl.create(:bot, :declines_matches, game: subject.type)
+
+        subject.invite_participants
+      end
+
+      it 'doesn\'t fill all spots' do
+        expect(subject.has_participants?).to eq false
       end
     end
   end
