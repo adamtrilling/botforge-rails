@@ -57,6 +57,21 @@ RSpec.describe Match, :type => :model do
         expect(subject.has_participants?).to eq false
       end
     end
+
+    context 'when there are enough players but some are inactive' do
+      before do
+        2.times do
+          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
+        end
+        FactoryGirl.create(:bot, :accepts_matches, :inactive, game: subject.type)
+
+        subject.invite_participants
+      end
+
+      it 'doesn\'t fill all spots' do
+        expect(subject.has_participants?).to eq false
+      end
+    end
   end
 
   describe '#has_participants?' do

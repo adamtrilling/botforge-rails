@@ -5,6 +5,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "bot#{n}" }
     url { |n| "http://bots.example.com/#{name}"}
     game { Match::GAMES.keys.sample }
+    active { true }
   end
 
   trait :accepts_matches do
@@ -21,5 +22,9 @@ FactoryGirl.define do
         with(:body => hash_including({type: 'invitation'})).
         to_return(:status => 503)
     end
+  end
+
+  trait :inactive do
+    active { false }
   end
 end
