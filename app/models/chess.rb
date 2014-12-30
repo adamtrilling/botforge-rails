@@ -1,4 +1,9 @@
 class Chess < Match
+
+  def num_players
+    2
+  end
+
   def setup_board
     self.state = Hash[
       'board' => {

@@ -10,16 +10,16 @@ FactoryGirl.define do
 
   trait :accepts_matches do
     after(:create) do |b|
-      stub_request(:get, b.url).
-        with(:body => hash_including({type: 'invitation'})).
+      stub_request(:post, b.url).
+        with(:body => hash_including({type: 'invite'})).
         to_return(:status => 200)
     end
   end
 
   trait :declines_matches do
     after(:create) do |b|
-      stub_request(:get, b.url).
-        with(:body => hash_including({type: 'invitation'})).
+      stub_request(:post, b.url).
+        with(:body => hash_including({type: 'invite'})).
         to_return(:status => 503)
     end
   end

@@ -21,7 +21,11 @@ RSpec.describe Match, :type => :model do
           FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
         end
 
-        subject.invite_participants
+        @retval = subject.invite_participants
+      end
+
+      it 'returns true' do
+        expect(@retval).to eq true
       end
 
       it 'fills all spots' do
@@ -35,7 +39,11 @@ RSpec.describe Match, :type => :model do
           FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
         end
 
-        subject.invite_participants
+        @retval = subject.invite_participants
+      end
+
+      it 'returns false' do
+        expect(@retval).to eq false
       end
 
       it 'doesn\'t fill all spots' do
@@ -50,7 +58,11 @@ RSpec.describe Match, :type => :model do
         end
         FactoryGirl.create(:bot, :declines_matches, game: subject.type)
 
-        subject.invite_participants
+        @retval = subject.invite_participants
+      end
+
+      it 'returns false' do
+        expect(@retval).to eq false
       end
 
       it 'doesn\'t fill all spots' do
@@ -65,7 +77,11 @@ RSpec.describe Match, :type => :model do
         end
         FactoryGirl.create(:bot, :accepts_matches, :inactive, game: subject.type)
 
-        subject.invite_participants
+        @retval = subject.invite_participants
+      end
+
+      it 'returns false' do
+        expect(@retval).to eq false
       end
 
       it 'doesn\'t fill all spots' do

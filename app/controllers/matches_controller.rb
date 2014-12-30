@@ -15,10 +15,10 @@ class MatchesController < ApplicationController
     @game = params[:game]
     @match = @game.constantize.new
     @match.setup_board
-    @match.invite_participants
     @match.participants.build(
       player: current_user.human_for(@game)
     )
+    @match.invite_participants
     @match.save
 
     redirect_to match_path(@match)
