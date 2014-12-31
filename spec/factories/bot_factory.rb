@@ -5,6 +5,7 @@ FactoryGirl.define do
     sequence(:name) { |n| "bot#{n}" }
     url { |n| "http://bots.example.com/#{name}"}
     game { Match::GAMES.keys.sample }
+    user
     active true
 
     transient do
