@@ -18,7 +18,7 @@ RSpec.describe Match, :type => :model do
     context 'when there are enough players available' do
       before do
         3.times do
-          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
+          FactoryGirl.create(:bot, game: subject.type)
         end
 
         @retval = subject.invite_participants
@@ -36,7 +36,7 @@ RSpec.describe Match, :type => :model do
     context 'when there are not enough players available' do
       before do
         2.times do
-          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
+          FactoryGirl.create(:bot, game: subject.type)
         end
 
         @retval = subject.invite_participants
@@ -54,9 +54,9 @@ RSpec.describe Match, :type => :model do
     context 'when there are enough players available but some of them decline' do
       before do
         2.times do
-          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
+          FactoryGirl.create(:bot, game: subject.type)
         end
-        FactoryGirl.create(:bot, :declines_matches, game: subject.type)
+        FactoryGirl.create(:bot, accepts_matches: false, game: subject.type)
 
         @retval = subject.invite_participants
       end
@@ -73,9 +73,9 @@ RSpec.describe Match, :type => :model do
     context 'when there are enough players but some are inactive' do
       before do
         2.times do
-          FactoryGirl.create(:bot, :accepts_matches, game: subject.type)
+          FactoryGirl.create(:bot, game: subject.type)
         end
-        FactoryGirl.create(:bot, :accepts_matches, :inactive, game: subject.type)
+        FactoryGirl.create(:bot, :inactive, game: subject.type)
 
         @retval = subject.invite_participants
       end

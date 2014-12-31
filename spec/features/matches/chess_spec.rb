@@ -40,7 +40,7 @@ feature 'Chess Matches' do
   end
 
   let(:current_user) { FactoryGirl.create(:user) }
-  let(:chess_bot) { FactoryGirl.create(:bot, :chess, :accepts_matches) }
+  let(:chess_bot) { FactoryGirl.create(:bot, :chess) }
 
   def there_is_a_chess_bot
     chess_bot

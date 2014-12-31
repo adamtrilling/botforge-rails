@@ -18,7 +18,7 @@ RSpec.describe Bot, :type => :model do
 
   describe '#invite' do
     context 'with a bot that accepts matches' do
-      let(:bot) { FactoryGirl.create(:bot, :accepts_matches) }
+      let(:bot) { FactoryGirl.create(:bot) }
       let(:match) { FactoryGirl.create(:chess, status: 'on hold') }
 
       before do
