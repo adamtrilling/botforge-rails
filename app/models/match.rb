@@ -20,7 +20,7 @@ class Match < ActiveRecord::Base
     inclusion: {in: GAMES.keys}
 
   def has_participants?
-    participants.size == num_players
+    participants.size <= max_participants && participants.size >= min_participants
   end
 
   def invite_participants
@@ -37,12 +37,16 @@ class Match < ActiveRecord::Base
     return has_participants?
   end
 
-  private
-  def max_participants
-    num_players.is_a?(Hash) ? num_players[:max] : num_players
+  class << self
+    def max_participants
+      expected_participants.is_a?(Hash) ? expected_participants[:max] : expected_participants
+    end
+
+    def min_participants
+      expected_participants.is_a?(Hash) ? expected_participants[:min] : expected_participants
+    end
   end
 
-  def max_participants
-    num_players.is_a?(Hash) ? num_players[:min] : num_players
-  end
+  delegate :max_participants, :min_participants,
+    to: :class
 end

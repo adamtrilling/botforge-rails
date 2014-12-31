@@ -1,6 +1,6 @@
 class Chess < Match
 
-  def num_players
+  def self.expected_participants
     2
   end
 

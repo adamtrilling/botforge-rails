@@ -12,7 +12,7 @@ RSpec.describe Match, :type => :model do
     subject { FactoryGirl.create(Match::GAMES.keys.sample.downcase.to_sym) }
 
     before do
-      allow(subject).to receive(:num_players).and_return(3)
+      allow(subject.class).to receive(:expected_participants).and_return(3)
     end
 
     context 'when there are enough players available' do
@@ -94,7 +94,7 @@ RSpec.describe Match, :type => :model do
     subject { Match.new }
 
     before do
-      allow(subject).to receive(:num_players).and_return(num_players)
+      allow(subject.class).to receive(:expected_participants).and_return(num_players)
     end
 
     context 'when the number of participants is fixed' do
