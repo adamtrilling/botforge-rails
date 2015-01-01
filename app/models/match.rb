@@ -1,16 +1,16 @@
 class Match < ActiveRecord::Base
   GAMES = {
-    'Holdem' => {
-      name: 'Texas Hold\'em Poker'  
-    },
-    'Go' => {
-      name: 'Go'
-    },
+    # 'Holdem' => {
+    #   name: 'Texas Hold\'em Poker'
+    # },
+    # 'Go' => {
+    #   name: 'Go'
+    # },
+    # 'Hearts' => {
+    #   name: 'Hearts'
+    # },
     'Chess' => {
       name: 'Chess'
-    },
-    'Hearts' => {
-      name: 'Hearts'
     }
   }
 
