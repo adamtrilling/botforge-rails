@@ -6,13 +6,19 @@ describe MatchesController do
   describe '#create' do
     before do
       allow(controller).to receive(:current_user).and_return(current_user)
-      post :create, game: game
     end
 
     context 'with a valid game' do
       Match::GAMES.keys.each do |g|
         context g do
           let(:game) { g }
+
+          before do
+            game.constantize.max_participants.times do |b|
+              FactoryGirl.create(:bot, game: game)
+            end
+            post :create, game: game
+          end
 
           it 'assigns a new match with the current user as a participant' do
             expect(assigns(:match)).to be_a g.constantize
@@ -33,7 +39,11 @@ describe MatchesController do
     end
 
     context 'with an invalid game' do
-      let(:game) { 'thermonuclear_war' }
+      let(:game) { 'ThermonuclearWar' }
+
+      before do
+        post :create, game: game
+      end
 
       it 'redirects to the games index' do
         expect(response).to redirect_to games_path
