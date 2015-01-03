@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :chess do
-    status { 'in progress' }
+    status { 'open' }
   end
 
   # factory :holdem do
@@ -14,4 +14,10 @@ FactoryGirl.define do
   # factory :hearts do
   #   status { 'in progress' }
   # end
+
+  trait :started do
+    after(:create) do |m|
+      m.start_match
+    end
+  end
 end

@@ -28,7 +28,7 @@ describe MatchesController do
           end
 
           it 'starts the match' do
-            expect(assigns(:match).state).to_not be_nil
+            expect(assigns(:match).state).to eq 'waiting'
           end
 
           it 'redirects to the match' do

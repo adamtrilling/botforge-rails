@@ -19,6 +19,13 @@ class Match < ActiveRecord::Base
   validates :type,
     inclusion: {in: GAMES.keys}
 
+  def start_match
+    invite_participants unless has_participants?
+    setup_board
+    request_move
+    update_attributes(state: 'started')
+  end
+
   def has_participants?
     participants.size <= max_participants && participants.size >= min_participants
   end
