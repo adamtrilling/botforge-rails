@@ -122,12 +122,4 @@ RSpec.describe Match, :type => :model do
       end
     end
   end
-
-  describe 'request_move' do
-    subject { FactoryGirl.create(Match::GAMES.keys.sample.downcase.to_sym, :started) }
-
-    before do
-
-    end
-  end
 end

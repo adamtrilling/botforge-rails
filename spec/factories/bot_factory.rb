@@ -10,12 +10,25 @@ FactoryGirl.define do
 
     transient do
       accepts_matches true
+      move_response :immediate
+      times_out false
     end
 
     after(:create) do |bot, evaluator|
-      stub_request(:post, bot.url).
-        with(:body => hash_including({type: 'invite'})).
-        to_return(:status => evaluator.accepts_matches ? 200 : 503)
+      if (evaluator.times_out)
+        stub_request(:post, bot.url).to_timeout
+      else
+        stub_request(:post, bot.url).
+          with(:body => hash_including({type: 'invite'})).
+          to_return(:status => evaluator.accepts_matches ? 200 : 503)
+
+        stub_request(:post, bot.url).
+          with(:body => hash_including({type: 'move'})).
+          to_return(
+            :status => (evaluator.move_response == :error) ? 503 : 200,
+            :body => (evaluator.move_response == :immediate) ? { 'move' => 'a4 to e7' }.to_json : nil
+          )
+      end
     end
   end
 

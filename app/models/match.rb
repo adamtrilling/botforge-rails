@@ -22,8 +22,8 @@ class Match < ActiveRecord::Base
   def start_match
     invite_participants unless has_participants?
     setup_board
+    update_attributes(status: 'in progress')
     request_move
-    update_attributes(state: 'started')
   end
 
   def has_participants?
@@ -44,6 +44,10 @@ class Match < ActiveRecord::Base
     return has_participants?
   end
 
+  def next_player_to_move
+    participants.find_by(seat: state[:next_to_move]).player
+  end
+
   class << self
     def max_participants
       expected_participants.is_a?(Hash) ? expected_participants[:max] : expected_participants
@@ -56,4 +60,7 @@ class Match < ActiveRecord::Base
 
   delegate :max_participants, :min_participants,
     to: :class
+
+  delegate :request_move,
+    to: :next_player_to_move
 end

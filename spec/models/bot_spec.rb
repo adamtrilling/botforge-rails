@@ -36,4 +36,55 @@ RSpec.describe Bot, :type => :model do
       end
     end
   end
+
+  describe '#request_move' do
+    let(:match) { FactoryGirl.create(:chess, status: 'active') }
+    let(:bot) { FactoryGirl.create(:bot, move_response: move_response) }
+    let(:move_response) { :immediate }
+
+    before do
+      allow(match).to receive(:execute_move)
+      @retval = bot.request_move(match)
+    end
+
+    it 'sends the move to the bot' do
+      expect(a_request(:post, bot.url).
+        with(body: hash_including(type: 'move', match_id: match.id))).
+        to have_been_made.once
+    end
+
+    context 'with a bot that immediately moves' do
+      it 'sends the move to the match' do
+        expect(match).to have_received(:execute_move).with('a4 to e7')
+      end
+
+      it 'returns true' do
+        expect(@retval).to eq true
+      end
+    end
+
+    context 'with a bot that does not immediately move' do
+      let(:move_response) { :delayed }
+
+      it 'does not send anything to the match' do
+        expect(match).to_not receive(:execute_move)
+      end
+
+      it 'returns true' do
+        expect(@retval).to eq true
+      end
+    end
+
+    context 'with a bot that errors' do
+      let(:move_response) { :error }
+
+      it 'does not send anything to the match' do
+        expect(match).to_not receive(:execute_move)
+      end
+
+      it 'returns false' do
+        expect(@retval).to eq false
+      end
+    end
+  end
 end
