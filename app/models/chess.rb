@@ -24,6 +24,12 @@ class Chess < Match
     ]
   end
 
+  def execute_move(move)
+    self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
+    self.state['history'] << move
+    save
+  end
+
   private
   def initial_board_pawns(row)
     ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, row]}}
