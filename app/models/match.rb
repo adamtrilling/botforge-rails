@@ -48,6 +48,10 @@ class Match < ActiveRecord::Base
     participants.find_by(seat: state[:next_to_move]).player
   end
 
+  def request_move
+    next_player_to_move.request_move(self)
+  end
+
   class << self
     def max_participants
       expected_participants.is_a?(Hash) ? expected_participants[:max] : expected_participants
@@ -60,7 +64,4 @@ class Match < ActiveRecord::Base
 
   delegate :max_participants, :min_participants,
     to: :class
-
-  delegate :request_move,
-    to: :next_player_to_move
 end

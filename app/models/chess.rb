@@ -4,6 +4,9 @@ class Chess < Match
     2
   end
 
+  delegate :max_participants, :min_participants,
+    to: :class
+
   def setup_board
     self.state = Hash[
       'board' => {
@@ -12,9 +15,9 @@ class Chess < Match
       },
       'history' => [],
       'legal_moves' => [
-        'pa3', 'pa4', 'pb3', 'pb4', 'pc3', 'pc4',
-        'pd3', 'pd4', 'pe3', 'pe4', 'pf3', 'pf4',
-        'pg3', 'pg4', 'ph3', 'ph4', 'na3', 'nc3',
+        'a3', 'a4', 'b3', 'b4', 'c3', 'c4',
+        'd3', 'd4', 'e3', 'e4', 'f3', 'f4',
+        'g3', 'g4', 'h3', 'h4', 'na3', 'nc3',
         'nf3', 'nh3'
       ],
       'next_to_move' => 0

@@ -5,7 +5,7 @@ class Human < Player
     }
 
   # human players act as delayed-response bots
-  def request_move
+  def request_move(match)
     return true
   end
 end

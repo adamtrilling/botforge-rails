@@ -17,7 +17,7 @@ FactoryGirl.define do
 
   trait :started do
     after(:create) do |m|
-      m.min_players.times do
+      m.min_participants.times do
         create(:bot, game: m.type)
       end
 
