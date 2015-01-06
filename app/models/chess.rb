@@ -25,8 +25,14 @@ class Chess < Match
   end
 
   def execute_move(move)
+    # pawn
+    if (move.size == 2)
+      self.state['board'] = move_pawn(move)
+    end
+
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
     self.state['history'] << move
+    self.state['legal_moves'] == legal_moves(self.state['next_to_move'])
     save
   end
 
@@ -44,5 +50,38 @@ class Chess < Match
       { 'rank' => 'B', 'space' => ['f', row]},
       { 'rank' => 'N', 'space' => ['g', row]},
       { 'rank' => 'R', 'space' => ['h', row]} ]
+  end
+
+  def move_pawn(move)
+
+  end
+
+  def legal_moves(participant)
+    legal_moves = []
+
+    state['board'][participant.to_s].each do |piece|
+      case piece['rank']
+      when 'P'
+        legal_moves << pawn_legal_moves(piece['space'], participant)
+      end
+    end
+
+    legal_moves.flatten
+  end
+
+  def pawn_legal_moves(space, participant)
+    if (participant == 0)
+      if (space.last == '2')
+        [space.first + '3', space.first + '4']
+      else
+        space.first + (space.last.ord + 1).chr
+      end
+    else
+      if (space.last == '7')
+        [space.first + '6', space.first + '5']
+      else
+        space.first + (space.last.ord - 1).chr
+      end
+    end
   end
 end

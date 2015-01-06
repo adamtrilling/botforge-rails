@@ -170,8 +170,13 @@ RSpec.describe Chess, :type => :model do
             'g6', 'g5', 'h6', 'h5', 'na6', 'nc6',
             'nf6', 'nh6'
           ]
-        }
-
+        },
+        other_player_legal_moves: [
+          'a3', 'a4', 'b3', 'b4', 'c3', 'c4',
+          'd4', 'e3', 'e4', 'f3', 'f4',
+          'g3', 'g4', 'h3', 'h4', 'na3', 'nc3',
+          'nf3', 'nh3'
+        ]
       }
     ].each do |name, test|
       context name do
@@ -192,8 +197,13 @@ RSpec.describe Chess, :type => :model do
           expect(subject.state['next_to_move']).to eq test[:state_after][:next_to_move]
         end
 
-        it 'should have the correct legal moves' do
+        it 'should have the correct legal moves for black' do
           expect(subject.state['legal_moves']).to eq test[:state_after][:legal_moves]
+        end
+
+        # testing the private API beacuse it halves the number of test cases
+        it 'should have the correct moves for white' do
+          expect(subject.send(:legal_moves, 0)).to eq test[:other_player_legal_moves]
         end
       end
     end
