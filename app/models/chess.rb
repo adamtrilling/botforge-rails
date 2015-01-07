@@ -27,7 +27,7 @@ class Chess < Match
   def execute_move(move)
     # pawn
     if (move.size == 2)
-      self.state['board'] = move_pawn(move)
+      move_pawn(move)
     end
 
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
@@ -53,7 +53,13 @@ class Chess < Match
   end
 
   def move_pawn(move)
+    player = self.state['next_to_move']
+    pieces = self.state['board'][player.to_s]
+    old_piece_index = pieces.index do |p|
+      p['rank'] == 'P' && p['space'].first == move[0] && (p['space'].last.to_i == move[1].to_i - 1)
+    end
 
+    self.state['board'][player.to_s][old_piece_index]['space'] = move.split('')
   end
 
   def legal_moves(participant)
