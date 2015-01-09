@@ -70,6 +70,8 @@ class Chess < Match
       case piece['rank']
       when 'P'
         legal_moves << pawn_legal_moves(piece['space'], participant)
+      when 'N'
+        legal_moves << knight_legal_moves(piece['space'])
       end
     end
 
@@ -90,5 +92,16 @@ class Chess < Match
         "#{space.first}#{space.last - 1}"
       end
     end
+  end
+
+  def knight_legal_moves(space)
+    [[-2,-1], [-2,1], [-1,-2], [-1,2], [1,-2], [1,2], [2,-1], [2,1]].collect do |move|
+      if (space.first.ord + move.first >= 'a'.ord && space.first.ord + move.first <= 'h'.ord &&
+          space.last + move.last >= 1 && space.last + move.last <= 8)
+        "n#{(space.first.ord + move.first).chr}#{space.last + move.last}"
+      else
+        nil
+      end
+    end.compact
   end
 end
