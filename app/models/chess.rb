@@ -9,10 +9,10 @@ class Chess < Match
 
   def setup_board
     self.state = Hash[
-      'board' => {
-        '0' => initial_board_power_pieces('1') + initial_board_pawns('2'),
-        '1' => initial_board_power_pieces('8') + initial_board_pawns('7')
-      },
+      'board' => [
+        initial_board_power_pieces(1) + initial_board_pawns(2),
+        initial_board_power_pieces(8) + initial_board_pawns(7)
+      ],
       'history' => [],
       'legal_moves' => [
         'a3', 'a4', 'b3', 'b4', 'c3', 'c4',
@@ -32,7 +32,7 @@ class Chess < Match
 
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
     self.state['history'] << move
-    self.state['legal_moves'] == legal_moves(self.state['next_to_move'])
+    self.state['legal_moves'] = legal_moves(self.state['next_to_move'])
     save
   end
 
@@ -53,19 +53,20 @@ class Chess < Match
   end
 
   def move_pawn(move)
-    player = self.state['next_to_move']
-    pieces = self.state['board'][player.to_s]
+    participant = self.state['next_to_move']
+    pieces = self.state['board'][participant]
     old_piece_index = pieces.index do |p|
       p['rank'] == 'P' && p['space'].first == move[0] && (p['space'].last.to_i == move[1].to_i - 1)
     end
 
-    self.state['board'][player.to_s][old_piece_index]['space'] = move.split('')
+    move = move.split('')
+    self.state['board'][participant][old_piece_index]['space'] = [move.first, move.last.to_i]
   end
 
   def legal_moves(participant)
     legal_moves = []
 
-    state['board'][participant.to_s].each do |piece|
+    state['board'][participant].each do |piece|
       case piece['rank']
       when 'P'
         legal_moves << pawn_legal_moves(piece['space'], participant)
@@ -77,16 +78,16 @@ class Chess < Match
 
   def pawn_legal_moves(space, participant)
     if (participant == 0)
-      if (space.last == '2')
-        [space.first + '3', space.first + '4']
+      if (space.last == 2)
+        ["#{space.first}3", "#{space.first}4"]
       else
-        space.first + (space.last.ord + 1).chr
+        "#{space.first}#{space.last + 1}"
       end
     else
-      if (space.last == '7')
-        [space.first + '6', space.first + '5']
+      if (space.last == 7)
+        ["#{space.first}6", "#{space.first}5"]
       else
-        space.first + (space.last.ord - 1).chr
+        "#{space.first}#{space.last - 1}"
       end
     end
   end
