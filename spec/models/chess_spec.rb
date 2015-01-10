@@ -197,13 +197,27 @@ RSpec.describe Chess, :type => :model do
           expect(subject.state['next_to_move']).to eq test[:state_after][:next_to_move]
         end
 
-        it 'should have the correct legal moves for black' do
-          expect(subject.state['legal_moves']).to eq test[:state_after][:legal_moves]
+        it 'should have the correct legal moves for the other player' do
+          subject.state['legal_moves'].each do |move|
+            expect(test[:state_after][:legal_moves]).to include(move)
+          end
+
+          test[:state_after][:legal_moves].each do |move|
+            expect(subject.state['legal_moves']).to include(move)
+          end
         end
 
         # testing the private API beacuse it halves the number of test cases
-        it 'should have the correct moves for white' do
-          expect(subject.send(:legal_moves, 0)).to eq test[:other_player_legal_moves]
+        it 'should have the correct moves for the current player`' do
+          current_player_legal_moves = subject.send(:legal_moves, (subject.state['next_to_move'] + 1) % 2)
+
+          current_player_legal_moves.each do |move|
+            expect(test[:other_player_legal_moves]).to include(move)
+          end
+
+          test[:other_player_legal_moves].each do |move|
+            expect(current_player_legal_moves).to include(move)
+          end
         end
       end
     end
