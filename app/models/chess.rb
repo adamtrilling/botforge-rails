@@ -38,19 +38,19 @@ class Chess < Match
   private
   def initial_board_pawns(participant)
     row = (participant == 0 ? 2 : 7)
-    ('a'..'h').collect {|col| { 'participant' => participant, 'rank' => 'P', 'space' => [col, row]}}
+    ('a'..'h').collect {|col| { 'participant' => participant, 'rank' => 'pawn', 'space' => [col, row]}}
   end
 
   def initial_board_power_pieces(participant)
     row = (participant == 0 ? 1 : 8)
-    [ { 'participant' => participant, 'rank' => 'R', 'space' => ['a', row]},
-      { 'participant' => participant, 'rank' => 'N', 'space' => ['b', row]},
-      { 'participant' => participant, 'rank' => 'B', 'space' => ['c', row]},
-      { 'participant' => participant, 'rank' => 'Q', 'space' => ['d', row]},
-      { 'participant' => participant, 'rank' => 'K', 'space' => ['e', row]},
-      { 'participant' => participant, 'rank' => 'B', 'space' => ['f', row]},
-      { 'participant' => participant, 'rank' => 'N', 'space' => ['g', row]},
-      { 'participant' => participant, 'rank' => 'R', 'space' => ['h', row]} ]
+    [ { 'participant' => participant, 'rank' => 'rook', 'space' => ['a', row]},
+      { 'participant' => participant, 'rank' => 'knight', 'space' => ['b', row]},
+      { 'participant' => participant, 'rank' => 'bishop', 'space' => ['c', row]},
+      { 'participant' => participant, 'rank' => 'queen', 'space' => ['d', row]},
+      { 'participant' => participant, 'rank' => 'king', 'space' => ['e', row]},
+      { 'participant' => participant, 'rank' => 'bishop', 'space' => ['f', row]},
+      { 'participant' => participant, 'rank' => 'knight', 'space' => ['g', row]},
+      { 'participant' => participant, 'rank' => 'rook', 'space' => ['h', row]} ]
   end
 
   def pieces_for(participant)
@@ -79,7 +79,7 @@ class Chess < Match
     participant = self.state['next_to_move']
     old_piece_index = state['board'].index do |p|
         p['participant'] == participant &&
-        p['rank'] == 'P' && p['space'].first == move[0] &&
+        p['rank'] == 'pawn' && p['space'].first == move[0] &&
         (p['space'].last.to_i == move[1].to_i - 1)
     end
 
@@ -88,15 +88,8 @@ class Chess < Match
   end
 
   def legal_moves(participant)
-    legal_moves = []
-
-    pieces_for(participant).each do |piece|
-      case piece['rank']
-      when 'P'
-        legal_moves << pawn_legal_moves(piece['space'], participant)
-      when 'N'
-        legal_moves << knight_legal_moves(piece['space'], participant)
-      end
+    legal_moves = pieces_for(participant).collect do |piece|
+      self.send(:"#{piece['rank']}_legal_moves", piece['space'], participant)
     end
 
     legal_moves.flatten
@@ -118,6 +111,14 @@ class Chess < Match
     end
   end
 
+  def king_legal_moves(space, participant)
+    []
+  end
+
+  def queen_legal_moves(space, participant)
+    []
+  end
+
   def knight_legal_moves(space, participant)
     [[-2,-1], [-2,1], [-1,-2], [-1,2], [1,-2], [1,2], [2,-1], [2,1]].collect do |move|
       new_space = [(space.first.ord + move.first).chr, space.last + move.last]
@@ -130,4 +131,14 @@ class Chess < Match
       end
     end.compact
   end
+
+  def bishop_legal_moves(space, participant)
+    []
+  end
+
+  def rook_legal_moves(space, participant)
+    []
+  end
+
+
 end
