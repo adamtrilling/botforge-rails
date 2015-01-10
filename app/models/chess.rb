@@ -96,18 +96,14 @@ class Chess < Match
   end
 
   def pawn_legal_moves(space, participant)
-    if (participant == 0)
-      if (space.last == 2)
-        ["#{space.first}3", "#{space.first}4"]
-      else
-        "#{space.first}#{space.last + 1}"
-      end
+    direction = participant == 0 ? 1 : -1
+    home_row = participant == 0 ? 2 : 7
+
+    if (space.last == home_row)
+      [ "#{space.first}#{home_row + direction}",
+        "#{space.first}#{home_row + direction * 2}"]
     else
-      if (space.last == 7)
-        ["#{space.first}6", "#{space.first}5"]
-      else
-        "#{space.first}#{space.last - 1}"
-      end
+      "#{space.first}#{space.last + direction}"
     end
   end
 
