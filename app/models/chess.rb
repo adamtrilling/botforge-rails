@@ -57,6 +57,24 @@ class Chess < Match
     self.state['board'].select {|piece| piece['participant'] == participant}
   end
 
+  def occupied?(space)
+    self.state['board'].select do |piece|
+      piece['space'] == space
+    end.size > 0
+  end
+
+  def capturable?(space, participant)
+    self.state['board'].select do |piece|
+      piece['space'] == space &&
+      piece['participant'] != participant
+    end.size > 0
+  end
+
+  def valid_space?(space)
+    space.first >= 'a' && space.first <= 'h' &&
+    space.last >= 1 && space.last <= 8
+  end
+
   def move_pawn(move)
     participant = self.state['next_to_move']
     old_piece_index = state['board'].index do |p|
@@ -77,7 +95,7 @@ class Chess < Match
       when 'P'
         legal_moves << pawn_legal_moves(piece['space'], participant)
       when 'N'
-        legal_moves << knight_legal_moves(piece['space'])
+        legal_moves << knight_legal_moves(piece['space'], participant)
       end
     end
 
@@ -100,11 +118,13 @@ class Chess < Match
     end
   end
 
-  def knight_legal_moves(space)
+  def knight_legal_moves(space, participant)
     [[-2,-1], [-2,1], [-1,-2], [-1,2], [1,-2], [1,2], [2,-1], [2,1]].collect do |move|
-      if (space.first.ord + move.first >= 'a'.ord && space.first.ord + move.first <= 'h'.ord &&
-          space.last + move.last >= 1 && space.last + move.last <= 8)
+      new_space = [(space.first.ord + move.first).chr, space.last + move.last]
+      if (valid_space?(new_space) && !occupied?(new_space))
         "n#{(space.first.ord + move.first).chr}#{space.last + move.last}"
+      elsif (valid_space?(new_space) && capturable?(new_space, participant))
+        "nx#{(space.first.ord + move.first).chr}#{space.last + move.last}"
       else
         nil
       end

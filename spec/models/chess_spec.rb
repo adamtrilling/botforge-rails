@@ -163,7 +163,7 @@ RSpec.describe Chess, :type => :model do
           'a3', 'a4', 'b3', 'b4', 'c3', 'c4',
           'd4', 'e3', 'e4', 'f3', 'f4',
           'g3', 'g4', 'h3', 'h4', 'na3', 'nc3',
-          'nf3', 'nh3'
+          'nd2', 'nf3', 'nh3'
         ]
       }
     ].each do |name, test|
