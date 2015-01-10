@@ -53,26 +53,28 @@ class Chess < Match
       { 'participant' => participant, 'rank' => 'rook', 'space' => ['h', row]} ]
   end
 
+  def valid_space?(space)
+    space.first >= 'a' && space.first <= 'h' &&
+    space.last >= 1 && space.last <= 8
+  end
+
   def pieces_for(participant)
     self.state['board'].select {|piece| piece['participant'] == participant}
   end
 
-  def occupied?(space)
+  def piece_at(space)
     self.state['board'].select do |piece|
       piece['space'] == space
-    end.size > 0
+    end.first
+  end
+
+  def occupied?(space)
+    piece_at(space).present?
   end
 
   def capturable?(space, participant)
-    self.state['board'].select do |piece|
-      piece['space'] == space &&
-      piece['participant'] != participant
-    end.size > 0
-  end
-
-  def valid_space?(space)
-    space.first >= 'a' && space.first <= 'h' &&
-    space.last >= 1 && space.last <= 8
+    piece = piece_at(space)
+    piece.present? && piece['participant'] != participant
   end
 
   def move_pawn(move)
@@ -90,7 +92,7 @@ class Chess < Match
   def legal_moves(participant)
     legal_moves = pieces_for(participant).collect do |piece|
       self.send(:"#{piece['rank']}_legal_moves", piece['space'], participant)
-    end
+  end
 
     legal_moves.flatten
   end
@@ -118,10 +120,13 @@ class Chess < Match
   def knight_legal_moves(space, participant)
     [[-2,-1], [-2,1], [-1,-2], [-1,2], [1,-2], [1,2], [2,-1], [2,1]].collect do |move|
       new_space = [(space.first.ord + move.first).chr, space.last + move.last]
-      if (valid_space?(new_space) && !occupied?(new_space))
-        "n#{(space.first.ord + move.first).chr}#{space.last + move.last}"
-      elsif (valid_space?(new_space) && capturable?(new_space, participant))
+
+      if (!valid_space?(new_space))
+        nil
+      elsif (capturable?(new_space, participant))
         "nx#{(space.first.ord + move.first).chr}#{space.last + move.last}"
+      elsif (!occupied?(new_space))
+        "n#{(space.first.ord + move.first).chr}#{space.last + move.last}"
       else
         nil
       end
@@ -135,6 +140,4 @@ class Chess < Match
   def rook_legal_moves(space, participant)
     []
   end
-
-
 end
