@@ -9,10 +9,9 @@ class Chess < Match
 
   def setup_board
     self.state = Hash[
-      'board' => [
-        initial_board_power_pieces(1) + initial_board_pawns(2),
-        initial_board_power_pieces(8) + initial_board_pawns(7)
-      ],
+      'board' =>
+        initial_board_power_pieces(0) + initial_board_pawns(0) +
+        initial_board_power_pieces(1) + initial_board_pawns(1),
       'history' => [],
       'legal_moves' => [
         'a3', 'a4', 'b3', 'b4', 'c3', 'c4',
@@ -37,36 +36,43 @@ class Chess < Match
   end
 
   private
-  def initial_board_pawns(row)
-    ('a'..'h').collect {|col| { 'rank' => 'P', 'space' => [col, row]}}
+  def initial_board_pawns(participant)
+    row = (participant == 0 ? 2 : 7)
+    ('a'..'h').collect {|col| { 'participant' => participant, 'rank' => 'P', 'space' => [col, row]}}
   end
 
-  def initial_board_power_pieces(row)
-    [ { 'rank' => 'R', 'space' => ['a', row]},
-      { 'rank' => 'N', 'space' => ['b', row]},
-      { 'rank' => 'B', 'space' => ['c', row]},
-      { 'rank' => 'Q', 'space' => ['d', row]},
-      { 'rank' => 'K', 'space' => ['e', row]},
-      { 'rank' => 'B', 'space' => ['f', row]},
-      { 'rank' => 'N', 'space' => ['g', row]},
-      { 'rank' => 'R', 'space' => ['h', row]} ]
+  def initial_board_power_pieces(participant)
+    row = (participant == 0 ? 1 : 8)
+    [ { 'participant' => participant, 'rank' => 'R', 'space' => ['a', row]},
+      { 'participant' => participant, 'rank' => 'N', 'space' => ['b', row]},
+      { 'participant' => participant, 'rank' => 'B', 'space' => ['c', row]},
+      { 'participant' => participant, 'rank' => 'Q', 'space' => ['d', row]},
+      { 'participant' => participant, 'rank' => 'K', 'space' => ['e', row]},
+      { 'participant' => participant, 'rank' => 'B', 'space' => ['f', row]},
+      { 'participant' => participant, 'rank' => 'N', 'space' => ['g', row]},
+      { 'participant' => participant, 'rank' => 'R', 'space' => ['h', row]} ]
+  end
+
+  def pieces_for(participant)
+    self.state['board'].select {|piece| piece['participant'] == participant}
   end
 
   def move_pawn(move)
     participant = self.state['next_to_move']
-    pieces = self.state['board'][participant]
-    old_piece_index = pieces.index do |p|
-      p['rank'] == 'P' && p['space'].first == move[0] && (p['space'].last.to_i == move[1].to_i - 1)
+    old_piece_index = state['board'].index do |p|
+        p['participant'] == participant &&
+        p['rank'] == 'P' && p['space'].first == move[0] &&
+        (p['space'].last.to_i == move[1].to_i - 1)
     end
 
     move = move.split('')
-    self.state['board'][participant][old_piece_index]['space'] = [move.first, move.last.to_i]
+    self.state['board'][old_piece_index]['space'] = [move.first, move.last.to_i]
   end
 
   def legal_moves(participant)
     legal_moves = []
 
-    state['board'][participant].each do |piece|
+    pieces_for(participant).each do |piece|
       case piece['rank']
       when 'P'
         legal_moves << pawn_legal_moves(piece['space'], participant)
