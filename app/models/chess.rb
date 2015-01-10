@@ -36,21 +36,21 @@ class Chess < Match
   end
 
   private
-  def initial_board_pawns(participant)
-    row = (participant == 0 ? 2 : 7)
-    ('a'..'h').collect {|col| { 'participant' => participant, 'rank' => 'pawn', 'space' => [col, row]}}
+  def initial_board_pawns(seat)
+    row = (seat == 0 ? 2 : 7)
+    ('a'..'h').collect {|col| { 'seat' => seat, 'rank' => 'pawn', 'space' => [col, row]}}
   end
 
-  def initial_board_power_pieces(participant)
-    row = (participant == 0 ? 1 : 8)
-    [ { 'participant' => participant, 'rank' => 'rook', 'space' => ['a', row]},
-      { 'participant' => participant, 'rank' => 'knight', 'space' => ['b', row]},
-      { 'participant' => participant, 'rank' => 'bishop', 'space' => ['c', row]},
-      { 'participant' => participant, 'rank' => 'queen', 'space' => ['d', row]},
-      { 'participant' => participant, 'rank' => 'king', 'space' => ['e', row]},
-      { 'participant' => participant, 'rank' => 'bishop', 'space' => ['f', row]},
-      { 'participant' => participant, 'rank' => 'knight', 'space' => ['g', row]},
-      { 'participant' => participant, 'rank' => 'rook', 'space' => ['h', row]} ]
+  def initial_board_power_pieces(seat)
+    row = (seat == 0 ? 1 : 8)
+    [ { 'seat' => seat, 'rank' => 'rook', 'space' => ['a', row]},
+      { 'seat' => seat, 'rank' => 'knight', 'space' => ['b', row]},
+      { 'seat' => seat, 'rank' => 'bishop', 'space' => ['c', row]},
+      { 'seat' => seat, 'rank' => 'queen', 'space' => ['d', row]},
+      { 'seat' => seat, 'rank' => 'king', 'space' => ['e', row]},
+      { 'seat' => seat, 'rank' => 'bishop', 'space' => ['f', row]},
+      { 'seat' => seat, 'rank' => 'knight', 'space' => ['g', row]},
+      { 'seat' => seat, 'rank' => 'rook', 'space' => ['h', row]} ]
   end
 
   def valid_space?(space)
@@ -58,8 +58,8 @@ class Chess < Match
     space.last >= 1 && space.last <= 8
   end
 
-  def pieces_for(participant)
-    self.state['board'].select {|piece| piece['participant'] == participant}
+  def pieces_for(seat)
+    self.state['board'].select {|piece| piece['seat'] == seat}
   end
 
   def piece_at(space)
@@ -72,15 +72,15 @@ class Chess < Match
     piece_at(space).present?
   end
 
-  def capturable?(space, participant)
+  def capturable?(space, seat)
     piece = piece_at(space)
-    piece.present? && piece['participant'] != participant
+    piece.present? && piece['seat'] != seat
   end
 
   def move_pawn(move)
-    participant = self.state['next_to_move']
+    seat = self.state['next_to_move']
     old_piece_index = state['board'].index do |p|
-        p['participant'] == participant &&
+        p['seat'] == seat &&
         p['rank'] == 'pawn' && p['space'].first == move[0] &&
         (p['space'].last.to_i == move[1].to_i - 1)
     end
@@ -89,17 +89,17 @@ class Chess < Match
     self.state['board'][old_piece_index]['space'] = [move.first, move.last.to_i]
   end
 
-  def legal_moves(participant)
-    legal_moves = pieces_for(participant).collect do |piece|
-      self.send(:"#{piece['rank']}_legal_moves", piece['space'], participant)
+  def legal_moves(seat)
+    legal_moves = pieces_for(seat).collect do |piece|
+      self.send(:"#{piece['rank']}_legal_moves", piece['space'], seat)
   end
 
     legal_moves.flatten
   end
 
-  def pawn_legal_moves(space, participant)
-    direction = participant == 0 ? 1 : -1
-    home_row = participant == 0 ? 2 : 7
+  def pawn_legal_moves(space, seat)
+    direction = seat == 0 ? 1 : -1
+    home_row = seat == 0 ? 2 : 7
 
     if (space.last == home_row)
       [ "#{space.first}#{home_row + direction}",
@@ -109,21 +109,21 @@ class Chess < Match
     end
   end
 
-  def king_legal_moves(space, participant)
+  def king_legal_moves(space, seat)
     []
   end
 
-  def queen_legal_moves(space, participant)
+  def queen_legal_moves(space, seat)
     []
   end
 
-  def knight_legal_moves(space, participant)
+  def knight_legal_moves(space, seat)
     [[-2,-1], [-2,1], [-1,-2], [-1,2], [1,-2], [1,2], [2,-1], [2,1]].collect do |move|
       new_space = [(space.first.ord + move.first).chr, space.last + move.last]
 
       if (!valid_space?(new_space))
         nil
-      elsif (capturable?(new_space, participant))
+      elsif (capturable?(new_space, seat))
         "nx#{(space.first.ord + move.first).chr}#{space.last + move.last}"
       elsif (!occupied?(new_space))
         "n#{(space.first.ord + move.first).chr}#{space.last + move.last}"
@@ -133,11 +133,11 @@ class Chess < Match
     end.compact
   end
 
-  def bishop_legal_moves(space, participant)
+  def bishop_legal_moves(space, seat)
     []
   end
 
-  def rook_legal_moves(space, participant)
+  def rook_legal_moves(space, seat)
     []
   end
 end
