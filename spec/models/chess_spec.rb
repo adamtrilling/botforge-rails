@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Chess, :type => :model do
   subject { Chess.new }
+  initial_board = 'rnbqkbnrpppppppp' + ('.' * 48) + 'PPPPPPPPRNBQKBNR'
 
   describe '#setup_board' do
     before do
@@ -9,40 +10,7 @@ RSpec.describe Chess, :type => :model do
     end
 
     it "sets the initial board layout" do
-      expect(subject.state['board']).to eq [
-        { 'seat' => 0, 'rank' => 'rook', 'space' => ['a', 1]},
-        { 'seat' => 0, 'rank' => 'knight', 'space' => ['b', 1]},
-        { 'seat' => 0, 'rank' => 'bishop', 'space' => ['c', 1]},
-        { 'seat' => 0, 'rank' => 'queen', 'space' => ['d', 1]},
-        { 'seat' => 0, 'rank' => 'king', 'space' => ['e', 1]},
-        { 'seat' => 0, 'rank' => 'bishop', 'space' => ['f', 1]},
-        { 'seat' => 0, 'rank' => 'knight', 'space' => ['g', 1]},
-        { 'seat' => 0, 'rank' => 'rook', 'space' => ['h', 1]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['a', 2]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['b', 2]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['c', 2]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['d', 2]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['e', 2]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['f', 2]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['g', 2]},
-        { 'seat' => 0, 'rank' => 'pawn', 'space' => ['h', 2]},
-        { 'seat' => 1, 'rank' => 'rook', 'space' => ['a', 8]},
-        { 'seat' => 1, 'rank' => 'knight', 'space' => ['b', 8]},
-        { 'seat' => 1, 'rank' => 'bishop', 'space' => ['c', 8]},
-        { 'seat' => 1, 'rank' => 'queen', 'space' => ['d', 8]},
-        { 'seat' => 1, 'rank' => 'king', 'space' => ['e', 8]},
-        { 'seat' => 1, 'rank' => 'bishop', 'space' => ['f', 8]},
-        { 'seat' => 1, 'rank' => 'knight', 'space' => ['g', 8]},
-        { 'seat' => 1, 'rank' => 'rook', 'space' => ['h', 8]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['a', 7]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['b', 7]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['c', 7]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['d', 7]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['e', 7]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['f', 7]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['g', 7]},
-        { 'seat' => 1, 'rank' => 'pawn', 'space' => ['h', 7]}
-      ]
+      expect(subject.state['board']).to eq initial_board
     end
 
     it 'creates an empty move history' do
@@ -71,40 +39,7 @@ RSpec.describe Chess, :type => :model do
     Hash[
       'white pawn moves one space' => {
         state_before: {
-          board: [
-            { 'seat' => 0, 'rank' => 'rook', 'space' => ['a', 1]},
-            { 'seat' => 0, 'rank' => 'knight', 'space' => ['b', 1]},
-            { 'seat' => 0, 'rank' => 'bishop', 'space' => ['c', 1]},
-            { 'seat' => 0, 'rank' => 'queen', 'space' => ['d', 1]},
-            { 'seat' => 0, 'rank' => 'king', 'space' => ['e', 1]},
-            { 'seat' => 0, 'rank' => 'bishop', 'space' => ['f', 1]},
-            { 'seat' => 0, 'rank' => 'knight', 'space' => ['g', 1]},
-            { 'seat' => 0, 'rank' => 'rook', 'space' => ['h', 1]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['a', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['b', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['c', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['d', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['e', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['f', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['g', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['h', 2]},
-            { 'seat' => 1, 'rank' => 'rook', 'space' => ['a', 8]},
-            { 'seat' => 1, 'rank' => 'knight', 'space' => ['b', 8]},
-            { 'seat' => 1, 'rank' => 'bishop', 'space' => ['c', 8]},
-            { 'seat' => 1, 'rank' => 'queen', 'space' => ['d', 8]},
-            { 'seat' => 1, 'rank' => 'king', 'space' => ['e', 8]},
-            { 'seat' => 1, 'rank' => 'bishop', 'space' => ['f', 8]},
-            { 'seat' => 1, 'rank' => 'knight', 'space' => ['g', 8]},
-            { 'seat' => 1, 'rank' => 'rook', 'space' => ['h', 8]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['a', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['b', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['c', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['d', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['e', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['f', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['g', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['h', 7]}
-          ],
+          board: initial_board,
           history: [],
           next_to_move: 0,
           legal_moves: [
@@ -116,40 +51,14 @@ RSpec.describe Chess, :type => :model do
         },
         move: 'd3',
         state_after: {
-          board: [
-            { 'seat' => 0, 'rank' => 'rook', 'space' => ['a', 1]},
-            { 'seat' => 0, 'rank' => 'knight', 'space' => ['b', 1]},
-            { 'seat' => 0, 'rank' => 'bishop', 'space' => ['c', 1]},
-            { 'seat' => 0, 'rank' => 'queen', 'space' => ['d', 1]},
-            { 'seat' => 0, 'rank' => 'king', 'space' => ['e', 1]},
-            { 'seat' => 0, 'rank' => 'bishop', 'space' => ['f', 1]},
-            { 'seat' => 0, 'rank' => 'knight', 'space' => ['g', 1]},
-            { 'seat' => 0, 'rank' => 'rook', 'space' => ['h', 1]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['a', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['b', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['c', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['d', 3]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['e', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['f', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['g', 2]},
-            { 'seat' => 0, 'rank' => 'pawn', 'space' => ['h', 2]},
-            { 'seat' => 1, 'rank' => 'rook', 'space' => ['a', 8]},
-            { 'seat' => 1, 'rank' => 'knight', 'space' => ['b', 8]},
-            { 'seat' => 1, 'rank' => 'bishop', 'space' => ['c', 8]},
-            { 'seat' => 1, 'rank' => 'queen', 'space' => ['d', 8]},
-            { 'seat' => 1, 'rank' => 'king', 'space' => ['e', 8]},
-            { 'seat' => 1, 'rank' => 'bishop', 'space' => ['f', 8]},
-            { 'seat' => 1, 'rank' => 'knight', 'space' => ['g', 8]},
-            { 'seat' => 1, 'rank' => 'rook', 'space' => ['h', 8]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['a', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['b', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['c', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['d', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['e', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['f', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['g', 7]},
-            { 'seat' => 1, 'rank' => 'pawn', 'space' => ['h', 7]}
-          ],
+          board: 'rnbqkbnr' +
+                 'ppp.pppp' +
+                 '...p....' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 'PPPPPPPP' +
+                 'RNBQKBNR',
           history: ['d3'],
           next_to_move: 1,
           legal_moves: [
