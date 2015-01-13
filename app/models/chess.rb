@@ -52,7 +52,7 @@ class Chess < Match
   end
 
   def pieces_for(seat)
-    self.state['board'].find_all_where {|p| range_for(seat).include?(p)}
+    self.state['board'].find_chars_where {|p| range_for(seat).include?(p)}
   end
 
   def piece_at(space)
