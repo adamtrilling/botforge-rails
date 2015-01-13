@@ -9,7 +9,7 @@ class Chess < Match
 
   def setup_board
     self.state = Hash[
-      'board' => 'rnbqkbnrpppppppp' + ('.' * 48) + 'PPPPPPPPRNBQKBNR',
+      'board' => 'rnbqkbnrpppppppp' + ('.' * 32) + 'PPPPPPPPRNBQKBNR',
       'history' => [],
       'legal_moves' => [
         'a3', 'a4', 'b3', 'b4', 'c3', 'c4',

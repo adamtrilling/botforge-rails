@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Chess, :type => :model do
   subject { Chess.new }
-  initial_board = 'rnbqkbnrpppppppp' + ('.' * 48) + 'PPPPPPPPRNBQKBNR'
+  initial_board = 'rnbqkbnrpppppppp' + ('.' * 32) + 'PPPPPPPPRNBQKBNR'
 
   describe '#setup_board' do
     before do
