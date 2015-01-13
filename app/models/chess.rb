@@ -70,13 +70,16 @@ class Chess < Match
   def move_pawn(move)
     seat = self.state['next_to_move']
     move_col = move[0].ord - 'a'.ord
-    move_row = move[1].to_i
+    move_row = move[1].to_i - 1
 
-    if (piece_at((move_row - 1) * 8 + move_col))
-      self.state['board'][(move_row - 1) * 8 + move_col] = capitalize('p', seat)
+    # remove old piece
+    if (piece_at((move_row - 1) * 8 + move_col) == capitalize('p', seat))
+      self.state['board'][(move_row - 1) * 8 + move_col] = '.'
     else
-      self.state['board'][(move_row - 2) * 8 + move_col] = capitalize('p', seat)
+      self.state['board'][(move_row - 2) * 8 + move_col] = '.'
     end
+
+    self.state['board'][move_row * 8 + move_col] = capitalize('p', seat)
   end
 
   def legal_moves(seat)
