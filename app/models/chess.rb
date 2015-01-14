@@ -45,10 +45,6 @@ class Chess < Match
     seat == 0 ? ('a'..'z') : ('A'..'Z')
   end
 
-  def valid_space?(space)
-    (0..63).include?(space)
-  end
-
   def pieces_for(seat)
     self.state['board'].find_chars_where {|p| range_for(seat).include?(p)}
   end
@@ -58,11 +54,11 @@ class Chess < Match
   end
 
   def occupied?(space)
-    piece_at(space) != '.'
+    piece_at(space).present?
   end
 
   def capturable?(space, seat)
-    occupied?(space) && !range_for(seat).include?(piece)
+    occupied?(space) && !range_for(seat).include?(piece_at(space))
   end
 
   def legal_moves(seat)
@@ -98,17 +94,17 @@ class Chess < Match
 
   def n_legal_moves(space, seat)
     [[-2,-1], [-2,1], [-1,-2], [-1,2], [1,-2], [1,2], [2,-1], [2,1]].collect do |move|
-      # new_space = [(space.first.ord + move.first).chr, space.last + move.last]
+      row = (space / 8) + move[0]
+      col = (space % 8) + move[1]
+      new_space = (row * 8) + col
 
-      # if (!valid_space?(new_space))
-      #   nil
-      # elsif (capturable?(new_space, seat))
-      #   "nx#{(space.first.ord + move.first).chr}#{space.last + move.last}"
-      # elsif (!occupied?(new_space))
-      #   "n#{(space.first.ord + move.first).chr}#{space.last + move.last}"
-      # else
-      #   nil
-      # end
+      if (!(0..7).include?(row) || !(0..7).include?(col))
+        nil
+      elsif (capturable?(new_space, seat) || !occupied?(new_space))
+        "#{space_to_coord(space)}-#{space_to_coord(new_space)}"
+      else
+        nil
+      end
     end.compact
   end
 
