@@ -26,7 +26,7 @@ FactoryGirl.define do
           with(:body => hash_including({type: 'move'})).
           to_return(
             :status => (evaluator.move_response == :error) ? 503 : 200,
-            :body => (evaluator.move_response == :immediate) ? { 'move' => 'a4 to e7' }.to_json : nil
+            :body => (evaluator.move_response == :immediate) ? { 'move' => 'a4-e7' }.to_json : nil
           )
       end
     end

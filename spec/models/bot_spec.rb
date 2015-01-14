@@ -55,7 +55,7 @@ RSpec.describe Bot, :type => :model do
 
     context 'with a bot that immediately moves' do
       it 'sends the move to the match' do
-        expect(match).to have_received(:execute_move).with('a4 to e7')
+        expect(match).to have_received(:execute_move).with('a4-e7')
       end
 
       it 'returns true' do

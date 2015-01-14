@@ -12,20 +12,19 @@ class Chess < Match
       'board' => 'rnbqkbnrpppppppp' + ('.' * 32) + 'PPPPPPPPRNBQKBNR',
       'history' => [],
       'legal_moves' => [
-        'a3', 'a4', 'b3', 'b4', 'c3', 'c4',
-        'd3', 'd4', 'e3', 'e4', 'f3', 'f4',
-        'g3', 'g4', 'h3', 'h4', 'na3', 'nc3',
-        'nf3', 'nh3'
+        'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
+        'd2-d3', 'd2-d4', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
+        'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b2-a3', 'b2-c3',
+        'g2-f3', 'g2-h3'
       ],
       'next_to_move' => 0
     ]
   end
 
   def execute_move(move)
-    # pawn
-    if (move.size == 2)
-      move_pawn(move)
-    end
+    coords = move.split('-')
+    self.state['board'][coord_to_space(coords[1])] = self.state['board'][coord_to_space(coords[0])]
+    self.state['board'][coord_to_space(coords[0])] = '.'
 
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
     self.state['history'] << move
@@ -34,17 +33,16 @@ class Chess < Match
   end
 
   private
+  def space_to_coord(space)
+    ('a'.ord + space % 8).chr + (space / 8 + 1).to_s
+  end
+
+  def coord_to_space(coord)
+    (coord[1].to_i - 1) * 8 + coord[0].ord - 'a'.ord
+  end
 
   def range_for(seat)
     seat == 0 ? ('a'..'z') : ('A'..'Z')
-  end
-
-  def capitalize(rank, seat)
-    if (seat == 1)
-      rank.upcase
-    else
-      rank
-    end
   end
 
   def valid_space?(space)
@@ -67,21 +65,6 @@ class Chess < Match
     occupied?(space) && !range_for(seat).include?(piece)
   end
 
-  def move_pawn(move)
-    seat = self.state['next_to_move']
-    move_col = move[0].ord - 'a'.ord
-    move_row = move[1].to_i - 1
-
-    # remove old piece
-    if (piece_at((move_row - 1) * 8 + move_col) == capitalize('p', seat))
-      self.state['board'][(move_row - 1) * 8 + move_col] = '.'
-    else
-      self.state['board'][(move_row - 2) * 8 + move_col] = '.'
-    end
-
-    self.state['board'][move_row * 8 + move_col] = capitalize('p', seat)
-  end
-
   def legal_moves(seat)
     legal_moves = pieces_for(seat).collect do |space|
       piece = state['board'][space]
@@ -95,14 +78,13 @@ class Chess < Match
     direction = seat == 0 ? 1 : -1
     home_row = seat == 0 ? 2 : 7
 
-    col = 'a'.ord + (space % 8)
-    row = space / 8
+    origin = space_to_coord(space)
 
-    if (row == home_row)
-      [ "#{col}#{home_row + direction}",
-        "#{col}#{home_row + direction * 2}"]
+    if (space / 8 + 1 == home_row)
+      [ "#{origin}-#{space_to_coord(space + 8 * direction)}",
+        "#{origin}-#{space_to_coord(space + 16 * direction)}"]
     else
-      "#{col}#{row + direction}"
+      "#{origin}-#{space_to_coord(space + 8 * direction)}"
     end
   end
 
