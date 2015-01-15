@@ -61,6 +61,10 @@ class Chess < Match
     occupied?(space) && !range_for(seat).include?(piece_at(space))
   end
 
+  def legal_destination?(space, seat)
+    (capturable?(space, seat) || !occupied?(space))
+  end
+
   def legal_moves(seat)
     legal_moves = pieces_for(seat).collect do |space|
       piece = state['board'][space]
@@ -69,8 +73,7 @@ class Chess < Match
 
     legal_moves.flatten.select do |m|
       # filter out same-color-occupied spaces
-      new_space = m.split('-')[1].to_i
-      (capturable?(new_space, seat) || !occupied?(new_space))
+      legal_destination?(m.split('-')[1].to_i, seat)
     end.collect do |m|
       # convert space numbers into moves
       m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')
