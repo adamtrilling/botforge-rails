@@ -67,20 +67,27 @@ class Chess < Match
       self.send(:"#{piece.downcase}_legal_moves", space, seat)
     end
 
-    legal_moves.flatten
+    legal_moves.flatten.select do |m|
+      # filter out same-color-occupied spaces
+      new_space = m.split('-')[1].to_i
+      (capturable?(new_space, seat) || !occupied?(new_space))
+    end.collect do |m|
+      # convert space numbers into moves
+      m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')
+    end
   end
 
   def p_legal_moves(space, seat)
     direction = seat == 0 ? 1 : -1
     home_row = seat == 0 ? 2 : 7
 
-    origin = space_to_coord(space)
-
-    if (space / 8 + 1 == home_row)
-      [ "#{origin}-#{space_to_coord(space + 8 * direction)}",
-        "#{origin}-#{space_to_coord(space + 16 * direction)}"]
+    if (occupied?(space + 8 * direction))
+      []
+    elsif (space / 8 + 1 == home_row)
+      [ "#{space}-#{space + 8 * direction}",
+        "#{space}-#{space + 16 * direction}"]
     else
-      "#{origin}-#{space_to_coord(space + 8 * direction)}"
+      "#{space}-#{space + 8 * direction}"
     end
   end
 
@@ -96,14 +103,11 @@ class Chess < Match
     [[-2,-1], [-2,1], [-1,-2], [-1,2], [1,-2], [1,2], [2,-1], [2,1]].collect do |move|
       row = (space / 8) + move[0]
       col = (space % 8) + move[1]
-      new_space = (row * 8) + col
 
       if (!(0..7).include?(row) || !(0..7).include?(col))
         nil
-      elsif (capturable?(new_space, seat) || !occupied?(new_space))
-        "#{space_to_coord(space)}-#{space_to_coord(new_space)}"
       else
-        nil
+        "#{space}-#{(row * 8) + col}"
       end
     end.compact
   end

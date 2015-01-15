@@ -124,7 +124,7 @@ RSpec.describe Chess, :type => :model do
                  'PPPPPPPP' +
                  'RNBQKBNR',
           history: ['d4'],
-          next_to_move: 0,
+          next_to_move: 1,
           legal_moves: [
             'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
             'd7-d6', 'd7-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
@@ -153,7 +153,7 @@ RSpec.describe Chess, :type => :model do
         },
         other_player_legal_moves: [
           'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
-          'd7-d6', 'd7-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
+          'd6-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
           'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6', 'b8-d7',
           'g8-f6', 'g8-h6'
         ]
@@ -169,7 +169,7 @@ RSpec.describe Chess, :type => :model do
                  'PPPPPPPP' +
                  'RNBQKBNR',
           history: ['d4'],
-          next_to_move: 0,
+          next_to_move: 1,
           legal_moves: [
             'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
             'd7-d6', 'd7-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
