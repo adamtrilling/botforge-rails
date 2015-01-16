@@ -83,15 +83,26 @@ class Chess < Match
   def p_legal_moves(space, seat)
     direction = seat == 0 ? 1 : -1
     home_row = seat == 0 ? 2 : 7
+    col = space % 8
 
-    if (occupied?(space + 8 * direction))
-      []
-    elsif (space / 8 + 1 == home_row)
-      [ "#{space}-#{space + 8 * direction}",
-        "#{space}-#{space + 16 * direction}"]
-    else
-      "#{space}-#{space + 8 * direction}"
+    legal_moves = []
+    if (!occupied?(space + 8 * direction))
+      legal_moves << "#{space}-#{space + 8 * direction}"
+
+      if (space / 8 + 1 == home_row)
+        legal_moves << "#{space}-#{space + 16 * direction}"
+      end
     end
+
+    # capture possibilities
+    if (col > 0 && capturable?(space + 7 * direction, seat))
+      legal_moves << "#{space}-#{space + 7 * direction}"
+    end
+    if (col < 7 && capturable?(space + 9 * direction, seat))
+      legal_moves << "#{space}-#{space + 9 * direction}"
+    end
+
+    legal_moves
   end
 
   def k_legal_moves(space, seat)

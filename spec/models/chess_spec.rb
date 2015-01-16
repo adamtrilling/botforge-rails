@@ -59,7 +59,7 @@ RSpec.describe Chess, :type => :model do
                  '........' +
                  'PPPPPPPP' +
                  'RNBQKBNR',
-          history: ['d3'],
+          history: ['d2-d3'],
           next_to_move: 1,
           legal_moves: [
             'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
@@ -97,7 +97,7 @@ RSpec.describe Chess, :type => :model do
                  '........' +
                  'PPPPPPPP' +
                  'RNBQKBNR',
-          history: ['d4'],
+          history: ['d2-d4'],
           next_to_move: 1,
           legal_moves: [
             'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
@@ -142,7 +142,7 @@ RSpec.describe Chess, :type => :model do
                  '...P....' +
                  'PPP.PPPP' +
                  'RNBQKBNR',
-          history: ['d4', 'd7'],
+          history: ['d2-d4', 'd7-d6'],
           next_to_move: 0,
           legal_moves: [
             'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
@@ -168,7 +168,7 @@ RSpec.describe Chess, :type => :model do
                  '........' +
                  'PPPPPPPP' +
                  'RNBQKBNR',
-          history: ['d4'],
+          history: ['d2-d4'],
           next_to_move: 1,
           legal_moves: [
             'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
@@ -187,7 +187,7 @@ RSpec.describe Chess, :type => :model do
                  '........' +
                  'PPP.PPPP' +
                  'RNBQKBNR',
-          history: ['d4', 'd5'],
+          history: ['d2-d4', 'd7-d5'],
           next_to_move: 0,
           legal_moves: [
             'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
@@ -201,6 +201,96 @@ RSpec.describe Chess, :type => :model do
           'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5', 'g7-g6', 'g7-g5',
           'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6', 'b8-d7',
           'g8-f6', 'g8-h6'
+        ]
+      },
+      'white pawn threatens capture' => {
+        state_before: {
+          board: 'rnbqkbnr' +
+                 'ppp.pppp' +
+                 '........' +
+                 '...p....' +
+                 '...P....' +
+                 '........' +
+                 'PPP.PPPP' +
+                 'RNBQKBNR',
+          history: ['d2-d4', 'd7-d5'],
+          next_to_move: 0,
+          legal_moves: [
+            'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
+            'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4', 'g2-g3', 'g2-g4',
+            'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
+            'g1-f3', 'g1-h3'
+          ]
+        },
+        move: 'e2-e4',
+        state_after: {
+          board: 'rnbqkbnr' +
+                 'ppp..ppp' +
+                 '........' +
+                 '...pp...' +
+                 '...P....' +
+                 '........' +
+                 'PPP.PPPP' +
+                 'RNBQKBNR',
+          history: ['d2-d4', 'd7-d5', 'e2-e4'],
+          next_to_move: 1,
+          legal_moves: [
+            'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
+            'd5-e4', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
+            'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5',
+            'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6'
+          ]
+        },
+        other_player_legal_moves: [
+          'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
+          'e4-e5', 'e4-d5', 'f2-f3', 'f2-f4', 'g2-g3', 'g2-g4',
+          'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
+          'g1-e2', 'g1-f3', 'g1-h3'
+        ]
+      },
+      'black pawn captures' => {
+        state_before: {
+          board: 'rnbqkbnr' +
+                 'ppp..ppp' +
+                 '........' +
+                 '...pp...' +
+                 '...P....' +
+                 '........' +
+                 'PPP.PPPP' +
+                 'RNBQKBNR',
+          history: ['d2-d4', 'd7-d5', 'e2-e4'],
+          next_to_move: 1,
+          legal_moves: [
+            'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
+            'd5-e4', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
+            'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5',
+            'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6'
+          ]
+        },
+        move: 'd5-e4',
+        state_after: {
+          board: 'rnbqkbnr' +
+                 'ppp..ppp' +
+                 '........' +
+                 '...pP...' +
+                 '........' +
+                 '........' +
+                 'PPP.PPPP' +
+                 'RNBQKBNR',
+          history: ['d4', 'd5', 'e4', 'd5-e4'],
+          next_to_move: 0,
+          legal_moves: [
+            'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
+            'd4-d5', 'f2-f3', 'f2-f4', 'g2-g3', 'g2-g4',
+            'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
+            'g1-e2', 'g1-f3', 'g1-h3'
+          ]
+        },
+        other_player_legal_moves: [
+          'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
+          'e7-e6', 'e7-e5', 'e4-e3', 'f7-f6', 'f7-f5',
+          'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5',
+          'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6'
         ]
       }
     ].each do |name, test|
