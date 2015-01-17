@@ -23,8 +23,11 @@ class Chess < Match
 
   def execute_move(move)
     coords = move.split('-')
-    self.state['board'][coord_to_space(coords[1])] = self.state['board'][coord_to_space(coords[0])]
-    self.state['board'][coord_to_space(coords[0])] = '.'
+    origin = coord_to_space(coords[0])
+    destination = coord_to_space(coords[1])
+
+    self.state['board'][destination] = self.state['board'][origin]
+    self.state['board'][origin] = '.'
 
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
     self.state['history'] << move

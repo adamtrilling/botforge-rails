@@ -292,6 +292,47 @@ RSpec.describe Chess, :type => :model do
           'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5',
           'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6'
         ]
+      },
+      'white pawn promotion to queen' => {
+        state_before: {
+          board: '....k...' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '.......K' +
+                 '........' +
+                 '....p...' +
+                 '........',
+          history: [],
+          next_to_move: 0,
+          legal_moves: [
+            'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
+            'e7-e8-q', 'e7-e8-r', 'e7-e8-n', 'e7-e8-b'
+          ]
+        },
+        move: 'e7-e8-q',
+        state_after: {
+          board: '....k...' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '.......K' +
+                 '........' +
+                 '....q...',
+          history: ['e7-e8-q'],
+          next_to_move: 1,
+          legal_moves: [
+            'h6-h7', 'h6-g5', 'h6-g7'
+          ]
+        },
+        other_player_legal_moves: [
+          'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
+          'e8-a8', 'e8-b8', 'e8-c8', 'e8-d8', 'e8-f8', 'e8-g8', 'e8-h8',
+          'e8-e7', 'e8-e6', 'e8-e5', 'e8-e4', 'e8-e3', 'e8-e2', 'e8-e1',
+          'e8-d7', 'e8-c6', 'e8-b5', 'e8-a4',
+          'e8-f7', 'e8-g6', 'e8-h5'
+        ]
       }
     ].each do |name, test|
       context name do
