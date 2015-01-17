@@ -23,11 +23,18 @@ class Chess < Match
 
   def execute_move(move)
     coords = move.split('-')
+
     origin = coord_to_space(coords[0])
     destination = coord_to_space(coords[1])
 
-    self.state['board'][destination] = self.state['board'][origin]
+    # check for pawn promotion
+    if (self.state['board'][origin].downcase == 'p' && ([0, 8]).include?(destination / 7))
+      self.state['board'][destination] = rank_for_player(coords[2], self.state['next_to_move'])
+    else
+      self.state['board'][destination] = self.state['board'][origin]
+    end
     self.state['board'][origin] = '.'
+
 
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
     self.state['history'] << move
@@ -46,6 +53,10 @@ class Chess < Match
 
   def range_for(seat)
     seat == 0 ? ('a'..'z') : ('A'..'Z')
+  end
+
+  def rank_for_player(rank, seat)
+    seat == 0 ? rank.downcase : rank.upcase
   end
 
   def pieces_for(seat)
