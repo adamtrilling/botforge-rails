@@ -72,7 +72,7 @@ RSpec.describe Chess, :type => :model do
           'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
           'd3-d4', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
           'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-          'g1-f3', 'g1-h3'
+          'g1-f3', 'g1-h3', 'e1-d2'
         ]
       },
       'white pawn moves two spaces' => {
@@ -110,7 +110,7 @@ RSpec.describe Chess, :type => :model do
           'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
           'd4-d5', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
           'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-          'g1-f3', 'g1-h3'
+          'g1-f3', 'g1-h3', 'e1-d2'
         ]
       },
       'black pawn moves one space' => {
@@ -148,14 +148,14 @@ RSpec.describe Chess, :type => :model do
             'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
             'd4-d5', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
             'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-            'g1-f3', 'g1-h3'
+            'g1-f3', 'g1-h3', 'e1-d2'
           ]
         },
         other_player_legal_moves: [
           'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
           'd6-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
           'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6', 'b8-d7',
-          'g8-f6', 'g8-h6'
+          'g8-f6', 'g8-h6', 'e8-d7'
         ]
       },
       'black pawn moves two spaces' => {
@@ -193,14 +193,14 @@ RSpec.describe Chess, :type => :model do
             'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
             'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4', 'g2-g3', 'g2-g4',
             'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-            'g1-f3', 'g1-h3'
+            'g1-f3', 'g1-h3', 'e1-d2'
           ]
         },
         other_player_legal_moves: [
           'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
           'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5', 'g7-g6', 'g7-g5',
           'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6', 'b8-d7',
-          'g8-f6', 'g8-h6'
+          'g8-f6', 'g8-h6', 'e8-d7'
         ]
       },
       'white pawn threatens capture' => {
@@ -219,7 +219,7 @@ RSpec.describe Chess, :type => :model do
             'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
             'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4', 'g2-g3', 'g2-g4',
             'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-            'g1-f3', 'g1-h3'
+            'g1-f3', 'g1-h3', 'e1-d2'
           ]
         },
         move: 'e2-e4',
@@ -238,14 +238,14 @@ RSpec.describe Chess, :type => :model do
             'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
             'd5-e4', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
             'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5',
-            'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6'
+            'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6', 'e8-d7'
           ]
         },
         other_player_legal_moves: [
           'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
           'e4-e5', 'e4-d5', 'f2-f3', 'f2-f4', 'g2-g3', 'g2-g4',
           'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-          'g1-e2', 'g1-f3', 'g1-h3'
+          'g1-e2', 'g1-f3', 'g1-h3', 'e1-d2', 'e1-e2'
         ]
       },
       'black pawn captures' => {
@@ -283,14 +283,14 @@ RSpec.describe Chess, :type => :model do
             'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
             'd4-d5', 'f2-f3', 'f2-f4', 'g2-g3', 'g2-g4',
             'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-            'g1-e2', 'g1-f3', 'g1-h3'
+            'g1-e2', 'g1-f3', 'g1-h3', 'e1-d2', 'e1-e2'
           ]
         },
         other_player_legal_moves: [
           'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
           'e7-e6', 'e7-e5', 'e4-e3', 'f7-f6', 'f7-f5',
           'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5',
-          'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6'
+          'b8-a6', 'b8-c6', 'b8-d7', 'g8-f6', 'g8-h6', 'e8-d7'
         ]
       },
       'white pawn promotion to knight' => {
@@ -323,7 +323,7 @@ RSpec.describe Chess, :type => :model do
           history: ['e7-e8-q'],
           next_to_move: 1,
           legal_moves: [
-            'h6-h7', 'h6-g5', 'h6-g7'
+            'h6-h5', 'h6-h7', 'h6-g5', 'h6-g6', 'h6-g7', 'h6-h7'
           ]
         },
         other_player_legal_moves: [

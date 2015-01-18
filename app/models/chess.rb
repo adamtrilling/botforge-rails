@@ -120,7 +120,20 @@ class Chess < Match
   end
 
   def k_legal_moves(space, seat)
-    []
+    row = space / 8
+    col = space % 8
+
+    legal_moves = []
+
+    [-1, 0, 1].each do |x|
+      [-1, 0, 1].each do |y|
+        if ((0..7).include?(col + x) && (0..7).include?(row + y))
+          legal_moves << "#{space}-#{space + (8 * y) + x}"
+        end
+      end
+    end
+
+    legal_moves
   end
 
   def q_legal_moves(space, seat)
