@@ -409,6 +409,49 @@ RSpec.describe Chess, :type => :model do
           'e3-c1', 'e3-d2', 'e3-f4', 'e3-g5', 'e3-h6',
           'e3-g1', 'e3-f2', 'e3-d4', 'e3-c5', 'e3-b6', 'e3-a7'
         ]
+      },
+      'queen moves' => {
+        state_before: {
+          board: '.q..k...' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '.......K' +
+                 '........' +
+                 '........',
+          history: [],
+          next_to_move: 0,
+          legal_moves: [
+            'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
+            'b1-b2', 'b1-b3', 'b1-b4', 'b1-b5', 'b1-b6', 'b1-b7', 'b1-b8',
+            'b1-a1', 'b1-a3', 'b1-a4', 'b1-c2', 'b1-d3', 'b1-e4', 'b1-f5',
+            'b1-g6', 'b1-h7', 'b1-a2'
+          ]
+        },
+        move: 'b1-b4',
+        state_after: {
+          board: '....k...' +
+                 '........' +
+                 '........' +
+                 '.q......' +
+                 '........' +
+                 '.......K' +
+                 '........' +
+                 '........',
+          history: ['b1-b4'],
+          next_to_move: 1,
+          legal_moves: [
+            'h6-h5', 'h6-h7', 'h6-g5', 'h6-g6', 'h6-g7', 'h6-h7'
+          ]
+        },
+        other_player_legal_moves: [
+          'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
+          'b4-b1', 'b4-b2', 'b4-b3', 'b4-b5', 'b4-b6', 'b4-b7', 'b4-b8',
+          'b4-a4', 'b4-c4', 'b4-d4', 'b4-e4', 'b4-f4', 'b4-g4', 'b4-h4',
+          'b4-a3', 'b4-c5', 'b4-d6', 'b4-e7', 'b4-f8',
+          'b4-a5', 'b4-c3', 'b4-d2', 'b4-e1'
+        ]
       }
     ].each do |name, test|
       context name do
