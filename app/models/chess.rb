@@ -137,7 +137,7 @@ class Chess < Match
   end
 
   def q_legal_moves(space, seat)
-    []
+    b_legal_moves(space, seat) + r_legal_moves(space, seat)
   end
 
   def n_legal_moves(space, seat)
@@ -154,10 +154,41 @@ class Chess < Match
   end
 
   def b_legal_moves(space, seat)
-    []
+    [[-1, -1], [-1, 1], [1, -1], [1, 1]].collect do |dir|
+      move_along_line(space, seat, dir)
+    end.flatten
   end
 
   def r_legal_moves(space, seat)
-    []
+    [[-1, 0], [1, 0], [0, -1], [0, 1]].collect do |dir|
+      move_along_line(space, seat, dir)
+    end.flatten
+  end
+
+  def move_along_line(space, seat, dir)
+    legal_moves = []
+
+    row = space / 8
+    col = space % 8
+
+    new_row = row + dir[0]
+    new_col = col + dir[1]
+
+    while ((0..7).include?(new_row) &&
+           (0..7).include?(new_col) &&
+           !occupied?(new_row * 8 + new_col))
+      legal_moves << "#{space}-#{(new_row * 8) + new_col}"
+
+      new_row += dir[0]
+      new_col += dir[1]
+    end
+
+    if ((0..7).include?(new_row) &&
+        (0..7).include?(new_col) &&
+        capturable?(new_row * 8 + new_col, seat))
+      legal_moves << "#{space}-#{(new_row * 8) + new_col}"
+    end
+
+    legal_moves
   end
 end
