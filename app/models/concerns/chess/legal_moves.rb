@@ -34,6 +34,10 @@ module Concerns::Chess::LegalMoves
     occupied?(space) && !range_for(seat).include?(piece_at(space))
   end
 
+  def can_move_to?(space, seat)
+    !occupied?(space) || capturable?(space, seat)
+  end
+
   def legal_destination?(space, seat)
     (capturable?(space, seat) || !occupied?(space))
   end
@@ -43,13 +47,11 @@ module Concerns::Chess::LegalMoves
   end
 
   def p_legal_moves(space, seat)
-    home_row = seat == 0 ? 2 : 7
-
     legal_moves = []
     if (!occupied?(space + 8 * p_direction(seat)))
       legal_moves << "#{space}-#{space + 8 * p_direction(seat)}"
 
-      if (space / 8 + 1 == home_row)
+      if (space / 8 + 1 == (seat == 0 ? 2 : 7))
         legal_moves << "#{space}-#{space + 16 * p_direction(seat)}"
       end
     end
@@ -123,18 +125,16 @@ module Concerns::Chess::LegalMoves
     new_col = col + dir[1]
 
     while ((0..7).include?(new_row) &&
-           (0..7).include?(new_col) &&
-           !occupied?(new_row * 8 + new_col))
-      legal_moves << "#{space}-#{(new_row * 8) + new_col}"
+           (0..7).include?(new_col))
+      if (can_move_to?(new_row * 8 + new_col, seat))
+        legal_moves << "#{space}-#{(new_row * 8) + new_col}"
+      end
+      if (occupied?(new_row * 8 + new_col))
+        break
+      end
 
       new_row += dir[0]
       new_col += dir[1]
-    end
-
-    if ((0..7).include?(new_row) &&
-        (0..7).include?(new_col) &&
-        capturable?(new_row * 8 + new_col, seat))
-      legal_moves << "#{space}-#{(new_row * 8) + new_col}"
     end
 
     legal_moves
