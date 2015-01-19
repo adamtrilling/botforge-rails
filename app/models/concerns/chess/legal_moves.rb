@@ -104,7 +104,7 @@ module Concerns::Chess::LegalMoves
   end
 
   def b_legal_moves(space, seat)
-    [[-1, -1], [-1, 1], [1, -1], [1, 1]].collect do |dir|
+    [-1,1].product([-1,1]).collect do |dir|
       move_along_line(space, seat, dir)
     end.flatten
   end
