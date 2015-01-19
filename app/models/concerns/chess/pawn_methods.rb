@@ -20,13 +20,13 @@ module Concerns::Chess::PawnMethods
 
   def p_legal_captures(space, seat)
     col = space % 8
+    row = space / 8
 
     legal_moves = []
-    if (col > 0 && capturable?(space + 7 * p_direction(seat), seat))
-      legal_moves << "#{space}-#{space + 7 * p_direction(seat)}"
-    end
-    if (col < 7 && capturable?(space + 9 * p_direction(seat), seat))
-      legal_moves << "#{space}-#{space + 9 * p_direction(seat)}"
+    [-1,1].each do |direction|
+      if ((0..7).include?(col + direction) && capturable?(space + (8 + direction) * p_direction(seat), seat))
+        legal_moves << "#{space}-#{space + (8 + direction) * p_direction(seat)}"
+      end
     end
 
     legal_moves
