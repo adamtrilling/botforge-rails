@@ -3,14 +3,12 @@ module Concerns::Chess::LegalMoves
   include Concerns::Chess::PawnMethods
 
   def legal_moves(seat)
-    legal_moves = pieces_for(seat).collect do |space|
+    pieces_for(seat).collect do |space|
       piece = state['board'][space]
       self.send(:"#{piece.downcase}_legal_moves", space, seat)
-    end
-
-    legal_moves.flatten.select do |m|
+    end.flatten.select do |m|
       # filter out same-color-occupied spaces
-      legal_destination?(m.split('-')[1].to_i, seat)
+      can_move_to?(m.split('-')[1].to_i, seat)
     end.collect do |m|
       # convert space numbers into moves
       m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')
@@ -37,10 +35,6 @@ module Concerns::Chess::LegalMoves
 
   def can_move_to?(space, seat)
     !occupied?(space) || capturable?(space, seat)
-  end
-
-  def legal_destination?(space, seat)
-    (capturable?(space, seat) || !occupied?(space))
   end
 
   def k_legal_moves(space, seat)
@@ -88,23 +82,22 @@ module Concerns::Chess::LegalMoves
   def move_along_line(space, seat, dir)
     legal_moves = []
 
-    row = space / 8
-    col = space % 8
+    # this would be a nice spot for a traditional for loop, which
+    # ruby does not support
+    row = space / 8 + dir[0]
+    col = space % 8 + dir[1]
 
-    new_row = row + dir[0]
-    new_col = col + dir[1]
-
-    while ((0..7).include?(new_row) &&
-           (0..7).include?(new_col))
-      if (can_move_to?(new_row * 8 + new_col, seat))
-        legal_moves << "#{space}-#{(new_row * 8) + new_col}"
+    while ((0..7).include?(row) &&
+           (0..7).include?(col))
+      if (can_move_to?(row * 8 + col, seat))
+        legal_moves << "#{space}-#{(row * 8) + col}"
       end
-      if (occupied?(new_row * 8 + new_col))
+      if (occupied?(row * 8 + col))
         break
       end
 
-      new_row += dir[0]
-      new_col += dir[1]
+      row += dir[0]
+      col += dir[1]
     end
 
     legal_moves
