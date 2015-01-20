@@ -468,6 +468,124 @@ RSpec.describe Chess, :type => :model do
           'b4-a3', 'b4-c5', 'b4-d6', 'b4-e7', 'b4-f8',
           'b4-a5', 'b4-c3', 'b4-d2'
         ]
+      },
+      'pinned piece' => {
+        state_before: {
+          board: '...k....' +
+                 '...n....' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '......R.' +
+                 '......K.',
+          history: [],
+          next_to_move: 1,
+          legal_moves: [
+            'g8-h8', 'g8-h7', 'g8-f7', 'g8-f8',
+            'g7-a7', 'g7-b7', 'g7-c7', 'g7-d7', 'g7-e7', 'g7-f7', 'g7-h7',
+            'g7-g6', 'g7-g5', 'g7-g4', 'g7-g3', 'g7-g2', 'g7-g1'
+          ]
+        },
+        move: 'g7-d7',
+        state_after: {
+          board: '...k....' +
+                 '...n....' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '...R....' +
+                 '......K.',
+          history: ['g7-d7'],
+          next_to_move: 0,
+          legal_moves: [
+            'd1-c1', 'd1-c2', 'd1-e2', 'd1-e1'
+          ]
+        },
+        other_player_legal_moves: [
+          'g8-h8', 'g8-h7', 'g8-g7', 'g8-f7', 'g8-f8',
+          'd7-a7', 'd7-b7', 'd7-c7', 'd7-e7', 'd7-f7', 'd7-g7', 'd7-h7',
+          'd7-d8', 'd7-d6', 'd7-d5', 'd7-d4', 'd7-d3', 'd7-d2'
+        ]
+      },
+      'check' => {
+        state_before: {
+          board: '...k....' +
+                 '...n....' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '.....R..' +
+                 '......K.',
+          history: [],
+          next_to_move: 1,
+          legal_moves: [
+            'g8-h8', 'g8-h7', 'g8-f7', 'g8-f8',
+            'f7-a7', 'f7-b7', 'f7-c7', 'f7-d7', 'f7-e7', 'f7-g7', 'f7-h7',
+            'f7-f6', 'f7-f5', 'f7-f4', 'f7-f3', 'f7-f2', 'f7-f1'
+          ]
+        },
+        move: 'f7-f1',
+        state_after: {
+          board: '...k.R..' +
+                 '...n....' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '......K.',
+          history: ['f7-f1'],
+          next_to_move: 0,
+          legal_moves: ['d2-f1'],
+          check: true
+        },
+        other_player_legal_moves: [
+          'g8-h8', 'g8-h7', 'g8-g7', 'g8-f7', 'g8-f8',
+          'f1-d1', 'f1-e1', 'f1-g1', 'f1-h1',
+          'f1-f2', 'f1-f3', 'f1-f4', 'f1-f5', 'f1-f6', 'f1-f7', 'f1-f8'
+        ]
+      },
+      'checkmate' => {
+        state_before: {
+          board: '...k....' +
+                 '...n....' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '......R.' +
+                 '......K.',
+          history: [],
+          next_to_move: 1,
+          legal_moves: [
+            'g8-h8', 'g8-h7', 'g8-f7', 'g8-f8',
+            'g7-a7', 'g7-b7', 'g7-c7', 'g7-d7', 'g7-e7', 'g7-f7', 'g7-h7',
+            'g7-g6', 'g7-g5', 'g7-g4', 'g7-g3', 'g7-g2', 'g7-g1'
+          ]
+        },
+        move: 'g7-g1',
+        state_after: {
+          board: '...k..R.' +
+                 '...n....' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '......K.',
+          history: ['g7-g1'],
+          next_to_move: 0,
+          legal_moves: [],
+          check: true
+        },
+        other_player_legal_moves: [
+          'g8-h8', 'g8-h7', 'g8-g7', 'g8-f7', 'g8-f8',
+          'g1-d1', 'g1-e1', 'g1-f1', 'g1-h1',
+          'g1-g2', 'g1-g3', 'g1-g4', 'g1-g5', 'g1-g6', 'g1-g7'
+        ]
       }
     ].each do |name, test|
       context name do
@@ -476,19 +594,19 @@ RSpec.describe Chess, :type => :model do
           subject.execute_move(test[:move])
         end
 
-        it 'should have the correct board' do
+        it 'has the correct board' do
           expect(subject.state['board']).to eq test[:state_after][:board]
         end
 
-        it 'should include the move in the history' do
+        it 'includes the move in the history' do
           expect(subject.state['history'].last).to eq test[:move]
         end
 
-        it 'should have the correct next to move' do
+        it 'has the correct next to move' do
           expect(subject.state['next_to_move']).to eq test[:state_after][:next_to_move]
         end
 
-        it 'should have the correct legal moves for the other player' do
+        it 'has the correct legal moves for the other player' do
           subject.state['legal_moves'].each do |move|
             expect(test[:state_after][:legal_moves]).to include(move)
           end
@@ -498,7 +616,7 @@ RSpec.describe Chess, :type => :model do
           end
         end
 
-        it 'should have the correct moves for the current player`' do
+        it 'has the correct moves for the current player`' do
           current_player_legal_moves = subject.legal_moves((subject.state['next_to_move'] + 1) % 2)
 
           current_player_legal_moves.each do |move|
@@ -508,6 +626,10 @@ RSpec.describe Chess, :type => :model do
           test[:other_player_legal_moves].each do |move|
             expect(current_player_legal_moves).to include(move)
           end
+        end
+
+        it 'has the correct check state' do
+          expect(subject.state['check']).to eq test[:state_after][:check]
         end
       end
     end
