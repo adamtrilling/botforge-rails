@@ -617,7 +617,8 @@ RSpec.describe Chess, :type => :model do
         end
 
         it 'has the correct moves for the current player`' do
-          current_player_legal_moves = subject.legal_moves((subject.state['next_to_move'] + 1) % 2)
+          current_player_legal_moves = subject.legal_moves(
+            subject.state['board'], (subject.state['next_to_move'] + 1) % 2)
 
           current_player_legal_moves.each do |move|
             expect(test[:other_player_legal_moves]).to include(move)

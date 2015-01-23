@@ -2,9 +2,9 @@ module Concerns::Chess::LegalMoves
   extend ActiveSupport::Concern
   include Concerns::Chess::PawnMethods
 
-  def legal_moves(seat)
+  def legal_moves(board, seat)
     pieces_for(seat).collect do |space|
-      piece = state['board'][space]
+      piece = board[space]
       self.send(:"#{piece.downcase}_legal_moves", space, seat)
     end.flatten.select do |m|
       # filter out same-color-occupied spaces

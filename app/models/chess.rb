@@ -1,5 +1,6 @@
 class Chess < Match
   include Concerns::Chess::LegalMoves
+  include Concerns::Chess::CheckMethods
 
   def self.expected_participants
     2
@@ -23,11 +24,11 @@ class Chess < Match
   end
 
   def execute_move(move)
-    move_pieces(move)
+    self.state['board'] = move_pieces(move, self.state['board'], self.state['next_to_move'])
 
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
     self.state['history'] << move
-    self.state['legal_moves'] = legal_moves(self.state['next_to_move'])
+    self.state['legal_moves'] = legal_moves(self.state['board'], self.state['next_to_move'])
     save
   end
 
@@ -48,17 +49,19 @@ class Chess < Match
     seat == 0 ? rank.downcase : rank.upcase
   end
 
-  def move_pieces(move)
+  def move_pieces(move, board, next_to_move)
     coords = move.split('-')
     origin = coord_to_space(coords[0])
     destination = coord_to_space(coords[1])
 
     # check for pawn promotion
-    if (self.state['board'][origin].downcase == 'p' && ([0, 8]).include?(destination / 7))
-      self.state['board'][destination] = rank_for_player(coords[2], self.state['next_to_move'])
+    if (board[origin].downcase == 'p' && ([0, 8]).include?(destination / 7))
+      board[destination] = rank_for_player(coords[2], next_to_move)
     else
-      self.state['board'][destination] = self.state['board'][origin]
+      board[destination] = board[origin]
     end
-    self.state['board'][origin] = '.'
+    board[origin] = '.'
+
+    board
   end
 end
