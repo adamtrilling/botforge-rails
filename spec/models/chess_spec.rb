@@ -32,51 +32,104 @@ RSpec.describe Chess, :type => :model do
   end
 
   describe '#execute_move' do
-    subject {
-      FactoryGirl.create(:chess, :started)
-    }
+    shared_examples "move examples" do
+      subject {
+        FactoryGirl.create(:chess, :started)
+      }
+
+      before do
+        subject.update_attributes(state: state_before)
+        subject.execute_move(move)
+      end
+
+      it 'has the correct board' do
+        expect(subject.state['board']).to eq state_after[:board]
+      end
+
+      it 'includes the move in the history' do
+        expect(subject.state['history'].last).to eq move
+      end
+
+      it 'has the correct next to move' do
+        expect(subject.state['next_to_move']).to eq state_after[:next_to_move]
+      end
+
+      it 'has the correct legal moves for the other player' do
+        subject.state['legal_moves'].each do |move|
+          expect(state_after[:legal_moves]).to include(move)
+        end
+
+        state_after[:legal_moves].each do |move|
+          expect(subject.state['legal_moves']).to include(move)
+        end
+      end
+
+      it 'has the correct moves for the current player`' do
+        current_player_legal_moves = subject.legal_moves(
+          subject.state['board'], (subject.state['next_to_move'] + 1) % 2)
+
+        current_player_legal_moves.each do |move|
+          expect(other_player_legal_moves).to include(move)
+        end
+
+        other_player_legal_moves.each do |move|
+          expect(current_player_legal_moves).to include(move)
+        end
+      end
+
+      it 'has the correct check state' do
+        expect(subject.state['check']).to eq state_after[:check]
+      end
+    end
+
+    context "pawn" do
+      context "white moves one space" do
+        include_examples "move examples"
+        let(:state_before) {
+          { board: initial_board,
+            history: [],
+            next_to_move: 0,
+            legal_moves: [
+              'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
+              'd2-d3', 'd2-d4', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
+              'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b2-a3', 'b2-c3',
+              'g2-f3', 'g2-h3'
+            ]
+          }
+        }
+        let(:move) {'d2-d3'}
+        let(:state_after) {
+          { board: 'rnbqkbnr' +
+            'ppp.pppp' +
+            '...p....' +
+            '........' +
+            '........' +
+            '........' +
+            'PPPPPPPP' +
+            'RNBQKBNR',
+            history: ['d2-d3'],
+            next_to_move: 1,
+            legal_moves: [
+              'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
+              'd7-d6', 'd7-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
+              'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6',
+              'g8-f6', 'g8-h6'
+            ],
+            check: false
+          }
+        }
+        let(:other_player_legal_moves) {
+          [ 'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
+            'd3-d4', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
+            'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
+            'g1-f3', 'g1-h3', 'd1-d2', 'e1-d2',
+            'c1-d2', 'c1-e3', 'c1-f4', 'c1-g5', 'c1-h6'
+          ]
+        }
+      end
+    end
 
     Hash[
-      'white pawn moves one space' => {
-        state_before: {
-          board: initial_board,
-          history: [],
-          next_to_move: 0,
-          legal_moves: [
-            'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
-            'd2-d3', 'd2-d4', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
-            'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b2-a3', 'b2-c3',
-            'g2-f3', 'g2-h3'
-          ]
-        },
-        move: 'd2-d3',
-        state_after: {
-          board: 'rnbqkbnr' +
-                 'ppp.pppp' +
-                 '...p....' +
-                 '........' +
-                 '........' +
-                 '........' +
-                 'PPPPPPPP' +
-                 'RNBQKBNR',
-          history: ['d2-d3'],
-          next_to_move: 1,
-          legal_moves: [
-            'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
-            'd7-d6', 'd7-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
-            'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6',
-            'g8-f6', 'g8-h6'
-          ],
-          check: false
-        },
-        other_player_legal_moves: [
-          'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
-          'd3-d4', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
-          'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
-          'g1-f3', 'g1-h3', 'd1-d2', 'e1-d2',
-          'c1-d2', 'c1-e3', 'c1-f4', 'c1-g5', 'c1-h6'
-        ]
-      },
       'white pawn moves two spaces' => {
         state_before: {
           board: initial_board,
@@ -600,49 +653,7 @@ RSpec.describe Chess, :type => :model do
       }
     ].each do |name, test|
       context name do
-        before do
-          subject.update_attributes(state: test[:state_before])
-          subject.execute_move(test[:move])
-        end
-
-        it 'has the correct board' do
-          expect(subject.state['board']).to eq test[:state_after][:board]
-        end
-
-        it 'includes the move in the history' do
-          expect(subject.state['history'].last).to eq test[:move]
-        end
-
-        it 'has the correct next to move' do
-          expect(subject.state['next_to_move']).to eq test[:state_after][:next_to_move]
-        end
-
-        it 'has the correct legal moves for the other player' do
-          subject.state['legal_moves'].each do |move|
-            expect(test[:state_after][:legal_moves]).to include(move)
-          end
-
-          test[:state_after][:legal_moves].each do |move|
-            expect(subject.state['legal_moves']).to include(move)
-          end
-        end
-
-        it 'has the correct moves for the current player`' do
-          current_player_legal_moves = subject.legal_moves(
-            subject.state['board'], (subject.state['next_to_move'] + 1) % 2)
-
-          current_player_legal_moves.each do |move|
-            expect(test[:other_player_legal_moves]).to include(move)
-          end
-
-          test[:other_player_legal_moves].each do |move|
-            expect(current_player_legal_moves).to include(move)
-          end
-        end
-
-        it 'has the correct check state' do
-          expect(subject.state['check']).to eq test[:state_after][:check]
-        end
+        
       end
     end
   end
