@@ -2,7 +2,7 @@ module Concerns::Chess::LegalMoves
   extend ActiveSupport::Concern
   include Concerns::Chess::PawnMethods
 
-  def legal_moves(board, seat)
+  def legal_moves(board, seat, self_check = false)
     pieces_for(seat).collect do |space|
       piece = board[space]
       self.send(:"#{piece.downcase}_legal_moves", space, seat)

@@ -28,7 +28,9 @@ class Chess < Match
 
     self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
     self.state['history'] << move
-    self.state['legal_moves'] = legal_moves(self.state['board'], self.state['next_to_move'])
+    self.state['legal_moves'] = legal_moves(self.state['board'], self.state['next_to_move'], true)
+    self.state['check'] = in_check?(self.state['board'], self.state['next_to_move'])
+
     save
   end
 

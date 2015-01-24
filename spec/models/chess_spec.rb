@@ -66,7 +66,8 @@ RSpec.describe Chess, :type => :model do
             'd7-d6', 'd7-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
             'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6',
             'g8-f6', 'g8-h6'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
@@ -105,7 +106,8 @@ RSpec.describe Chess, :type => :model do
             'd7-d6', 'd7-d5', 'e7-e6', 'e7-e5', 'f7-f6', 'f7-f5',
             'g7-g6', 'g7-g5', 'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6',
             'g8-f6', 'g8-h6'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
@@ -152,7 +154,8 @@ RSpec.describe Chess, :type => :model do
             'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
             'g1-f3', 'g1-h3', 'd1-d2', 'd1-d3', 'e1-d2',
             'c1-d2', 'c1-e3', 'c1-f4', 'c1-g5', 'c1-h6'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
@@ -199,7 +202,8 @@ RSpec.describe Chess, :type => :model do
             'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b1-a3', 'b1-c3', 'b1-d2',
             'g1-f3', 'g1-h3', 'd1-d2', 'd1-d3', 'e1-d2',
             'c1-d2', 'c1-e3', 'c1-f4', 'c1-g5', 'c1-h6'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
@@ -246,7 +250,8 @@ RSpec.describe Chess, :type => :model do
             'h7-h6', 'h7-h5', 'b8-a6', 'b8-c6', 'b8-d7',
             'g8-f6', 'g8-h6', 'e8-d7', 'c8-d7', 'c8-e6', 'c8-f5',
             'c8-g4', 'c8-h3', 'd8-d7', 'd8-d6'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
@@ -297,7 +302,8 @@ RSpec.describe Chess, :type => :model do
             'c1-d2', 'c1-e3', 'c1-f4', 'c1-g5', 'c1-h6',
             'd1-d2', 'd1-d3', 'd1-e2', 'd1-f3', 'd1-g4', 'd1-h5',
             'f1-e2', 'f1-d3', 'f1-c4', 'f1-b5', 'f1-a6'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'a7-a6', 'a7-a5', 'b7-b6', 'b7-b5', 'c7-c6', 'c7-c5',
@@ -339,7 +345,8 @@ RSpec.describe Chess, :type => :model do
           next_to_move: 1,
           legal_moves: [
             'h6-h5', 'h6-h7', 'h6-g5', 'h6-g6', 'h6-g7', 'h6-h7'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
@@ -378,7 +385,8 @@ RSpec.describe Chess, :type => :model do
           next_to_move: 1,
           legal_moves: [
             'h6-h5', 'h6-h7', 'h6-g5', 'h6-g6', 'h6-g7', 'h6-h7'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
@@ -418,7 +426,8 @@ RSpec.describe Chess, :type => :model do
           next_to_move: 1,
           legal_moves: [
             'g8-f8', 'g8-f7', 'g8-g7', 'g8-h7', 'g8-h8'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'e1-d1', 'e1-d2', 'e1-e2', 'e1-f2', 'e1-f1',
@@ -459,7 +468,8 @@ RSpec.describe Chess, :type => :model do
           next_to_move: 1,
           legal_moves: [
             'h6-h5', 'h6-h7', 'h6-g5', 'h6-g6', 'h6-g7', 'h6-h7'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
@@ -501,7 +511,8 @@ RSpec.describe Chess, :type => :model do
           next_to_move: 0,
           legal_moves: [
             'd1-c1', 'd1-c2', 'd1-e2', 'd1-e1'
-          ]
+          ],
+          check: false
         },
         other_player_legal_moves: [
           'g8-h8', 'g8-h7', 'g8-g7', 'g8-f7', 'g8-f8',
