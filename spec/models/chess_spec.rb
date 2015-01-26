@@ -250,7 +250,7 @@ RSpec.describe Chess, :type => :model do
                   history: ['e7-e8-n'],
                   next_to_move: 1,
                   legal_moves: [
-                    'h6-h5', 'h6-h7', 'h6-g5', 'h6-g6', 'h6-g7', 'h6-h7'
+                    'h6-h5', 'h6-h7', 'h6-g5', 'h6-g6', 'h6-h7'
                   ],
                   check: false
                 } }
@@ -292,7 +292,7 @@ RSpec.describe Chess, :type => :model do
                   history: ['e7-e8-q'],
                   next_to_move: 1,
                   legal_moves: [
-                    'h6-h5', 'h6-g5', 'h6-g7', 'h6-h7'
+                    'h6-g5', 'h6-g7', 'h6-h7'
                   ],
                   check: false
                 } }

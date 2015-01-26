@@ -3,13 +3,32 @@ module Concerns::Chess::LegalMoves
   include Concerns::Chess::PawnMethods
 
   def legal_moves(board, seat, self_check = false)
-    pieces_for(seat).collect do |space|
-      piece = board[space]
+    local_board = board.dup
+
+    moves = pieces_for(local_board, seat).collect do |space|
+      piece = local_board[space]
       self.send(:"#{piece.downcase}_legal_moves", space, seat)
-    end.flatten.select do |m|
-      # filter out same-color-occupied spaces
+    end.flatten
+
+    # filter out same-color-occupied spaces
+    moves.select! do |m|
       can_move_to?(m.split('-')[1].to_i, seat)
-    end.collect do |m|
+    end
+
+    # filter out moves that would leave you in check
+    if (self_check)
+      moves.reject! do |m|
+        puts "move: #{m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')} (#{m})"
+        puts "old board: #{local_board}"
+        puts "new board: #{move_pieces(m, local_board.dup, seat)}"
+        puts "in check?: #{in_check?(move_pieces(m, local_board.dup, seat), seat)}"
+        binding.pry if m == '11-1'
+        new_board = move_pieces(m, local_board.dup, seat)
+        in_check?(new_board, seat)
+      end
+    end
+
+    moves.collect do |m|
       # convert space numbers into moves
       m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')
     end
@@ -17,12 +36,12 @@ module Concerns::Chess::LegalMoves
 
   private
 
-  def pieces_for(seat)
-    self.state['board'].find_chars_where {|p| range_for(seat).include?(p)}
+  def pieces_for(board, seat)
+    board.find_chars_where {|p| range_for(seat).include?(p)}
   end
 
   def piece_at(space)
-    self.state['board'][space] == '.' ? nil : self.state['board'][space]
+    state['board'][space] == '.' ? nil : state['board'][space]
   end
 
   def occupied?(space)
@@ -45,6 +64,7 @@ module Concerns::Chess::LegalMoves
 
     [-1, 0, 1].each do |x|
       [-1, 0, 1].each do |y|
+        next if (x == 0 && y == 0)
         if ((0..7).include?(col + x) && (0..7).include?(row + y))
           legal_moves << "#{space}-#{space + (8 * y) + x}"
         end

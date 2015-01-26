@@ -24,12 +24,12 @@ class Chess < Match
   end
 
   def execute_move(move)
-    self.state['board'] = move_pieces(move, self.state['board'], self.state['next_to_move'])
+    self.state['board'] = move_pieces(move, state['board'], state['next_to_move'])
 
-    self.state['next_to_move'] = (self.state['next_to_move'] + 1) % 2
+    self.state['next_to_move'] = (state['next_to_move'] + 1) % 2
     self.state['history'] << move
-    self.state['legal_moves'] = legal_moves(self.state['board'], self.state['next_to_move'], true)
-    self.state['check'] = in_check?(self.state['board'], self.state['next_to_move'])
+    self.state['legal_moves'] = legal_moves(state['board'], state['next_to_move'], true)
+    self.state['check'] = in_check?(state['board'], state['next_to_move'])
 
     save
   end
@@ -53,8 +53,14 @@ class Chess < Match
 
   def move_pieces(move, board, next_to_move)
     coords = move.split('-')
-    origin = coord_to_space(coords[0])
-    destination = coord_to_space(coords[1])
+
+    if (('a'..'h').include?(move[0]))
+      origin = coord_to_space(coords[0])
+      destination = coord_to_space(coords[1])
+    else
+      origin = coords[0].to_i
+      destination = coords[1].to_i
+    end
 
     # check for pawn promotion
     if (board[origin].downcase == 'p' && ([0, 8]).include?(destination / 7))
