@@ -658,7 +658,7 @@ RSpec.describe Chess, :type => :model do
           } }
         let(:move) { 'f7-f1' }
         let(:state_after) {
-          {board: '...k.R..' +
+          {board:  '...k.R..' +
                    '...n....' +
                    '........' +
                    '........' +
@@ -668,7 +668,7 @@ RSpec.describe Chess, :type => :model do
                    '......K.',
             history: ['f7-f1'],
             next_to_move: 0,
-            legal_moves: ['d2-f1'],
+            legal_moves: ['d2-f1', 'd1-c2', 'd1-e2'],
             check: true
           } }
         let(:other_player_legal_moves) {[
@@ -683,7 +683,7 @@ RSpec.describe Chess, :type => :model do
       context 'check and no legal moves is checkmate' do
         let(:state_before) {
           { board: '...k....' +
-                   '...n....' +
+                   '..ppp...' +
                    '........' +
                    '........' +
                    '........' +
@@ -701,7 +701,7 @@ RSpec.describe Chess, :type => :model do
         let(:move) { 'g7-g1' }
         let(:state_after) {
           { board: '...k..R.' +
-                   '...n....' +
+                   '..ppp...' +
                    '........' +
                    '........' +
                    '........' +
