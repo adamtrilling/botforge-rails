@@ -1,4 +1,4 @@
-module Concerns::Chess::CheckMethods
+module Concerns::Chess::EndgameMethods
   extend ActiveSupport::Concern
 
   def in_check?(board, seat)
@@ -7,4 +7,5 @@ module Concerns::Chess::CheckMethods
       board[dest].downcase == 'k'
     end
   end
+
 end

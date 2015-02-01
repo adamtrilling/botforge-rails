@@ -1,6 +1,6 @@
 class Chess < Match
   include Concerns::Chess::LegalMoves
-  include Concerns::Chess::CheckMethods
+  include Concerns::Chess::EndgameMethods
 
   def self.expected_participants
     2
