@@ -593,6 +593,52 @@ RSpec.describe Chess, :type => :model do
       end
     end
 
+    context 'king' do
+      let(:state_before) {
+        { board: '.q..k...' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '.......K' +
+                 '........' +
+                 '........',
+          history: [],
+          next_to_move: 0,
+          legal_moves: [
+            'e1-d1', 'e1-f1', 'e1-d2', 'e1-e2', 'e1-f2',
+            'b1-b2', 'b1-b3', 'b1-b4', 'b1-b5', 'b1-b6', 'b1-b7', 'b1-b8',
+            'b1-a1', 'b1-a3', 'b1-a4', 'b1-c2', 'b1-d3', 'b1-e4', 'b1-f5',
+            'b1-g6', 'b1-h7', 'b1-a2'
+          ]
+        } }
+      let(:move) { 'e1-e2' }
+      let(:state_after) {
+        { board: '.q......' +
+                 '....k...' +
+                 '........' +
+                 '........' +
+                 '........' +
+                 '.......K' +
+                 '........' +
+                 '........',
+          history: ['b1-b4'],
+          next_to_move: 1,
+          legal_moves: [
+            'h6-h5', 'h6-g5', 'h6-g7'
+          ],
+          check: false
+        } }
+      let(:other_player_legal_moves) { [
+          'e2-d1', 'e2-e1', 'e2-f1', 'e2-d2', 'e2-f2', 'e2-d3', 'e2-e3', 'e2-f3',
+          'b1-a1', 'b1-c1', 'b1-d1', 'b1-e1', 'b1-f1', 'b1-g1', 'b1-h1',
+          'b1-b2', 'b1-b3', 'b1-b4', 'b1-b5', 'b1-b6', 'b1-b7', 'b1-b8',
+          'b1-a2', 'b1-c2', 'b1-d3', 'b1-e4', 'b1-f5', 'b1-g6', 'b1-h7'
+        ] }
+
+      include_examples "move examples"
+    end
+
     context 'moves that can cause check' do
       context 'pinned piece can\'t move' do
         let(:state_before) {
