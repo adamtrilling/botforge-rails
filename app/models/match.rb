@@ -65,3 +65,7 @@ class Match < ActiveRecord::Base
   delegate :max_participants, :min_participants,
     to: :class
 end
+
+class IllegalMove < ArgumentError
+
+end

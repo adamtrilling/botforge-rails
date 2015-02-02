@@ -82,6 +82,57 @@ RSpec.describe Chess, :type => :model do
       end
     end
 
+    shared_examples "legal move examples" do
+      subject {
+        FactoryGirl.create(:chess, :started)
+      }
+
+      it 'has the correct legal moves for the other player' do
+        subject.legal_moves(board, next_to_move).each do |move|
+          expect(legal_moves).to include(move)
+        end
+
+        legal_moves.each do |move|
+          expect(subject.legal_moves(board, next_to_move)).to include(move)
+        end
+      end
+
+      it 'has the correct legal moves for the other player' do
+        subject.legal_moves(board, (next_to_move + 1) % 2).each do |move|
+          expect(other_player_legal_moves).to include(move)
+        end
+
+        legal_moves.each do |move|
+          expect(subject.other_player_legal_moves(board, next_to_move)).to include(move)
+        end
+      end
+
+      it 'has the correct check state' do
+        expect(subject.state['check']).to eq state_after[:check]
+      end
+    end
+
+    context 'illegal move' do
+      subject {
+        FactoryGirl.create(:chess, :started)
+      }
+
+      it 'throws an exception' do
+        subject.update_attributes(state: {
+          board: initial_board,
+          history: [],
+          next_to_move: 0,
+          legal_moves: [
+            'a2-a3', 'a2-a4', 'b2-b3', 'b2-b4', 'c2-c3', 'c2-c4',
+            'd2-d3', 'd2-d4', 'e2-e3', 'e2-e4', 'f2-f3', 'f2-f4',
+            'g2-g3', 'g2-g4', 'h2-h3', 'h2-h4', 'b2-a3', 'b2-c3',
+            'g2-f3', 'g2-h3'
+          ]
+        })
+        expect { subject.execute_move('') }.to raise_error(IllegalMove)
+      end
+    end
+
     context 'piece movement' do
       context 'pawn' do
         context "white" do
@@ -103,13 +154,13 @@ RSpec.describe Chess, :type => :model do
               let(:move) {'d2-d3'}
               let(:state_after) {
                 { board: 'rnbqkbnr' +
-                  'ppp.pppp' +
-                  '...p....' +
-                  '........' +
-                  '........' +
-                  '........' +
-                  'PPPPPPPP' +
-                  'RNBQKBNR',
+                         'ppp.pppp' +
+                         '...p....' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         'PPPPPPPP' +
+                         'RNBQKBNR',
                   history: ['d2-d3'],
                   next_to_move: 1,
                   legal_moves: [
@@ -637,6 +688,131 @@ RSpec.describe Chess, :type => :model do
         ] }
 
       include_examples "move examples"
+
+      context "castling" do
+        context 'white' do
+          context 'king-side' do
+            context 'legal castle' do
+              let(:state_before) {
+                { board: '....k..r' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '...QK...',
+                  history: [],
+                  next_to_move: 0,
+                  legal_moves: [
+                    'e1-d1', 'e1-f1', 'e1-g1', 'e1-d2', 'e1-e2', 'e1-e3',
+                    'h1-g1', 'h1-f1', 'h1-h2', 'h1-h3', 'h1-h4', 'h1-h5',
+                    'h1-h6', 'h1-h7', 'h1-h8'
+                  ]
+                } }
+              let(:move) { 'e1-f1' }
+              let(:state_after) {
+                { board: '.....rk.' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '...QK...',
+                  history: ['e1-f1'],
+                  next_to_move: 1,
+                  legal_moves: [
+                    'e8-e7', 'e8-d7', 'd8-a8', 'd8-b8', 'd8-c8', 'd8-d7', 'd8-d6',
+                    'd8-d5', 'd8-d4', 'd8-d3', 'd8-d2', 'd8-d1', 'd8-c7', 'd8-b6',
+                    'd8-a5', 'd8-e7', 'd8-f6', 'd8-g5', 'd8-h4'
+                  ],
+                  check: false
+                } }
+              let(:other_player_legal_moves) { [
+                  'g1-h1', 'g1-f2', 'g1-g2', 'g1-h2', 'e1-a1', 'e1-b1', 'e1-c1',
+                  'e1-d1', 'e1-e2', 'e1-e3', 'e1-e4', 'e1-e5', 'e1-e6', 'e1-e7',
+                  'e1-e8'
+                ] }
+
+              include_examples "move examples"
+            end
+
+            context 'castle out of check' do
+              let(:board) {
+                'r...k...' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '....K..R' }
+                  
+              let(:other_player_legal_moves) {[
+                'e8-e7', 'd8-a8', 'd8-b8', 'd8-c8', 'd8-d7', 'd8-d6',
+                'd8-d5', 'd8-d4', 'd8-d3', 'd8-d2', 'd8-d1', 'd8-c7',
+                'd8-b6', 'd8-a5', 'd8-e7', 'd8-f6', 'd8-g5', 'd8-h4' ]}
+              let(:legal_moves) { [
+                'c1-b1', 'c1-b2', 'c1-c2', 'd1-e1', 'd1-f1', 'd1-g1',
+                'd1-h1', 'd1-d2', 'd1-d3', 'd1-d4', 'd1-d5', 'd1-d6',
+                'd1-d7', 'd1-d8' ] }
+
+              let (:check) { true }
+
+              include_examples "legal move examples"
+            end
+          end
+
+          context 'queen-side' do
+            context 'legal castle' do
+              let(:state_before) {
+                { board: 'r...k...' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '....K..R',
+                  history: [],
+                  next_to_move: 0,
+                  legal_moves: [
+                    'e1-d1', 'e1-c1', 'e1-g1', 'e1-d2', 'e1-e2', 'e1-e3',
+                    'a1-b1', 'a1-c1', 'a1-d1', 'a1-b1', 'a1-c1', 'a1-d1',
+                    'a1-e1', 'a1-f1', 'a1-g1'
+                  ]
+                } }
+              let(:move) { 'e1-c1' }
+              let(:state_after) {
+                { board: '..kr....' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '........' +
+                         '...QK...',
+                  history: ['e1-c1'],
+                  next_to_move: 1,
+                  legal_moves: [
+                    'e8-e7', 'd8-a8', 'd8-b8', 'd8-c8', 'd8-d7', 'd8-d6',
+                    'd8-d5', 'd8-d4', 'd8-d3', 'd8-d2', 'd8-d1', 'd8-c7',
+                    'd8-b6', 'd8-a5', 'd8-e7', 'd8-f6', 'd8-g5', 'd8-h4'
+                  ],
+                  check: false
+                } }
+              let(:other_player_legal_moves) { [
+                  'c1-b1', 'c1-b2', 'c1-c2', 'd1-e1', 'd1-f1', 'd1-g1',
+                  'd1-h1', 'd1-d2', 'd1-d3', 'd1-d4', 'd1-d5', 'd1-d6',
+                  'd1-d7', 'd1-d8'
+                ] }
+
+              include_examples "move examples"
+            end
+          end
+        end
+      end
     end
 
     context 'moves that can cause check' do
