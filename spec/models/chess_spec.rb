@@ -87,6 +87,11 @@ RSpec.describe Chess, :type => :model do
         FactoryGirl.create(:chess, :started)
       }
 
+      before do
+        subject.state['history'] = history
+        subject.save
+      end
+
       it 'has the correct legal moves for the other player' do
         subject.legal_moves(board, next_to_move).each do |move|
           expect(legal_moves).to include(move)
@@ -740,23 +745,44 @@ RSpec.describe Chess, :type => :model do
 
             context 'castle out of check' do
               let(:board) {
-                'r...k...' +
+                '....k..r' +
                 '........' +
                 '........' +
                 '........' +
                 '........' +
                 '........' +
                 '........' +
-                '....K..R' }
+                '....RK..' }
+              let(:history) { [] }
+
+              let(:other_player_legal_moves) {[
+                'e8-d8', 'e8-c8', 'e8-b8', 'e8-a8', 'e8-e7', 'e8-e6',
+                'e8-e5', 'e8-e4', 'e8-e3', 'e8-e2', 'e8-e1', 'f8-e7',
+                'f8-f7', 'f8-g7', 'f8-g8' ]}
+              let(:legal_moves) {[
+                'e1-d1', 'e1-d2', 'e1-f1', 'e1-f2' ]}
+
+              let (:check) { true }
+
+              include_examples "legal move examples"
+            end
+
+            context 'castle when the king has moved' do
+              let(:board) {
+                '....k..r' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '.....K.R' }
+              let(:history) { ['e1-e2', 'e8-f8', 'e2-e1'] }
                   
               let(:other_player_legal_moves) {[
-                'e8-e7', 'd8-a8', 'd8-b8', 'd8-c8', 'd8-d7', 'd8-d6',
-                'd8-d5', 'd8-d4', 'd8-d3', 'd8-d2', 'd8-d1', 'd8-c7',
-                'd8-b6', 'd8-a5', 'd8-e7', 'd8-f6', 'd8-g5', 'd8-h4' ]}
+                 ]}
               let(:legal_moves) { [
-                'c1-b1', 'c1-b2', 'c1-c2', 'd1-e1', 'd1-f1', 'd1-g1',
-                'd1-h1', 'd1-d2', 'd1-d3', 'd1-d4', 'd1-d5', 'd1-d6',
-                'd1-d7', 'd1-d8' ] }
+                 ] }
 
               let (:check) { true }
 
@@ -792,20 +818,19 @@ RSpec.describe Chess, :type => :model do
                          '........' +
                          '........' +
                          '........' +
-                         '...QK...',
+                         '....K..R',
                   history: ['e1-c1'],
                   next_to_move: 1,
                   legal_moves: [
-                    'e8-e7', 'd8-a8', 'd8-b8', 'd8-c8', 'd8-d7', 'd8-d6',
-                    'd8-d5', 'd8-d4', 'd8-d3', 'd8-d2', 'd8-d1', 'd8-c7',
-                    'd8-b6', 'd8-a5', 'd8-e7', 'd8-f6', 'd8-g5', 'd8-h4'
+                    'e8-e7', 'e8-f7', 'e8-f8', 'h8-f8', 'h8-g8', 'h8-h7',
+                    'h8-h6', 'h8-h5', 'h8-h4', 'h8-h3', 'h8-h2', 'h8-h1'
                   ],
                   check: false
                 } }
               let(:other_player_legal_moves) { [
-                  'c1-b1', 'c1-b2', 'c1-c2', 'd1-e1', 'd1-f1', 'd1-g1',
-                  'd1-h1', 'd1-d2', 'd1-d3', 'd1-d4', 'd1-d5', 'd1-d6',
-                  'd1-d7', 'd1-d8'
+                  'c1-b1', 'c1-b2', 'c1-c2', 'c1-d2', 'd1-e1', 'd1-f1',
+                  'd1-g1', 'd1-h1', 'd1-d2', 'd1-d3', 'd1-d4', 'd1-d5',
+                  'd1-d6', 'd1-d7', 'd1-d8'
                 ] }
 
               include_examples "move examples"
