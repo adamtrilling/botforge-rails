@@ -743,6 +743,34 @@ RSpec.describe Chess, :type => :model do
               include_examples "move examples"
             end
 
+            context 'castle with a piece in the way' do
+              let(:board) {
+                '....k.nr' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '.....K.R' }
+              let(:history) { }
+
+              let(:other_player_legal_moves) {[
+                'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',
+                'h8-g8', 'h8-g8', 'h8-f8', 'h8-e8', 'h8-d8',
+                'h8-c8', 'h8-b8', 'h8-a8'
+              ]}
+              let(:legal_moves) { [
+                'e1-d1', 'e1-d2', 'e1-e2', 'e1-f2', 'e1-f1',
+                'g1-e3', 'g1-f2', 'g1-h3', 'h1-h2', 'h1-h3',
+                'h1-h4', 'h1-h5', 'h1-h6', 'h1-h7', 'h1-h8'
+              ]}
+
+              let (:check) { false }
+
+              include_examples "legal move examples"
+            end
+
             context 'castle out of check' do
               let(:board) {
                 '....k..r' +
@@ -767,6 +795,33 @@ RSpec.describe Chess, :type => :model do
               include_examples "legal move examples"
             end
 
+            context 'castle through check' do
+              let(:board) {
+                '....k..r' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '....KR..' }
+              let(:history) { [] }
+
+              let(:other_player_legal_moves) {[
+                'e8-d8', 'e8-d7', 'e8-e7', 'e8-f7', 'f8-g8', 'f8-h8',
+                'f8-f7', 'f8-f6', 'f8-f5', 'f8-f4', 'f8-f3', 'f8-f2',
+                'f8-f1'
+              ]}
+              let(:legal_moves) {[
+                'e1-d1', 'e1-d2', 'e1-e2', 'h1-g1', 'h1-f1', 'h1-h2',
+                'h1-h3', 'h1-h4', 'h1-h5', 'h1-h6', 'h1-h7', 'h1-h8'
+              ]}
+
+              let (:check) { false }
+
+              include_examples "legal move examples"
+            end
+
             context 'castle when the king has moved' do
               let(:board) {
                 '....k..r' +
@@ -780,11 +835,45 @@ RSpec.describe Chess, :type => :model do
               let(:history) { ['e1-e2', 'e8-f8', 'e2-e1'] }
                   
               let(:other_player_legal_moves) {[
-                 ]}
+                'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',
+                'h8-g8', 'h8-g8', 'h8-f8', 'h8-e8', 'h8-d8',
+                'h8-c8', 'h8-b8', 'h8-a8'
+              ]}
               let(:legal_moves) { [
-                 ] }
+                'e1-d1', 'e1-d2', 'e1-e2', 'e1-f2', 'e1-f1',
+                'h1-g1', 'h1-f1', 'h1-h2', 'h1-h3', 'h1-h4',
+                'h1-h5', 'h1-h6', 'h1-h7', 'h1-h8'
+              ]}
 
-              let (:check) { true }
+              let (:check) { false }
+
+              include_examples "legal move examples"
+            end
+
+            context 'castle when the rook has moved' do
+              let(:board) {
+                '....k..r' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '.....K.R' }
+              let(:history) { ['h1-h2', 'e8-f8', 'h2-h1'] }
+
+              let(:other_player_legal_moves) {[
+                'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',
+                'h8-g8', 'h8-g8', 'h8-f8', 'h8-e8', 'h8-d8',
+                'h8-c8', 'h8-b8', 'h8-a8'
+              ]}
+              let(:legal_moves) { [
+                'e1-d1', 'e1-d2', 'e1-e2', 'e1-f2', 'e1-f1',
+                'h1-g1', 'h1-f1', 'h1-h2', 'h1-h3', 'h1-h4',
+                'h1-h5', 'h1-h6', 'h1-h7', 'h1-h8'
+              ]}
+
+              let (:check) { false }
 
               include_examples "legal move examples"
             end
