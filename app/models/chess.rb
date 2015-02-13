@@ -24,6 +24,8 @@ class Chess < Match
   end
 
   def execute_move(move)
+    raise IllegalMove unless self.state['legal_moves'].include?(move)
+
     self.state['board'] = move_pieces(move, state['board'], state['next_to_move'])
 
     self.state['next_to_move'] = (state['next_to_move'] + 1) % 2

@@ -23,7 +23,6 @@ class Match < ActiveRecord::Base
     invite_participants unless has_participants?
     setup_board
     update_attributes(status: 'in progress')
-    request_move
   end
 
   def has_participants?
@@ -45,7 +44,7 @@ class Match < ActiveRecord::Base
   end
 
   def next_player_to_move
-    participants.find_by(seat: state[:next_to_move]).player
+    participants.find_by(seat: state['next_to_move']).player
   end
 
   def request_move

@@ -15,12 +15,22 @@ FactoryGirl.define do
   #   status { 'in progress' }
   # end
 
-  trait :started do
+  trait :has_players do
     after(:create) do |m|
-      m.min_participants.times do
-        create(:bot, game: m.type)
+      m.min_participants.times do |i|
+        Participant.create(
+          match_id: m.id,
+          player_id: create(:bot, game: m.type).id,
+          seat: i
+        )
       end
+    end
+  end
 
+  trait :started do
+    has_players
+
+    after(:create) do |m|
       m.start_match
     end
   end

@@ -24,10 +24,12 @@ FactoryGirl.define do
 
         stub_request(:post, bot.url).
           with(:body => hash_including({type: 'move'})).
-          to_return(
-            :status => (evaluator.move_response == :error) ? 503 : 200,
-            :body => (evaluator.move_response == :immediate) ? { 'move' => 'a4-e7' }.to_json : nil
-          )
+          to_return do |request|
+            {
+              :status => (evaluator.move_response == :error) ? 503 : 200,
+              :body => (evaluator.move_response == :immediate) ? { 'move' => JSON.parse(request.body)['state']['legal_moves'].first }.to_json : nil
+            }
+          end
       end
     end
   end

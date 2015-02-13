@@ -18,6 +18,7 @@ class MatchesController < ApplicationController
       player: current_user.human_for(@game)
     )
     @match.start_match
+    @match.request_move
 
     redirect_to match_path(@match)
   end
