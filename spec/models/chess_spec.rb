@@ -696,6 +696,7 @@ RSpec.describe Chess, :type => :model do
 
       context "castling" do
         context 'white' do
+          let(:next_to_move) { 0 }
           context 'king-side' do
             context 'legal castle' do
               let(:state_before) {
@@ -923,6 +924,141 @@ RSpec.describe Chess, :type => :model do
                 ] }
 
               include_examples "move examples"
+            end
+
+            context 'castle with a piece in the way' do
+              let(:board) {
+                'rn..k...' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '.....K.R' }
+              let(:history) { }
+
+              let(:other_player_legal_moves) {[
+                'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',
+                'h8-g8', 'h8-g8', 'h8-f8', 'h8-e8', 'h8-d8',
+                'h8-c8', 'h8-b8', 'h8-a8'
+              ]}
+              let(:legal_moves) { [
+                'e1-d1', 'e1-d2', 'e1-e2', 'e1-f2', 'e1-f1',
+                'b1-a3', 'b1-d2', 'b1-c3', 'a1-a2', 'a1-a3',
+                'a1-a4', 'a1-a5', 'a1-a6', 'a1-a7', 'a1-h8'
+              ]}
+
+              let (:check) { false }
+
+              include_examples "legal move examples"
+            end
+
+            context 'castle out of check' do
+              let(:board) {
+                'r...k...' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '....RK..' }
+              let(:history) { [] }
+
+              let(:other_player_legal_moves) {[
+                'e8-d8', 'e8-c8', 'e8-b8', 'e8-a8', 'e8-e7', 'e8-e6',
+                'e8-e5', 'e8-e4', 'e8-e3', 'e8-e2', 'e8-e1', 'f8-e7',
+                'f8-f7', 'f8-g7', 'f8-g8' ]}
+              let(:legal_moves) {[
+                'e1-d1', 'e1-d2', 'e1-f1', 'e1-f2' ]}
+
+              let (:check) { true }
+
+              include_examples "legal move examples"
+            end
+
+            context 'castle through check' do
+              let(:board) {
+                'r...k...' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '...RK...' }
+              let(:history) { [] }
+
+              let(:other_player_legal_moves) {[
+                'e8-d8', 'e8-d7', 'e8-e7', 'e8-f7', 'f8-g8', 'f8-h8',
+                'f8-f7', 'f8-f6', 'f8-f5', 'f8-f4', 'f8-f3', 'f8-f2',
+                'f8-f1'
+              ]}
+              let(:legal_moves) {[
+                'e1-d1', 'e1-d2', 'e1-e2', 'h1-g1', 'h1-f1', 'h1-h2',
+                'h1-h3', 'h1-h4', 'h1-h5', 'h1-h6', 'h1-h7', 'h1-h8'
+              ]}
+
+              let (:check) { false }
+
+              include_examples "legal move examples"
+            end
+
+            context 'castle when the king has moved' do
+              let(:board) {
+                '....k..r' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '.....K.R' }
+              let(:history) { ['e1-e2', 'e8-f8', 'e2-e1'] }
+
+              let(:other_player_legal_moves) {[
+                'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',
+                'h8-g8', 'h8-g8', 'h8-f8', 'h8-e8', 'h8-d8',
+                'h8-c8', 'h8-b8', 'h8-a8'
+              ]}
+              let(:legal_moves) { [
+                'e1-d1', 'e1-d2', 'e1-e2', 'e1-f2', 'e1-f1',
+                'h1-g1', 'h1-f1', 'h1-h2', 'h1-h3', 'h1-h4',
+                'h1-h5', 'h1-h6', 'h1-h7', 'h1-h8'
+              ]}
+
+              let (:check) { false }
+
+              include_examples "legal move examples"
+            end
+
+            context 'castle when the rook has moved' do
+              let(:board) {
+                '....k..r' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '........' +
+                '.....K.R' }
+              let(:history) { ['h1-h2', 'e8-f8', 'h2-h1'] }
+
+              let(:other_player_legal_moves) {[
+                'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',
+                'h8-g8', 'h8-g8', 'h8-f8', 'h8-e8', 'h8-d8',
+                'h8-c8', 'h8-b8', 'h8-a8'
+              ]}
+              let(:legal_moves) { [
+                'e1-d1', 'e1-d2', 'e1-e2', 'e1-f2', 'e1-f1',
+                'h1-g1', 'h1-f1', 'h1-h2', 'h1-h3', 'h1-h4',
+                'h1-h5', 'h1-h6', 'h1-h7', 'h1-h8'
+              ]}
+
+              let (:check) { false }
+
+              include_examples "legal move examples"
             end
           end
         end
