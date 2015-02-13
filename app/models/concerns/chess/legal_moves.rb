@@ -23,10 +23,7 @@ module Concerns::Chess::LegalMoves
       end
     end
 
-    moves.collect do |m|
-      # convert space numbers into moves
-      m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')
-    end
+    spaces_to_coords(moves)
   end
 
   private

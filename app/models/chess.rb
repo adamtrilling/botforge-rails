@@ -43,6 +43,13 @@ class Chess < Match
     (coord[1].to_i - 1) * 8 + coord[0].ord - 'a'.ord
   end
 
+  def spaces_to_coords(list)
+    list.collect do |m|
+      # convert space numbers into moves
+      m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')
+    end
+  end
+
   def range_for(seat)
     seat == 0 ? ('a'..'z') : ('A'..'Z')
   end
