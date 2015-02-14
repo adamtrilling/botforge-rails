@@ -38,12 +38,17 @@ RSpec.describe Bot, :type => :model do
   end
 
   describe '#request_move' do
-    let(:match) { FactoryGirl.create(:chess, :started) }
-    let(:bot) { match.participants.first.player }
+    let(:match) do
+      match = FactoryGirl.create(:chess)
+      match.participants.create(player_id: bot.id)
+      match.start_match
+      match
+    end
+    let(:bot) { FactoryGirl.create(:bot, move_response: move_response) }
     let(:move_response) { :immediate }
 
     before do
-      allow(match).to receive(:execute_move)
+      allow(match).to receive(:execute_move).and_call_original
       @retval = bot.request_move(match)
     end
 
@@ -55,7 +60,7 @@ RSpec.describe Bot, :type => :model do
 
     context 'with a bot that immediately moves' do
       it 'sends the move to the match' do
-        expect(match).to have_received(:execute_move).with(match.state['legal_moves'].first)
+        expect(match).to have_received(:execute_move).with('a2-a3')
       end
 
       it 'returns true' do

@@ -40,6 +40,12 @@ class Match < ActiveRecord::Base
       break if self.participants.size == max_participants
     end
 
+    if (has_participants?)
+      participants.shuffle.each_with_index do |p, i|
+        p.seat = i
+      end
+    end
+
     return has_participants?
   end
 
