@@ -1,6 +1,8 @@
 class Chess < Match
   include Concerns::Chess::LegalMoves
   include Concerns::Chess::EndgameMethods
+  include Concerns::Chess::PawnMethods
+  include Concerns::Chess::KingMethods
 
   def self.expected_participants
     2
@@ -63,6 +65,10 @@ class Chess < Match
   def move_pieces(move, board, next_to_move)
     coords = move.split('-')
 
+    if (coords.all? {|c| c == 'o'})
+      return do_castle(move, board, next_to_move)
+    end
+
     if (('a'..'h').include?(move[0]))
       origin = coord_to_space(coords[0])
       destination = coord_to_space(coords[1])
@@ -78,6 +84,24 @@ class Chess < Match
       board[destination] = board[origin]
     end
     board[origin] = '.'
+
+    board
+  end
+
+  def do_castle(move, board, seat)
+    if (move == 'o-o')
+      # king-side
+      board[(home_row(seat) - 1) * 8 + 4] = '.'
+      board[(home_row(seat) - 1) * 8 + 6] = rank_for_player('k', seat)
+      board[(home_row(seat) - 1) * 8 + 7] = '.'
+      board[(home_row(seat) - 1) * 8 + 5] = rank_for_player('r', seat)
+    else
+      # queen-side
+      board[(home_row(seat) - 1) * 8 + 4] = '.'
+      board[(home_row(seat) - 1) * 8 + 2] = rank_for_player('k', seat)
+      board[(home_row(seat) - 1) * 8 + 0] = '.'
+      board[(home_row(seat) - 1) * 8 + 3] = rank_for_player('r', seat)
+    end
 
     board
   end

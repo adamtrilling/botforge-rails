@@ -1,6 +1,5 @@
 module Concerns::Chess::LegalMoves
   extend ActiveSupport::Concern
-  include Concerns::Chess::PawnMethods
 
   def legal_moves(board, seat, self_check = false)
     local_board = board.dup
@@ -28,6 +27,10 @@ module Concerns::Chess::LegalMoves
 
   private
 
+  def home_row(seat)
+    seat == 0 ? 1 : 8
+  end
+
   def pieces_for(board, seat)
     board.find_chars_where {|p| range_for(seat).include?(p)}
   end
@@ -46,24 +49,6 @@ module Concerns::Chess::LegalMoves
 
   def can_move_to?(space, seat, board = state['board'])
     !occupied?(space, board) || capturable?(space, seat, board)
-  end
-
-  def k_legal_moves(space, seat, board = state['board'])
-    row = space / 8
-    col = space % 8
-
-    legal_moves = []
-
-    [-1, 0, 1].each do |x|
-      [-1, 0, 1].each do |y|
-        next if (x == 0 && y == 0)
-        if ((0..7).include?(col + x) && (0..7).include?(row + y))
-          legal_moves << "#{space}-#{space + (8 * y) + x}"
-        end
-      end
-    end
-
-    legal_moves
   end
 
   def q_legal_moves(space, seat, board = state['board'])
