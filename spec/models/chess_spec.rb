@@ -756,7 +756,7 @@ RSpec.describe Chess, :type => :model do
                 '........' +
                 '........' +
                 '.....K.R' }
-              let(:history) { }
+              let(:history) { [] }
 
               let(:other_player_legal_moves) {[
                 'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',
@@ -938,7 +938,7 @@ RSpec.describe Chess, :type => :model do
                 '........' +
                 '........' +
                 '.....K.R' }
-              let(:history) { }
+              let(:history) { [] }
 
               let(:other_player_legal_moves) {[
                 'f8-e8', 'f8-e7', 'f8-f7', 'f8-g7', 'f8-g8',

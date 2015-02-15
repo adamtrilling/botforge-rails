@@ -18,10 +18,10 @@ module Concerns::Chess::KingMethods
 
     # castling
     if (space == coord_to_space("e#{home_row(seat)}"))
-      if (can_castle_kingside?(board, seat))
+      if (can_castle?(board, seat, 'king'))
         legal_moves << "o-o"
       end
-      if (can_castle_queenside?(board, seat))
+      if (can_castle?(board, seat, 'queen'))
         legal_moves << "o-o-o"
       end
     end
@@ -33,23 +33,15 @@ module Concerns::Chess::KingMethods
     ['c', 'g'].collect {|n| "e#{home_row(seat)}-#{n}#{home_row(seat)}"}
   end
 
-  def can_castle_kingside?(board, seat)
-    can_castle?(board, seat) &&
-    board[(home_row(seat) * 8) - 1] == rank_for_player('r', seat) &&
-    state['history'].none? do |m|
-      m.split('-')[0] == "h#{home_row(seat)}"
-    end
-  end
+  def can_castle?(board, seat, side)
+    rook_col = (side == 'king' ? 'h' : 'a')
 
-  def can_castle_queenside?(board, seat)
-    can_castle?(board, seat) &&
-    board[(home_row(seat) * 8 - 1)] == rank_for_player('r', seat) &&
+    # the rook hasn't moved
+    board[(home_row(seat) - 1) * 8 + (rook_col.ord - 'a'.ord)] == rank_for_player('r', seat) &&
     state['history'].none? do |m|
-      m.split('-')[0] == "a#{home_row(seat)}"
-    end
-  end
+      m.split('-')[0] == "#{rook_col}#{home_row(seat)}"
+    end &&
 
-  def can_castle?(board, seat)
     # king hasn't moved
     board[(home_row(seat) * 8 - 1) + 4] == rank_for_player('k', seat) &&
     state['history'].none? do |m|
