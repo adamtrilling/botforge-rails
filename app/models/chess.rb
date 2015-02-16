@@ -50,7 +50,13 @@ class Chess < Match
   def spaces_to_coords(list)
     list.collect do |m|
       # convert space numbers into moves
-      m.split('-').map {|s| space_to_coord(s.to_i)}.join('-')
+      m.split('-').map do |s|
+        if (s == 'o')
+          'o'
+        else
+          space_to_coord(s.to_i)
+        end
+      end.join('-')
     end
   end
 

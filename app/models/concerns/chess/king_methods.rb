@@ -43,12 +43,12 @@ module Concerns::Chess::KingMethods
     end &&
 
     # king hasn't moved
-    board[(home_row(seat) * 8 - 1) + 4] == rank_for_player('k', seat) &&
+    board[(home_row(seat) - 1) * 8 + 4] == rank_for_player('k', seat) &&
     state['history'].none? do |m|
       m.split('-')[0] == "e#{home_row(seat)}"
     end &&
 
     # can't castle out of check
-    !in_check(board, seat)
+    !self.state['check']
   end
 end
