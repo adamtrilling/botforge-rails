@@ -35,6 +35,7 @@ module Concerns::Chess::KingMethods
 
   def can_castle?(board, seat, side)
     rook_col = (side == 'king' ? 'h' : 'a')
+    castle_range = (side == 'king' ? ('f'..'g') : ('b'..'d'))
 
     # the rook hasn't moved
     board[(home_row(seat) - 1) * 8 + (rook_col.ord - 'a'.ord)] == rank_for_player('r', seat) &&
@@ -48,7 +49,15 @@ module Concerns::Chess::KingMethods
       m.split('-')[0] == "e#{home_row(seat)}"
     end &&
 
+    # there are no pieces between the rook and the king
+    castle_range.all? do |s|
+      board[coord_to_space("#{s}#{home_row(seat)}")] == '.'
+    end &&
+
     # can't castle out of check
     !self.state['check']
+
+    # can't castle through check
+    # TODO
   end
 end

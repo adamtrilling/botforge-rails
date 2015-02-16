@@ -91,6 +91,7 @@ RSpec.describe Chess, :type => :model do
         subject.state['history'] = history
         subject.state['board'] = board
         subject.state['next_to_move'] = next_to_move
+        subject.state['check'] = check
         subject.save
       end
 
@@ -112,10 +113,6 @@ RSpec.describe Chess, :type => :model do
         other_player_legal_moves.each do |move|
           expect(subject.legal_moves(board, (next_to_move + 1) % 2, true)).to include(move)
         end
-      end
-
-      it 'has the correct check state' do
-        expect(subject.state['check']).to eq state_after[:check]
       end
     end
 
@@ -914,8 +911,8 @@ RSpec.describe Chess, :type => :model do
                   history: ['o-o-o'],
                   next_to_move: 1,
                   legal_moves: [
-                    'e8-e7', 'e8-f7', 'e8-f8', 'h8-f8', 'h8-g8', 'h8-h7',
-                    'h8-h6', 'h8-h5', 'h8-h4', 'h8-h3', 'h8-h2', 'h8-h1'
+                    'e8-e7', 'e8-f7', 'e8-f8', 'o-o', 'h8-f8', 'h8-g8',
+                    'h8-h7', 'h8-h6', 'h8-h5', 'h8-h4', 'h8-h3', 'h8-h2', 'h8-h1'
                   ],
                   check: false
                 } }
