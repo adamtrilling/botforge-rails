@@ -11,7 +11,8 @@ module Concerns::Chess::LegalMoves
 
     # filter out same-color-occupied spaces
     moves.select! do |m|
-      can_move_to?(m.split('-')[1].to_i, seat)
+      components = m.split('-')
+      components[0] != 'o' && can_move_to?(components[1].to_i, seat)
     end
 
     # filter out moves that would leave you in check
