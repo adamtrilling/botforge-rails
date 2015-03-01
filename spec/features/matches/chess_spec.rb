@@ -58,4 +58,36 @@ feature 'Chess Matches' do
   def there_is_an_in_progress_match
     @match = FactoryGirl.create(:chess)
   end
+
+  def i_am_shown_the_match
+    within('#board') do
+      within('[data-row="1"][data-col="a"]') do
+        expect(page).to have_selector('i.icon-chess-r.white')
+      end
+
+      within('[data-row="1"][data-col="e"]') do
+        expect(page).to have_selector('i.icon-chess-k.white')
+      end
+
+      within('[data-row="1"][data-col="g"]') do
+        expect(page).to have_selector('i.icon-chess-n.white')
+      end
+
+      within('[data-row="2"][data-col="a"]') do
+        expect(page).to have_selector('i.icon-chess-p.white')
+      end
+
+      within('[data-row="8"][data-col="a"]') do
+        expect(page).to have_selector('i.icon-chess-r.black')
+      end
+
+      within('[data-row="8"][data-col="f"]') do
+        expect(page).to have_selector('i.icon-chess-b.black')
+      end
+
+      within('[data-row="7"][data-col="c"]') do
+        expect(page).to have_selector('i.icon-chess-p.black')
+      end
+    end
+  end
 end

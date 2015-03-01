@@ -1,1 +1,7 @@
-chess
+#board
+  %table
+    - (0..7).to_a.reverse.each do |row|
+      %tr{data: {row: row + 1}}
+        - ('a'..'h').each_with_index do |col, i|
+          %td{data: {row: row + 1, col: col}}
+            %i{class: piece_to_icon(@match.state['board'][row * 8 + i])}
