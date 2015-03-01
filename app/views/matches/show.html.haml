@@ -1,3 +1,13 @@
-%h1="Match #{@match.id} - #{@match.type}"
+#info
+  %h3="#{@match.type} Match #{@match.id}"
+  %table
+    %th Player
+    %th Rating
+    %th Seat
+    - @match.participants.each do |p|
+      %tr
+        %td=p.player.name
+        %td=p.player.rating
+        %td=p.seat
 
 = render partial: "#{@match.type.downcase}"

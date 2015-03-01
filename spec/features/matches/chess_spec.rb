@@ -60,6 +60,14 @@ feature 'Chess Matches' do
   end
 
   def i_am_shown_the_match
+    within('#info') do
+      expect(page).to have_text("Chess Match #{@match.id}")
+      @match.participants.each do |p|
+        expect(page).to have_text(p.player.name)
+        expect(page).to have_text(p.player.rating)
+      end
+    end
+
     within('#board') do
       within('[data-row="1"][data-col="a"]') do
         expect(page).to have_selector('i.icon-chess-r.white')

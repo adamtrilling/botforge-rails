@@ -5,3 +5,7 @@
         - ('a'..'h').each_with_index do |col, i|
           %td{data: {row: row + 1, col: col}}
             %i{class: piece_to_icon(@match.state['board'][row * 8 + i])}
+#history
+  %ul
+    - @match.state['history'].in_groups_of(2) do |moves|
+      %li="#{moves[0]} #{moves[1]}"
