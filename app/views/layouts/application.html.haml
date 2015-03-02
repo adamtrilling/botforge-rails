@@ -1,0 +1,13 @@
+!!!
+%html
+  %head
+    %title Botforge
+    = stylesheet_link_tag 'application', media: 'all'
+    = javascript_include_tag 'application'
+    %link{href: 'http://fonts.googleapis.com/css?family=Open+Sans', rel: 'stylesheet', type: 'text/css'}
+    = csrf_meta_tags
+  %body
+    = render partial: 'layouts/header'
+    %hr
+    .container
+      = yield

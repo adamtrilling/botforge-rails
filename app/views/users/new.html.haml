@@ -1,6 +1,13 @@
-= simple_form_for @user do |f|
-  =f.input :username
-  =f.input :email
-  =f.input :password
-  =f.input :password_confirmation, label: 'Confirm password'
-  =f.submit
+.one.third.centered
+  %h1 Register
+  = simple_form_for @user do |f|
+    .row
+      .one.whole=f.input :username
+    .row
+      .one.whole=f.input :email
+    .row
+      .one.whole=f.input :password
+    .row
+      .one.whole=f.input :password_confirmation, label: 'Confirm password'
+    .row.pad-top
+      .one.whole=button_tag 'Register'

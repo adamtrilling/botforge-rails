@@ -4,10 +4,13 @@ ruby '2.2.0'
 
 gem 'rails', '~> 4.2.0.rc1'
 
+gem 'autoprefixer-rails'
 gem 'bcrypt'
 gem 'cancancan'
+gem 'compass-rails'
 gem 'exception_notification'
 gem 'faraday'
+gem 'groundworkcss'
 gem 'haml'
 gem 'jbuilder'
 gem 'jquery-rails'
