@@ -28,7 +28,9 @@ feature "User management" do
   end
 
   def i_elect_to_create_an_account
-    click_link "Register"
+    within '#content' do
+      click_link "Register"
+    end
   end
 
   def i_am_shown_the_registration_page
@@ -44,7 +46,7 @@ feature "User management" do
     fill_in 'Password', with: password
     fill_in 'Confirm password', with: password
 
-    click_button 'Create User'
+    click_button 'Register'
   end
 
   def i_get_a_confirmation_email

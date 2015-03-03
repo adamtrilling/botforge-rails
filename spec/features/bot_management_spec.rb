@@ -55,7 +55,7 @@ feature 'Bot management' do
   end
 
   def i_elect_to_create_a_bot
-    click_link 'New bot'
+    click_link 'New Bot'
   end
 
   def i_am_shown_the_new_bot_form
