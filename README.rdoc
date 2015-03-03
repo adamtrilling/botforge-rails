@@ -8,4 +8,4 @@ Requirements:
 * Bundler
 * PostgreSQL
 
-Once you've installed the bundle, you can run the server using <tt>rails s</tt>, and the tests using <t>rake</tt>.
+Once you've installed the bundle, you can run the server using <tt>rails s</tt>, and the tests using <tt>rake</tt>.
