@@ -39,6 +39,7 @@ feature 'Bot management' do
     FactoryGirl.create(:bot, user: current_user)
   ] }
   let(:bot_name) { SecureRandom.hex }
+  let(:game) { Match::GAMES.keys.sample }
 
   def i_have_bots
     bots
@@ -68,7 +69,7 @@ feature 'Bot management' do
   def i_fill_in_the_new_bot_form
     fill_in 'Name', with: bot_name
     fill_in 'URL', with: "https://www.example.com/bots/#{bot_name}"
-    fill_in 'Game', with: 'Thermonuclear War'
+    select game, from: 'Game'
 
     click_button 'Create Bot'
   end
@@ -93,7 +94,7 @@ feature 'Bot management' do
   def i_fill_in_the_bot_edit_form
     fill_in 'Name', with: bot_name
     fill_in 'URL', with: "https://www.example.com/bots/#{bot_name}"
-    fill_in 'Game', with: 'Thermonuclear War'
+    select game, from: 'Game'
 
     click_button 'Update Bot'
   end
