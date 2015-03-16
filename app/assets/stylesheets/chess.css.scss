@@ -1,0 +1,27 @@
+.chess-board {
+  width: 392px;
+  height: 392px;
+
+  td {
+    height: 39px;
+    width: 39px;
+    padding: 0;
+  }
+
+  td.light-square {
+    color: #b58863;
+    background-color: #f0d9b5;
+  }
+
+  td.dark-square {
+    color: #f0d9b5;
+    background-color: #b58863;
+  }
+
+  .chess-k-white {
+    content:url('chess/k-white.svg');
+    position: relative;
+    top: 4px;
+    left: 4px;
+  }
+}

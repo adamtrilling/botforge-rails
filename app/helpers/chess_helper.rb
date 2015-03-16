@@ -3,9 +3,13 @@ module ChessHelper
     if (piece == '.')
       nil
     elsif (('a'..'z').include?(piece))
-      "icon-chess-#{piece} white"
+      "chess-#{piece}-white"
     else
-      "icon-chess-#{piece.downcase} black"
+      "chess-#{piece.downcase}-black"
     end
+  end
+
+  def square_color(row, col)
+    (row + col) % 2 > 0 ? 'light-square' : 'dark-square'
   end
 end

@@ -1,11 +1,12 @@
-%h1=@game_attrs[:name]
-= form_tag matches_path do
-  = hidden_field_tag :game, @game
-  = submit_tag "Request Match"
-= render partial: 'leaderboard'
+.padded
+  %h1=@game_attrs[:name]
+  = form_tag matches_path do
+    = hidden_field_tag :game, @game
+    = submit_tag "Request Match"
+  = render partial: 'leaderboard'
 
-#rules
-  = render partial: "games/#{@game.downcase}/rules"
+  #rules.row
+    = render partial: "games/#{@game.downcase}/rules"
 
-#api
-  = render partial: "games/#{@game.downcase}/api"
+  #api.row
+    = render partial: "games/#{@game.downcase}/api"

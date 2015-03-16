@@ -17,6 +17,7 @@ class MatchesController < ApplicationController
     @match.participants.build(
       player: current_user.human_for(@game)
     )
+
     @match.start_match
     @match.request_move
 
