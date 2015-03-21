@@ -3,9 +3,9 @@ module ChessHelper
     if (piece == '.')
       nil
     elsif (('a'..'z').include?(piece))
-      "chess-#{piece}-white"
+      "chess-occupied chess-#{piece}-white"
     else
-      "chess-#{piece.downcase}-black"
+      "chess-occupied chess-#{piece.downcase}-black"
     end
   end
 

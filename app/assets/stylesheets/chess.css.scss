@@ -1,10 +1,11 @@
 .chess-board {
   width: 392px;
   height: 392px;
+  table-layout: fixed;
 
   td {
-    height: 39px;
-    width: 39px;
+    height: 49px;
+    width: 49px;
     padding: 0;
   }
 
@@ -18,10 +19,58 @@
     background-color: #b58863;
   }
 
+  .chess-occupied {
+    position: relative;
+    top: 2px;
+    left: 2px;
+  }
+
   .chess-k-white {
     content:url('chess/k-white.svg');
-    position: relative;
-    top: 4px;
-    left: 4px;
   }
+
+  .chess-k-black {
+    content:url('chess/k-black.svg');
+  }
+
+  .chess-q-white {
+    content:url('chess/q-white.svg');
+  }
+
+  .chess-q-black {
+    content:url('chess/q-black.svg');
+  }
+
+  .chess-b-white {
+    content:url('chess/b-white.svg');
+  }
+
+  .chess-b-black {
+    content:url('chess/b-black.svg');
+  }
+
+  .chess-n-white {
+    content:url('chess/n-white.svg');
+  }
+
+  .chess-n-black {
+    content:url('chess/n-black.svg');
+  }
+
+  .chess-r-white {
+    content:url('chess/r-white.svg');
+  }
+
+  .chess-r-black {
+    content:url('chess/r-black.svg');
+  }
+
+  .chess-p-white {
+    content:url('chess/p-white.svg');
+  }
+
+  .chess-p-black {
+    content:url('chess/p-black.svg');
+  }
+
 }
